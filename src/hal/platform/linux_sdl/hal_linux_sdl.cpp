@@ -38,6 +38,11 @@ namespace MOONCAKE {
         /*Initialize LVGL*/
         lv_init();
 
+        /*Create a default group for keyboard navigation*/
+        lv_group_set_default(lv_group_create());
+
+
+        /*Initialize the HAL (display, input devices, tick) for LVGL*/
         lv_disp_t * disp = lv_sdl_window_create(328, 448);
         lv_indev_t * mouse = lv_sdl_mouse_create();
         lv_indev_set_group(mouse, lv_group_get_default());
