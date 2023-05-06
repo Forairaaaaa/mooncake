@@ -38,7 +38,6 @@ add_subdirectory(${MOONCAKE_ROOT_DIR}/src/lvgl)
 
 
 
-
 #  Build library
 add_library(mooncake
     ${MOONCAKE_SRCS}
