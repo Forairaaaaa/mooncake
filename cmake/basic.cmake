@@ -27,7 +27,11 @@ include_directories(${SDL2_INCLUDE_DIRS})
 
 
 # lvgl
+set(LV_CONF_PATH ${MOONCAKE_ROOT_DIR}/src/hal/platform/linux_sdl/lv_conf_linux_sdl.h)
+add_definitions(-DLV_CONF_PATH=${LV_CONF_PATH})
 add_subdirectory(${MOONCAKE_ROOT_DIR}/src/lvgl)
+
+
 
 
 #  Build library
