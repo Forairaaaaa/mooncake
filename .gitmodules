@@ -1,0 +1,3 @@
+[submodule "src/simplekv"]
+	path = src/simplekv
+	url = https://github.com/Forairaaaaa/simplekv.git
