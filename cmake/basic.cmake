@@ -1,5 +1,10 @@
 # Basic CMakeLists.txt
 
+cmake_minimum_required(VERSION 3.10)
+set(CMAKE_C_STANDARD 11)#C11
+set(CMAKE_CXX_STANDARD 17)#C17
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 
 # Mooncake
 file(GLOB_RECURSE MOONCAKE_SRCS
@@ -27,8 +32,8 @@ include_directories(${SDL2_INCLUDE_DIRS})
 
 
 # lvgl
-set(LV_CONF_PATH ${MOONCAKE_ROOT_DIR}/src/hal/platform/linux_sdl/lv_conf_linux_sdl.h)
-add_definitions(-DLV_CONF_PATH=${LV_CONF_PATH})
+set(MY_LV_CONF_PATH ${MOONCAKE_ROOT_DIR}/src/hal/platform/linux_sdl/lv_conf.h)
+add_definitions(-DLV_CONF_PATH=${MY_LV_CONF_PATH})
 add_subdirectory(${MOONCAKE_ROOT_DIR}/src/lvgl)
 
 
