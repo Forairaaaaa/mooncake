@@ -7,6 +7,8 @@
  * 
  * @copyright Copyright (c) 2023
  * 
+ * https://github.com/lvgl/lv_port_pc_eclipse/tree/master 
+ * 
  */
 #pragma once
 #include "../../hal.hpp"
@@ -26,6 +28,9 @@ namespace MOONCAKE {
 
             /* Init override */
             bool init();
+
+            /* Update override */
+            void update();
 
     };
 

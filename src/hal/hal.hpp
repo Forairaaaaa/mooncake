@@ -28,7 +28,9 @@ namespace MOONCAKE {
 
             /* HAL init for port to override, this will be called by mooncake init */
             virtual bool init() { return false; }
-            
+
+            /* Will be called by mooncake update */
+            virtual void update() {}
     };
 
 }
