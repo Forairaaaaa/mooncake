@@ -10,6 +10,6 @@
  */
 #pragma once
 
-#include "hal/hal.h"
+#include "hal/hal.hpp"
 #include "hal/platform/linux_sdl/hal_linux_sdl.h"
 
