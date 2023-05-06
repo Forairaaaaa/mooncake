@@ -25,7 +25,10 @@ namespace MOONCAKE {
             printf("> database error\n");
             return false;
         }
+
+        _database_init();
         _lvgl_init();
+        
         return true;
     }
 
@@ -43,28 +46,36 @@ namespace MOONCAKE {
 
 
         /*Initialize the HAL (display, input devices, tick) for LVGL*/
-        lv_disp_t * disp = lv_sdl_window_create(328, 448);
+        lv_disp_t * disp = lv_sdl_window_create(
+            _database->Get("DIS_HOR")->value<uint16_t>(),
+            _database->Get("DIS_VER")->value<uint16_t>()
+            );
         lv_indev_t * mouse = lv_sdl_mouse_create();
         lv_indev_set_group(mouse, lv_group_get_default());
         lv_indev_set_disp(mouse, disp);
-
-        //   LV_IMG_DECLARE(mouse_cursor_icon); /*Declare the image file.*/
-        //   lv_obj_t * cursor_obj;
-        //   cursor_obj = lv_img_create(lv_scr_act());         /*Create an image object for the cursor */
-        //   lv_img_set_src(cursor_obj, &mouse_cursor_icon);   /*Set the image source*/
-        //   lv_indev_set_cursor(mouse, cursor_obj);           /*Connect the image  object to the driver*/
-
         lv_indev_t * mousewheel = lv_sdl_mousewheel_create();
         lv_indev_set_disp(mousewheel, disp);
         lv_indev_set_group(mousewheel, lv_group_get_default());
-
         lv_indev_t * keyboard = lv_sdl_keyboard_create();
         lv_indev_set_disp(keyboard, disp);
         lv_indev_set_group(keyboard, lv_group_get_default());
 
+    }
+
+
+
+    void HAL_Linux_SDL::_database_init()
+    {
+        _database->Add<uint16_t>("DIS_HOR", _config.dis_hor_res);
+        _database->Add<uint16_t>("DIS_VER", _config.dis_ver_res);
+        
 
 
     }
+
+
+
+
 
 
     void HAL_Linux_SDL::update()
@@ -72,6 +83,9 @@ namespace MOONCAKE {
         // printf("> hal update\n");
         lv_timer_handler();
     }
+
+
+
 
 }
 

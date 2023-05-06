@@ -20,6 +20,7 @@ namespace MOONCAKE {
     class HAL_Linux_SDL : public HAL_BASE {
         private:
             void _lvgl_init();
+            void _database_init();
 
         public:
             /* Init database */
