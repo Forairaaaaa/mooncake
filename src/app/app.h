@@ -49,6 +49,7 @@ namespace MOONCAKE {
 
             /* Set database */
             inline void setDatabase(SIMPLEKV::SimpleKV* db) { _database = db; }
+            inline void setUserData(void* userData) { _user_data = userData; }
 
 
             /* Basic API */
@@ -63,30 +64,6 @@ namespace MOONCAKE {
             virtual void onRunning() {}
             virtual void onPause() {}
             virtual void onDestroy() {}
-
-    };
-
-
-    struct APPList_t {
-        APP_BASE* app = nullptr;
-        uint16_t id = 0;
-    };
-
-
-    class APP_Register {
-        private:
-            std::vector<APPList_t> _app_list;
-
-        public:
-            APP_Register() {}
-            ~APP_Register() = default;
-
-            /* Basic API */
-            bool install(APP_BASE* app, SIMPLEKV::SimpleKV* database, void* userData = nullptr);
-            bool uninstall(APP_BASE* app);
-
-            inline std::vector<APPList_t> getAppList() { return _app_list; }
-
 
     };
 
