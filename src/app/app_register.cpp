@@ -30,6 +30,8 @@ namespace MOONCAKE {
         /* Pass parameter */
         app->setDatabase(database);
         app->setUserData(userData);
+        /* Setup basic configs */
+        app->onSetup();
 
         /* Push into App list */
         _id++;

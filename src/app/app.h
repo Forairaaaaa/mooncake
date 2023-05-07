@@ -59,9 +59,11 @@ namespace MOONCAKE {
 
 
             /* Life cycle */
+            virtual void onSetup() {}
             virtual void onCreate() {}
             virtual void onResume() {}
             virtual void onRunning() {}
+            virtual void onRunningBG() {}
             virtual void onPause() {}
             virtual void onDestroy() {}
 

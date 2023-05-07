@@ -23,8 +23,11 @@ namespace MOONCAKE {
 
     class APP_Register {
         private:
-            std::vector<APPList_t> _app_list;
             int _id;
+            
+
+        protected:
+            std::vector<APPList_t> _app_list;
 
 
         public:
