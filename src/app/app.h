@@ -32,7 +32,7 @@ namespace MOONCAKE {
             inline void setAppIcon(void* icon) { _icon_addr = icon; }
             inline SIMPLEKV::SimpleKV* Database() { return _database; }
             inline void* getUserData() { return _user_data; };
-            inline void allowBackgroudRunning(bool allow) { _allow_bg_running = allow; }
+            inline void allowBgRunningBG(bool allow) { _allow_bg_running = allow; }
             inline void endApp() { _finished = true; }
 
 

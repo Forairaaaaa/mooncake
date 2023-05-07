@@ -15,31 +15,50 @@
 namespace MOONCAKE {
 
 
-    struct APPRunning_t {
+    enum APPLifecycleEvent_t {
+        ON_SETUP = 0,
+        ON_CREATE,
+        ON_RESUME,
+        ON_RUNNING,
+        ON_RUNNING_BG,
+        ON_PAUSE,
+        ON_DESTROY
+    };
+
+
+    struct APPManager_t {
         APP_BASE* app = nullptr;
-        bool isOnFG = false;
-        bool allowRunningBG = false;
+        APPLifecycleEvent_t event = ON_SETUP;
+        APPLifecycleEvent_t event_last = ON_SETUP;
     };
 
 
     class APP_Manger : public APP_Register {
         private:
-            std::vector<APPRunning_t> _running_apps;
+            std::vector<APPManager_t> _running_apps;
+            APP_BASE* _foreground_app;
 
 
         public:
-            APP_Manger() = default;
+            APP_Manger() : _foreground_app(nullptr) {}
             ~APP_Manger() = default;
 
 
             /* Basic API */
-            bool startApp(int id);
-            bool startApp(const char* name);
-            bool closeApp(int id);
-            bool closeApp(const char* name);
+            bool startApp(APP_BASE* app);
+            inline bool startApp(int id) { return startApp(getApp(id)); }
+            inline bool startApp(const char* name) { return startApp(getApp(name)); }
+
+            bool closeApp(APP_BASE* app);
+            inline bool closeApp(int id) { return closeApp(getApp(id)); }
+            inline bool closeApp(const char* name) { return closeApp(getApp(name)); }
+
+            bool destroyApp(APP_BASE* app);
+            inline bool destroyApp(int id) { return destroyApp(getApp(id)); }
+            inline bool destroyApp(const char* name) { return destroyApp(getApp(name)); }
 
 
-            /* Call this in loop to update App running */
+            /* Call this in loop to keep App running */
             void update();
 
     };
