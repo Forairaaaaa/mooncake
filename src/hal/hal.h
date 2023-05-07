@@ -34,7 +34,7 @@ namespace MOONCAKE {
 
             /* Basic configs */
             inline HALconfig_t config(void) { return _config; }
-            inline void config(HALconfig_t cfg) { _config = cfg; }
+            inline void config(const HALconfig_t& cfg) { _config = cfg; }
 
 
             /* Database API */

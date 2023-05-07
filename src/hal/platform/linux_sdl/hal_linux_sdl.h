@@ -11,7 +11,7 @@
  * 
  */
 #pragma once
-#include "../../hal.hpp"
+#include "../../hal.h"
 
 
 namespace MOONCAKE {

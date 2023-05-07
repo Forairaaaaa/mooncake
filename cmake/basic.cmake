@@ -9,11 +9,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Mooncake
 file(GLOB_RECURSE MOONCAKE_SRCS
     ${MOONCAKE_ROOT_DIR}/src/hal/platform/linux_sdl/*.cpp
+    ${MOONCAKE_ROOT_DIR}/src/app/*.cpp
+    ${MOONCAKE_ROOT_DIR}/src/framework/*.cpp
 )
 set(MOONCAKE_INCS
     ${MOONCAKE_ROOT_DIR}/src/
     ${MOONCAKE_ROOT_DIR}/src/hal/
     ${MOONCAKE_ROOT_DIR}/src/hal/platform/linux_sdl/
+    ${MOONCAKE_ROOT_DIR}/app/
+    ${MOONCAKE_ROOT_DIR}/framework/
 )
 
 
