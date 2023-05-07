@@ -15,19 +15,27 @@
 namespace MOONCAKE {
 
 
+    /* Inherit and override "Life cycle" to create your own App */
     class APP_BASE {
         protected:
             std::string _name;
             void* _icon_addr;
             bool _allow_bg_running;
             bool _finished;
+            SIMPLEKV::SimpleKV* _database;
 
+            /* App internal API */
+            inline SIMPLEKV::SimpleKV* Database() { return _database; }
             inline void endApp() { _finished = true; }
 
 
         public:
-            APP_BASE() : _name(""), _icon_addr(nullptr), _allow_bg_running(false), _finished(false) {}
+            APP_BASE() : _name(""), _icon_addr(nullptr), _allow_bg_running(false), _finished(false), _database(nullptr) {}
             ~APP_BASE() = default;
+
+
+            /* Set database */
+            inline void setDatabase(SIMPLEKV::SimpleKV* db) { _database = db; }
 
 
             /* Basic API */
