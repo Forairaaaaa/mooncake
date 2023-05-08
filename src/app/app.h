@@ -56,10 +56,14 @@ namespace MOONCAKE {
             inline std::string getName() { return _name; }
             inline void* iconAddr() { return _icon_addr; }
             inline bool allowBgRunning() { return _allow_bg_running; }
+            inline bool isFinished() { return _finished; }
+
+
+            /* Setup App configs, called when install */
+            virtual void onSetup() {}
 
 
             /* Life cycle */
-            virtual void onSetup() {}
             virtual void onCreate() {}
             virtual void onResume() {}
             virtual void onRunning() {}
