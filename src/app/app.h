@@ -30,10 +30,10 @@ namespace MOONCAKE {
             /* App internal API */
             inline void setAppName(const std::string& name) { _name = name; }
             inline void setAppIcon(void* icon) { _icon_addr = icon; }
-            inline SIMPLEKV::SimpleKV* Database() { return _database; }
-            inline void* getUserData() { return _user_data; };
-            inline void allowBgRunningBG(bool allow) { _allow_bg_running = allow; }
+            inline void setAllowBgRunning(bool allow) { _allow_bg_running = allow; }
             inline void endApp() { _finished = true; }
+            inline SIMPLEKV::SimpleKV* getDatabase() { return _database; }
+            inline void* getUserData() { return _user_data; };
 
 
         public:
@@ -47,21 +47,24 @@ namespace MOONCAKE {
             ~APP_BASE() = default;
 
 
-            /* Set database */
+            /* API for App manager */
             inline void setDatabase(SIMPLEKV::SimpleKV* db) { _database = db; }
             inline void setUserData(void* userData) { _user_data = userData; }
 
-
+            
             /* Basic API */
-            inline std::string getName() { return _name; }
-            inline void* iconAddr() { return _icon_addr; }
-            inline bool allowBgRunning() { return _allow_bg_running; }
+            inline std::string getAppName() { return _name; }
+            inline void* getIconAddr() { return _icon_addr; }
+            inline bool isAllowBgRunning() { return _allow_bg_running; }
             inline bool isFinished() { return _finished; }
 
 
-            /* Setup App configs, called when install */
+            /**
+             * @brief Lifecycle callbacks for derived to override
+             * 
+             */
+            /* Setup App configs, called when App "install()" */
             virtual void onSetup() {}
-
 
             /* Life cycle */
             virtual void onCreate() {}

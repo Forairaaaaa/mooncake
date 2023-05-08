@@ -47,10 +47,18 @@ namespace MOONCAKE {
         /* If already running */
         for (auto iter = _running_apps.begin(); iter != _running_apps.end(); iter++) {
             if (iter->app == app) {
-                /* Put foreground App to first element */
-                std::swap(*(_running_apps.begin()), *(iter));
+
+                /* If App is running on foregound  */
+                if (iter->event == ON_RUNNING) {
+                    return true;
+                }
+
+                /* Send event */
+                iter->event = ON_RESUME;
                 /* Update foreground */
                 _foreground_app = app;
+                /* Setup flag to update the first element after next update */
+                _update_first_element = true;                
                 return true;
             }
         }
@@ -70,9 +78,15 @@ namespace MOONCAKE {
         }
 
         /* Search in running list */
-        for (auto i : _running_apps) {
-            if (i.app == app) {
-                i.event = ON_PAUSE;
+        for (auto iter = _running_apps.begin(); iter != _running_apps.end(); iter++) {
+            if (iter->app == app) {
+                
+                /* If already running on background */
+                if (iter->event == ON_RUNNING_BG) {
+                    return true;
+                }
+
+                iter->event = ON_PAUSE;
                 return true;
             }
         }
@@ -86,12 +100,10 @@ namespace MOONCAKE {
             return false;
         }
 
-        /* Search in running Apps */
-        for (auto i : _running_apps) {
-            if (i.app == app) {
-                i.app->onPause();
-                i.app->onDestroy();
-                _remove_running_app(app);
+        /* Search in running list */
+        for (auto iter = _running_apps.begin(); iter != _running_apps.end(); iter++) {
+            if (iter->app == app) {
+                iter->event = ON_PAUSE_DESTROY;
                 return true;
             }
         }
@@ -101,9 +113,9 @@ namespace MOONCAKE {
 
     void APP_Manger::destroyAllApps()
     {
-        for (auto i : _running_apps) {
-            i.app->onPause();
-            i.app->onDestroy();
+        for (auto iter = _running_apps.begin(); iter != _running_apps.end(); iter++) {
+            iter->app->onPause();
+            iter->app->onDestroy();
         }
         /* Free list */
         _running_apps.clear();
@@ -113,8 +125,8 @@ namespace MOONCAKE {
 
     bool APP_Manger::isAppRunning(APP_BASE* app)
     {
-        for (auto i : _running_apps) {
-            if (i.app == app) {
+        for (auto iter = _running_apps.begin(); iter != _running_apps.end(); iter++) {
+            if (iter->app == app) {
                 return true;
             }
         }
@@ -129,8 +141,8 @@ namespace MOONCAKE {
     void APP_Manger::update()
     {
         /**
-         * Because foreground App is set to the first element, it's life cycle callback will be called firstly,
-         * to avoid new App's "onCreate" or BG's resume effect FG's "onPause", "onDestroy".
+         * Because foreground App is set to be the first element, it's life cycle callbacks will be called firstly,
+         * to avoid new App's "onCreate" or BG's "onResume" effect FG's "onPause", "onDestroy".
          * 
          * Moreover, "onRunning", "onPause", "onDestroy" will be called at first,
          * and new App's "onCreate" or BG's "onRunningBG", "onResume" will be called next,
@@ -153,6 +165,7 @@ namespace MOONCAKE {
             
             /* If App call "endApp()" internally */
             if (iter->app->isFinished()) {
+                /* End it */
                 iter->app->onPause();
                 iter->event = ON_DESTROY;
             }
@@ -162,12 +175,18 @@ namespace MOONCAKE {
                 iter->app->onPause();
 
                 /* If allow backgroud running */
-                if (iter->app->allowBgRunning()) {
+                if (iter->app->isAllowBgRunning()) {
                     iter->event = ON_RUNNING_BG;
                 }
                 else {
                     iter->event = ON_DESTROY;
                 }
+            }
+
+            /* On pause destroy */
+            if (iter->event == ON_PAUSE_DESTROY) {
+                iter->app->onPause();
+                iter->event = ON_DESTROY;
             }
 
             /* On destroy */
@@ -180,14 +199,7 @@ namespace MOONCAKE {
 
             /* On running backgound */
             if (iter->event == ON_RUNNING_BG) {
-                /* If is foreground App, take out to foreground */
-                if (iter->app == _foreground_app) {
-                    iter->event = ON_RESUME;
-                }
-                /* If not, keep running in background */
-                else {
-                    iter->app->onRunningBG();
-                }
+                iter->app->onRunningBG();
             }
 
             /* On create */
@@ -204,6 +216,20 @@ namespace MOONCAKE {
 
             iter++;
         }
+        
+        /* If need to update first element of running list */
+        if (_update_first_element) {
+            _update_first_element = false;
+            /* Find FG App */
+            for (auto iter = _running_apps.begin(); iter != _running_apps.end(); iter++) {
+                if (iter->app == _foreground_app) {
+                    /* Swap it to the first one */
+                    std::swap(*(_running_apps.begin()), *(iter));
+                    break;
+                }
+            }
+        }
+
     }
 
 

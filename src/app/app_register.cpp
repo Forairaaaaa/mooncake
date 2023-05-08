@@ -71,7 +71,7 @@ namespace MOONCAKE {
     int APP_Register::getAppID(const char* name)
     {
         for (auto i : _app_list) {
-            if (i.app->getName() == name) {
+            if (i.app->getAppName() == name) {
                 return i.id;
             }
         }
@@ -93,7 +93,7 @@ namespace MOONCAKE {
     APP_BASE* APP_Register::getApp(const char* name)
     {
         for (auto i : _app_list) {
-            if (i.app->getName() == name) {
+            if (i.app->getAppName() == name) {
                 return i.app;
             }
         }

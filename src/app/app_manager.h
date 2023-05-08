@@ -22,6 +22,7 @@ namespace MOONCAKE {
         ON_RUNNING,
         ON_RUNNING_BG,
         ON_PAUSE,
+        ON_PAUSE_DESTROY,
         ON_DESTROY
     };
 
@@ -37,13 +38,16 @@ namespace MOONCAKE {
         private:
             std::vector<APPManager_t> _running_apps;
             APP_BASE* _foreground_app;
+            bool _update_first_element;
 
             bool _add_running_app(APP_BASE* app, const APPLifecycleEvent_t& event, const APPLifecycleEvent_t& event_last);
             bool _remove_running_app(APP_BASE* app);
 
 
         public:
-            APP_Manger() : _foreground_app(nullptr) {}
+            APP_Manger() : 
+                _foreground_app(nullptr),
+                _update_first_element(false) {}
             ~APP_Manger() = default;
 
 
