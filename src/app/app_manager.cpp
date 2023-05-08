@@ -14,30 +14,6 @@
 namespace MOONCAKE {
 
 
-    bool APP_Manger::_add_running_app(APP_BASE* app, const APPLifecycleEvent_t& event, const APPLifecycleEvent_t& event_last)
-    {
-        APPManager_t new_app;
-        new_app.app = app;
-        new_app.event = event;
-        new_app.event_last = event_last;
-        _running_apps.emplace(_running_apps.begin(), new_app);
-        return true;
-    }
-
-
-    bool APP_Manger::_remove_running_app(APP_BASE* app)
-    {
-        /* Iterate running Apps */
-        for (auto iter = _running_apps.begin(); iter != _running_apps.end(); iter++) {
-            if (iter->app == app) {
-                _running_apps.erase(iter);
-                return true;
-            }
-        }
-        return false;
-    }
-
-
     bool APP_Manger::startApp(APP_BASE* app)
     {
         if (app == nullptr) {
@@ -63,10 +39,16 @@ namespace MOONCAKE {
             }
         }
 
-        /* If not, push one into running list's first one */
-        _add_running_app(app, ON_CREATE, ON_SETUP);
+        /* If not, create a new one */
+        APPManager_t new_app;
+        new_app.app = app;
+        new_app.event = ON_CREATE;
+        _running_apps.push_back(new_app);
+
         /* Update foreground */
         _foreground_app = app;
+        /* Setup flag to update the first element after next update */
+        _update_first_element = true;  
         return true;
     }
 

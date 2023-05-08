@@ -40,9 +40,6 @@ namespace MOONCAKE {
             APP_BASE* _foreground_app;
             bool _update_first_element;
 
-            bool _add_running_app(APP_BASE* app, const APPLifecycleEvent_t& event, const APPLifecycleEvent_t& event_last);
-            bool _remove_running_app(APP_BASE* app);
-
 
         public:
             APP_Manger() : 
