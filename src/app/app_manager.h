@@ -18,6 +18,8 @@ namespace MOONCAKE {
     enum APPLifecycleEvent_t {
         ON_SETUP = 0,
         ON_CREATE,
+        ON_CREATE_PAUSE,
+        ON_CREATE_DESTROY,
         ON_RESUME,
         ON_RUNNING,
         ON_RUNNING_BG,

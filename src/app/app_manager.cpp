@@ -65,6 +65,17 @@ namespace MOONCAKE {
                 
                 /* If already running on background */
                 if (iter->event == ON_RUNNING_BG) {
+                    return false;
+                }
+
+                /* If just start */
+                if (iter->event == ON_CREATE) {
+                    iter->event = ON_CREATE_PAUSE;
+                    return true;
+                }
+
+                /* If called repeatly or jsut start and destroy */
+                if ((iter->event == ON_CREATE_PAUSE) || (iter->event == ON_CREATE_DESTROY)) {
                     return true;
                 }
 
@@ -85,6 +96,18 @@ namespace MOONCAKE {
         /* Search in running list */
         for (auto iter = _running_apps.begin(); iter != _running_apps.end(); iter++) {
             if (iter->app == app) {
+
+                /* If just start or start and close */
+                if ((iter->event == ON_CREATE) || (iter->event == ON_CREATE_PAUSE)) {
+                    iter->event = ON_CREATE_DESTROY;
+                    return true;
+                }
+
+                /* If called repeatly */
+                if (iter->event == ON_CREATE_DESTROY) {
+                    return true;
+                }
+
                 iter->event = ON_PAUSE_DESTROY;
                 return true;
             }
@@ -144,12 +167,24 @@ namespace MOONCAKE {
                     iter->event = ON_PAUSE;
                 }
             }
+
+            /* On running backgound */
+            if (iter->event == ON_RUNNING_BG) {
+                iter->app->onRunningBG();
+            }
             
             /* If App call "endApp()" internally */
             if (iter->app->isFinished()) {
                 /* End it */
                 iter->app->onPause();
                 iter->event = ON_DESTROY;
+            }
+
+            /* On create pause */
+            if (iter->event == ON_CREATE_PAUSE) {
+                iter->app->onCreate();
+                iter->app->onResume();
+                iter->event = ON_PAUSE;
             }
             
             /* On pause */
@@ -165,6 +200,13 @@ namespace MOONCAKE {
                 }
             }
 
+            /* On create destroy */
+            if (iter->event == ON_CREATE_DESTROY) {
+                iter->app->onCreate();
+                iter->app->onResume();
+                iter->event = ON_PAUSE_DESTROY;
+            }
+
             /* On pause destroy */
             if (iter->event == ON_PAUSE_DESTROY) {
                 iter->app->onPause();
@@ -177,11 +219,6 @@ namespace MOONCAKE {
                 /* Kick it out of running list */
                 iter = _running_apps.erase(iter);
                 continue;
-            }
-
-            /* On running backgound */
-            if (iter->event == ON_RUNNING_BG) {
-                iter->app->onRunningBG();
             }
 
             /* On create */
