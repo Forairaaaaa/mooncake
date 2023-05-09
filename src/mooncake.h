@@ -9,7 +9,5 @@
  * 
  */
 #pragma once
-
-#include "hal/hal.h"
-#include "hal/platform/linux_sdl/hal_linux_sdl.h"
-
+#include "system_data_def.h"
+#include "framework/framework.h"

@@ -13,7 +13,7 @@ file(GLOB_RECURSE MOONCAKE_SRCS
 )
 set(MOONCAKE_INCS
     ${MOONCAKE_ROOT_DIR}/src/
-    ${MOONCAKE_ROOT_DIR}/app/
+    ${MOONCAKE_ROOT_DIR}/src/app/
     ${MOONCAKE_ROOT_DIR}/framework/
     ${MOONCAKE_ROOT_DIR}/builtin_apps/
     ${MOONCAKE_ROOT_DIR}/builtin_apps/boot_anim/
