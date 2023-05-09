@@ -63,9 +63,9 @@ namespace MOONCAKE {
 
         /* Hardware */
         #ifdef MC_DISP_HOR
-        _config.database->Add<uint16_t>(MC_DISP_HOR, uint16_t(0));
-        _config.database->Add<uint16_t>(MC_DISP_VER, uint16_t(0));
-        _config.database->Add<uint8_t>(MC_DISP_BRIGHTNESS, uint8_t(0));
+        _config.database->Add<uint16_t>(MC_DISP_HOR, _config.displayHor);
+        _config.database->Add<uint16_t>(MC_DISP_VER, _config.displayVer);
+        _config.database->Add<uint8_t>(MC_DISP_BRIGHTNESS, uint8_t(100));
         #endif
     }
 

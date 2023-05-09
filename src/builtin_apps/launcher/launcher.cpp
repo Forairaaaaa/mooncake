@@ -9,6 +9,7 @@
  * 
  */
 #include "launcher.h"
+#include "../../system_data_def.h"
 #include <lvgl.h>
 
 
@@ -61,6 +62,9 @@ namespace MOONCAKE {
 
             // _framework->destroyApp(getAppName().c_str());
             // _framework->startApp(getAppName().c_str());
+
+
+            printf("%d %d %d\n", getDatabase()->Get(MC_DISP_HOR)->value<uint16_t>(), getDatabase()->Get(MC_DISP_VER)->value<uint16_t>(), getDatabase()->Get(MC_DISP_BRIGHTNESS)->value<uint8_t>());
 
 
         }
