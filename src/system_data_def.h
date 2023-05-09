@@ -32,7 +32,7 @@
 
 /* Time */
 #if 1
-#define MC_TIME             "_TIME"      // MOONCAKE::DataTime_t
+#define MC_TIME             "_TIME"         // MOONCAKE::DataTime_t
 namespace MOONCAKE {
     struct DataTime_t {
         uint8_t sec;		/* Seconds.	[0-60] (1 leap second) */
@@ -50,7 +50,7 @@ namespace MOONCAKE {
 
 /* Hardware */
 #if 1
-#define MC_DISP_HOR         "_DIS_HOR"  // uint16_t
-#define MC_DISP_VER         "_DIS_VER"  // uint16_t
-#define MC_DISP_BRIGHTNESS  "_DIS_BRI"  // uint8_t
+#define MC_DISP_HOR         "_DIS_HOR"      // uint16_t
+#define MC_DISP_VER         "_DIS_VER"      // uint16_t
+#define MC_DISP_BRIGHTNESS  "_DIS_BRI"      // uint8_t
 #endif
