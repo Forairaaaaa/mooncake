@@ -9,6 +9,7 @@
  * 
  */
 #include "boot_anim.h"
+#include <lvgl.h>
 
 
 namespace MOONCAKE {
@@ -20,11 +21,15 @@ namespace MOONCAKE {
             setAppName("BootAnim");
         }
 
+
         /* Life cycle */
         void Boot_Anim::onCreate()
         {
             printf("%s > boot anim\n", getAppName().c_str());
             count = 0;
+
+            // lv_demo_benchmark(LV_DEMO_BENCHMARK_MODE_REAL);
+
         }
 
 
@@ -38,9 +43,11 @@ namespace MOONCAKE {
         {
             count++;
             // printf("%d\n", count);
-            if (count > 100) {
+            if (count == 0xFF) {
                 endApp();
             }
+
+            lv_timer_handler();
         }
 
 

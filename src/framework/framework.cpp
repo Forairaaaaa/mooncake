@@ -41,7 +41,7 @@ namespace MOONCAKE {
     {
         /* If database is set */
         if (_config.database != nullptr) {
-            _builtin_database = false;
+            _using_builtin_database = false;
         }
         else {
             _config.database = new SIMPLEKV::SimpleKV;
@@ -56,7 +56,21 @@ namespace MOONCAKE {
                 return false;
             }
         }
-        
+
+        /* If launcher is set */
+        if (_config.launcher != nullptr) {
+            _using_builtin_launcher = false;
+        }
+        else {
+            _config.launcher = new BUILTIN_APP::Launcher;
+            if (_config.launcher == nullptr) {
+                return false;
+            }
+        }
+        /* Install launcher */
+        install(_config.launcher, _config.database, (void*)this);
+        /* Start launcher */
+        startApp(_config.launcher);
 
 
 

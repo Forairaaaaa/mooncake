@@ -9,4 +9,39 @@
  * 
  */
 #pragma once
+#include "../../app/app.h"
 
+
+namespace MOONCAKE {
+    namespace BUILTIN_APP {
+
+    
+        class Launcher : public APP_BASE {
+            private:
+                
+
+            public:
+                Launcher() = default;
+                ~Launcher() = default;
+
+
+                /**
+                 * @brief Lifecycle callbacks for derived to override
+                 * 
+                 */
+                /* Setup App configs, called when App "install()" */
+                void onSetup();
+
+                /* Life cycle */
+                void onCreate();
+                void onResume();
+                void onRunning();
+                void onRunningBG();
+                void onPause();
+                void onDestroy();
+            
+        };
+
+
+    }
+}

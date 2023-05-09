@@ -27,16 +27,16 @@ namespace MOONCAKE {
     class Framework : public APP_Manger {
         private:
             FrameworkConfig_t _config;
-            bool _builtin_database;
-            bool _builtin_launcher;
+            bool _using_builtin_database;
+            bool _using_builtin_launcher;
 
             bool _run_boot_anim();
             
 
         public:
             Framework() : 
-                _builtin_database(true),
-                _builtin_launcher(true) {}
+                _using_builtin_database(true),
+                _using_builtin_launcher(true) {}
             ~Framework() = default;
 
 

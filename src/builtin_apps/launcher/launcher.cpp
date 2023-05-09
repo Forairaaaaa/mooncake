@@ -9,4 +9,55 @@
  * 
  */
 #include "launcher.h"
+#include <lvgl.h>
 
+
+namespace MOONCAKE {
+    namespace BUILTIN_APP {
+
+
+        void Launcher::onSetup()
+        {
+            setAppName("Launcher");
+        }
+
+
+        /* Life cycle */
+        void Launcher::onCreate()
+        {
+            printf("%s > onCreate\n", getAppName().c_str());
+        }
+
+
+        void Launcher::onResume()
+        {
+            printf("%s > onResume\n", getAppName().c_str());
+        }
+
+
+        void Launcher::onRunning()
+        {
+            printf("%s > onRunning\n", getAppName().c_str());
+        }
+
+
+        void Launcher::onRunningBG()
+        {
+            printf("%s > onRunningBG\n", getAppName().c_str());
+        }
+
+
+        void Launcher::onPause()
+        {
+            printf("%s > onPause\n", getAppName().c_str());
+        }
+
+
+        void Launcher::onDestroy()
+        {
+            printf("%s > onDestroy\n", getAppName().c_str());
+        }
+
+
+    }
+}
