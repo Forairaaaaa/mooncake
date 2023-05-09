@@ -39,6 +39,13 @@ namespace MOONCAKE {
 
     bool Framework::init()
     {
+        if (_inited) {
+            return false;
+        }
+
+        /* Clear running Apps */
+        destroyAllApps();
+
         /* If database is set */
         if (_config.database != nullptr) {
             _using_builtin_database = false;
@@ -56,6 +63,12 @@ namespace MOONCAKE {
                 return false;
             }
         }
+        
+        /* If dont use launcher */
+        if (!_config.useLauncher) {
+            _inited = true;
+            return true;
+        }
 
         /* If launcher is set */
         if (_config.launcher != nullptr) {
@@ -67,20 +80,20 @@ namespace MOONCAKE {
                 return false;
             }
         }
-        /* Install launcher */
+        
+        /* Install launcher, and pass framework's pointer as userdata */
         install(_config.launcher, _config.database, (void*)this);
         /* Start launcher */
         startApp(_config.launcher);
 
-
-
+        _inited = true;
         return true;
     }
 
 
     void Framework::update()
     {
-
+        
 
 
         /* Update App manager */

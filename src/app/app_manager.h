@@ -32,7 +32,6 @@ namespace MOONCAKE {
     struct APPManager_t {
         APP_BASE* app = nullptr;
         APPLifecycleEvent_t event = ON_SETUP;
-        APPLifecycleEvent_t event_last = ON_SETUP;
     };
 
 

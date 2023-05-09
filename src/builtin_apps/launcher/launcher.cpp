@@ -19,6 +19,11 @@ namespace MOONCAKE {
         void Launcher::onSetup()
         {
             setAppName("Launcher");
+            setAllowBgRunning(true);
+
+            _framework = (Framework*)getUserData();
+
+            printf("app num :::: %d\n", _framework->getAppNum());
         }
 
 
@@ -26,24 +31,38 @@ namespace MOONCAKE {
         void Launcher::onCreate()
         {
             printf("%s > onCreate\n", getAppName().c_str());
+
+            
         }
 
 
         void Launcher::onResume()
         {
             printf("%s > onResume\n", getAppName().c_str());
+
+
         }
 
 
         void Launcher::onRunning()
         {
             printf("%s > onRunning\n", getAppName().c_str());
+
+            
+            _framework->closeApp(getAppName().c_str());
+            
         }
 
 
         void Launcher::onRunningBG()
         {
             printf("%s > onRunningBG\n", getAppName().c_str());
+
+
+            // _framework->destroyApp(getAppName().c_str());
+            // _framework->startApp(getAppName().c_str());
+
+
         }
 
 

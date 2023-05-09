@@ -10,6 +10,7 @@
  */
 #pragma once
 #include "../../app/app.h"
+#include "../../framework/framework.h"
 
 
 namespace MOONCAKE {
@@ -18,10 +19,10 @@ namespace MOONCAKE {
     
         class Launcher : public APP_BASE {
             private:
-                
+                Framework* _framework;
 
             public:
-                Launcher() = default;
+                Launcher() : _framework(nullptr) {}
                 ~Launcher() = default;
 
 
