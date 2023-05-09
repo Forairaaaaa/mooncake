@@ -10,6 +10,7 @@
  */
 #include "framework.h"
 #include "../builtin_apps/builtin_apps.h"
+#include "../system_data_def.h"
 
 
 namespace MOONCAKE {
@@ -37,6 +38,38 @@ namespace MOONCAKE {
     }
 
 
+    void Framework::_system_data_init()
+    {
+        /* Clear database */
+        _config.database->DeleteAll();
+
+        /* System infos */
+        #ifdef MC_SYSTEM_TICKS
+        _config.database->Add<uint32_t>(MC_SYSTEM_TICKS, uint32_t(0));
+        #endif
+
+        /* Navigation */
+        #ifdef MC_KEY_MENU
+        _config.database->Add<bool>(MC_KEY_MENU, bool(false));
+        _config.database->Add<bool>(MC_KEY_HOME, bool(false));
+        _config.database->Add<bool>(MC_KEY_BACK, bool(false));
+        _config.database->Add<bool>(MC_KEY_POWER, bool(false));
+        #endif
+
+        /* Time */
+        #ifdef MC_TIME
+        _config.database->Add<DataTime_t>(MC_TIME, DataTime_t());
+        #endif
+
+        /* Hardware */
+        #ifdef MC_DISP_HOR
+        _config.database->Add<uint16_t>(MC_DISP_HOR, uint16_t(0));
+        _config.database->Add<uint16_t>(MC_DISP_VER, uint16_t(0));
+        _config.database->Add<uint8_t>(MC_DISP_BRIGHTNESS, uint8_t(0));
+        #endif
+    }
+
+
     bool Framework::init()
     {
         if (_inited) {
@@ -56,6 +89,9 @@ namespace MOONCAKE {
                 return false;
             }
         }
+
+        /* Init system data */
+        _system_data_init();
 
         /* Boot anim */
         if (_config.playBootAnim) {
@@ -93,7 +129,7 @@ namespace MOONCAKE {
 
     void Framework::update()
     {
-        
+
 
 
         /* Update App manager */

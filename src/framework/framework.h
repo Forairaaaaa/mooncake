@@ -21,6 +21,10 @@ namespace MOONCAKE {
         APP_BASE* launcher = nullptr;
         bool playBootAnim = true;
         bool useLauncher = true;
+
+        /* Hardware */
+        uint16_t displayHor = 480;
+        uint16_t displayVer = 320;
     };
 
 
@@ -32,6 +36,7 @@ namespace MOONCAKE {
             bool _inited;
 
             bool _run_boot_anim();
+            void _system_data_init();
             
 
         public:
@@ -48,6 +53,7 @@ namespace MOONCAKE {
             inline void setDatabase(SIMPLEKV::SimpleKV* db) { if (_inited) { return; } else { _config.database = db; } }
             inline void setBootAnim(APP_BASE* bootAnim) { if (_inited) { return; } else { _config.bootAnim = bootAnim; } }
             inline void setLauncher(APP_BASE* luancher) { if (_inited) { return; } else { _config.launcher = luancher; } }
+            inline void setDisplay(uint16_t hor, uint16_t ver) { if (_inited) { return; } else { _config.displayHor = hor; _config.displayVer = ver; } }
             
 
             /* Framework init */
