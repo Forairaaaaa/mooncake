@@ -74,8 +74,6 @@ namespace MOONCAKE {
             /* Call this in loop to keep App running */
             void update();
 
-            
-
     };
 
 
