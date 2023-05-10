@@ -60,6 +60,17 @@ namespace MOONCAKE {
             bool init();
 
 
+            /**
+             * @brief Install App into register 
+             * 
+             * @param app App pointer 
+             * @param database System database
+             * @param userData Custom user data
+             * @return int App ID
+             */
+            int install(APP_BASE* app, void* userData = nullptr);
+
+
             /* Call this in loop to keep framework running */
             void update();
 

@@ -44,11 +44,11 @@ namespace MOONCAKE {
     }
 
 
-    bool APP_Register::uninstall(uint16_t appId)
+    bool APP_Register::uninstall(APP_BASE* app)
     {
         /* Find App */
         for (auto iter = _app_list.begin(); iter != _app_list.end(); iter++) {
-            if (iter->id == appId) {
+            if (iter->app == app) {
                 _app_list.erase(iter);
                 return true;
             }

@@ -28,7 +28,7 @@ namespace MOONCAKE {
             }
         }
         /* Run Anim until finished */
-        install(_config.bootAnim, nullptr, nullptr);
+        APP_Register::install(_config.bootAnim, nullptr, nullptr);
         startApp(_config.bootAnim);
         while (1) {
             APP_Manger::update();
@@ -36,8 +36,10 @@ namespace MOONCAKE {
                 break;
             }
         }
+        APP_Register::uninstall(_config.bootAnim);
         if (using_builtin_bootAnim) {
             delete _config.bootAnim;
+            _config.bootAnim = nullptr;
         }
         return true;
     }
@@ -123,12 +125,21 @@ namespace MOONCAKE {
         }
         
         /* Install launcher, and pass framework's pointer as userdata */
-        install(_config.launcher, _config.database, (void*)this);
+        APP_Register::install(_config.launcher, _config.database, (void*)this);
         /* Start launcher */
         startApp(_config.launcher);
 
         _inited = true;
         return true;
+    }
+
+
+    int Framework::install(APP_BASE* app, void* userData)
+    {
+        if (!_inited) {
+            return -1;
+        }
+        return APP_Register::install(app, _config.database, userData);
     }
 
 

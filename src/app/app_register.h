@@ -44,7 +44,9 @@ namespace MOONCAKE {
              * @return int App ID
              */
             int install(APP_BASE* app, SIMPLEKV::SimpleKV* database, void* userData = nullptr);
-            bool uninstall(uint16_t appId);
+            bool uninstall(APP_BASE* app);
+            inline bool uninstall(int id) { return uninstall(getApp(id)); }
+            inline bool uninstall(const char* name) { return uninstall(getApp(name)); }
 
 
             /* Basic API */
