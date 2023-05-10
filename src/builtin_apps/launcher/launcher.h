@@ -11,11 +11,20 @@
 #pragma once
 #include "../../app/app.h"
 #include "../../framework/framework.h"
+
 #include <lvgl.h>
 
 
 namespace MOONCAKE {
     namespace BUILTIN_APP {
+
+
+        struct LauncherData_t {
+            int16_t* dispHor = nullptr;
+            int16_t* dispVer = nullptr;
+            bool dispModePortrait = false;
+            lv_obj_t* screenMain = nullptr;
+        };
 
     
         class Launcher : public APP_BASE {
@@ -23,7 +32,7 @@ namespace MOONCAKE {
                 Framework* _framework;
 
                 /* Lvgl */
-                lv_obj_t* _launcher_screen;
+                LauncherData_t _data;
 
 
             public:

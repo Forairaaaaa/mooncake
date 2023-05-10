@@ -50,7 +50,7 @@ namespace MOONCAKE {
 
 /* Hardware */
 #if 1
-#define MC_DISP_HOR         "_DIS_HOR"      // uint16_t
-#define MC_DISP_VER         "_DIS_VER"      // uint16_t
+#define MC_DISP_HOR         "_DIS_HOR"      // int16_t
+#define MC_DISP_VER         "_DIS_VER"      // int16_t
 #define MC_DISP_BRIGHTNESS  "_DIS_BRI"      // uint8_t
 #endif
