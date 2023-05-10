@@ -19,7 +19,9 @@ namespace MOONCAKE {
     bool Framework::_run_boot_anim()
     {
         /* If boot anim is not set */
+        bool using_builtin_bootAnim = false;
         if (_config.bootAnim == nullptr) {
+            using_builtin_bootAnim = true;
             _config.bootAnim = new BUILTIN_APP::Boot_Anim;
             if (_config.bootAnim == nullptr) {
                 return false;
@@ -33,6 +35,9 @@ namespace MOONCAKE {
             if (!isAppRunning(_config.bootAnim)) {
                 break;
             }
+        }
+        if (using_builtin_bootAnim) {
+            delete _config.bootAnim;
         }
         return true;
     }

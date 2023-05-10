@@ -10,7 +10,6 @@
  */
 #include "launcher.h"
 #include "../../system_data_def.h"
-#include <lvgl.h>
 
 
 namespace MOONCAKE {
@@ -21,50 +20,50 @@ namespace MOONCAKE {
         {
             setAppName("Launcher");
             setAllowBgRunning(true);
-
             _framework = (Framework*)getUserData();
 
-            printf("app num :::: %d\n", _framework->getAppNum());
         }
 
 
         /* Life cycle */
         void Launcher::onCreate()
         {
-            printf("%s > onCreate\n", getAppName().c_str());
+            printf("[%s] onCreate\n", getAppName().c_str());
 
+
+
+            _launcher_screen = lv_obj_create(NULL);
             
+
+
+
+
         }
 
 
         void Launcher::onResume()
         {
-            printf("%s > onResume\n", getAppName().c_str());
+            printf("[%s] onResume\n", getAppName().c_str());
 
 
+            lv_scr_load_anim(_launcher_screen, LV_SCR_LOAD_ANIM_FADE_IN, 200, 0, true);
         }
 
 
         void Launcher::onRunning()
         {
-            printf("%s > onRunning\n", getAppName().c_str());
+            // printf("[%s] onRunning\n", getAppName().c_str());
 
             
-            _framework->closeApp(getAppName().c_str());
+
             
         }
 
 
         void Launcher::onRunningBG()
         {
-            printf("%s > onRunningBG\n", getAppName().c_str());
+            printf("[%s] onRunningBG\n", getAppName().c_str());
 
-
-            // _framework->destroyApp(getAppName().c_str());
-            // _framework->startApp(getAppName().c_str());
-
-
-            printf("%d %d %d\n", getDatabase()->Get(MC_DISP_HOR)->value<uint16_t>(), getDatabase()->Get(MC_DISP_VER)->value<uint16_t>(), getDatabase()->Get(MC_DISP_BRIGHTNESS)->value<uint8_t>());
 
 
         }
@@ -72,13 +71,13 @@ namespace MOONCAKE {
 
         void Launcher::onPause()
         {
-            printf("%s > onPause\n", getAppName().c_str());
+            printf("[%s] onPause\n", getAppName().c_str());
         }
 
 
         void Launcher::onDestroy()
         {
-            printf("%s > onDestroy\n", getAppName().c_str());
+            printf("[%s] onDestroy\n", getAppName().c_str());
         }
 
 

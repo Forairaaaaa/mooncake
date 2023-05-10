@@ -18,7 +18,7 @@ namespace MOONCAKE {
     
         class Boot_Anim : public APP_BASE {
             private:
-                int count;
+
 
             public:
                 Boot_Anim() = default;

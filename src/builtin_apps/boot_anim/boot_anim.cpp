@@ -25,28 +25,36 @@ namespace MOONCAKE {
         /* Life cycle */
         void Boot_Anim::onCreate()
         {
-            printf("%s > boot anim\n", getAppName().c_str());
-            count = 0;
+            printf("[%s] onCreate\n", getAppName().c_str());
 
-            // lv_demo_benchmark(LV_DEMO_BENCHMARK_MODE_REAL);
+
+
+            lv_obj_t * label1 = lv_label_create(lv_scr_act());
+            lv_label_set_text(label1, "Boot Anim");
+            lv_obj_align(label1, LV_ALIGN_CENTER, 0, -30);
+            
 
         }
 
 
         void Boot_Anim::onResume()
         {
+            
 
         }
 
 
         void Boot_Anim::onRunning()
         {
-            count++;
-            // printf("%d\n", count);
-            if (count == 0xFF) {
+            static lv_obj_t * label2 = lv_label_create(lv_scr_act());
+
+            if (lv_tick_get() > 500) {
                 endApp();
             }
 
+
+            lv_label_set_text_fmt(label2, "%d", lv_tick_get());
+            lv_obj_align(label2, LV_ALIGN_CENTER, 0, 0);
             lv_timer_handler();
         }
 
@@ -65,7 +73,7 @@ namespace MOONCAKE {
 
         void Boot_Anim::onDestroy()
         {
-            printf("%s > boot anim done\n", getAppName().c_str());
+            printf("[%s] onDestroy\n", getAppName().c_str());
         }
 
 
