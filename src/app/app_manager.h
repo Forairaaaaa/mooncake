@@ -69,6 +69,8 @@ namespace MOONCAKE {
             inline bool isAppRunning(int id) { return isAppRunning(getApp(id)); }
             inline bool isAppRunning(const char* name) { return isAppRunning(getApp(name)); }
 
+            bool isAnyAppRunningFG();
+
 
             /* Call this in loop to keep App running */
             void update();

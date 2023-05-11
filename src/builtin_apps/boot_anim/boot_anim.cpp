@@ -49,7 +49,7 @@ namespace MOONCAKE {
             static lv_obj_t * label2 = lv_label_create(lv_scr_act());
 
             if (lv_tick_get() > 500) {
-                endApp();
+                destroyApp();
             }
 
 

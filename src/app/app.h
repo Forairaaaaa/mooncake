@@ -22,17 +22,59 @@ namespace MOONCAKE {
             void* _user_data;
             void* _icon_addr;
             bool _allow_bg_running;
-            bool _finished;
+            bool _go_close;
+            bool _go_destroy;
             SIMPLEKV::SimpleKV* _database;
 
 
         protected:
             /* App internal API */
+
+            /**
+             * @brief Set the App Name
+             * 
+             * @param name 
+             */
             inline void setAppName(const std::string& name) { _name = name; }
+
+            /**
+             * @brief Set the App Icon
+             * 
+             * @param icon 
+             */
             inline void setAppIcon(void* icon) { _icon_addr = icon; }
+
+            /**
+             * @brief Set if is App running background after closed
+             * 
+             * @param allow 
+             */
             inline void setAllowBgRunning(bool allow) { _allow_bg_running = allow; }
-            inline void endApp() { _finished = true; }
+
+            /**
+             * @brief Close App 
+             * 
+             */
+            inline void closeApp() { _go_close = true; }
+
+            /**
+             * @brief Destroy App, not going background
+             * 
+             */
+            inline void destroyApp() { _go_destroy = true; }
+
+            /**
+             * @brief Get database
+             * 
+             * @return SIMPLEKV::SimpleKV* 
+             */
             inline SIMPLEKV::SimpleKV* getDatabase() { return _database; }
+
+            /**
+             * @brief Get user data
+             * 
+             * @return void* 
+             */
             inline void* getUserData() { return _user_data; };
 
 
@@ -42,7 +84,8 @@ namespace MOONCAKE {
                 _user_data(nullptr),
                 _icon_addr(nullptr),
                 _allow_bg_running(false),
-                _finished(false),
+                _go_close(false),
+                _go_destroy(false),
                 _database(nullptr) {}
             ~APP_BASE() = default;
 
@@ -54,9 +97,12 @@ namespace MOONCAKE {
             
             /* Basic API */
             inline std::string getAppName() { return _name; }
-            inline void* getIconAddr() { return _icon_addr; }
+            inline void* getAppIcon() { return _icon_addr; }
             inline bool isAllowBgRunning() { return _allow_bg_running; }
-            inline bool isFinished() { return _finished; }
+            inline bool isGoingClose() { return _go_close; }
+            inline bool isGoingDestroy() { return _go_destroy; }
+            inline void resetGoingCloseFlag() { _go_close = false; }
+            inline void resetGoingDestroyFlag() { _go_destroy = false; }
 
 
             /**

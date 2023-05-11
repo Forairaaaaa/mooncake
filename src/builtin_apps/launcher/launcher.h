@@ -24,20 +24,27 @@ namespace MOONCAKE {
             int16_t* dispVer = nullptr;
             bool dispModePortrait = false;
             lv_obj_t* screenMain = nullptr;
+            lv_obj_t* appFlexCntr = nullptr;
         };
 
     
         class Launcher : public APP_BASE {
             private:
                 Framework* _framework;
+                APP_BASE* _launch_app;
 
                 /* Lvgl */
                 LauncherData_t _data;
+                static void _lvgl_event_cb(lv_event_t* e);
+                void _update_app_list();
 
 
             public:
-                Launcher() : _framework(nullptr) {}
+                Launcher() : _framework(nullptr), _launch_app(nullptr) {}
                 ~Launcher() = default;
+
+                void updateAppIconZoom();
+                inline void setLaunchApp(APP_BASE* app) { _launch_app = app; }
 
 
                 /**

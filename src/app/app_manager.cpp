@@ -139,6 +139,17 @@ namespace MOONCAKE {
     }
 
 
+    bool APP_Manger::isAnyAppRunningFG()
+    {
+        for (auto iter = _running_apps.begin(); iter != _running_apps.end(); iter++) {
+            if (iter->event == ON_RUNNING) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     /**
      * @brief FSM to implement lifecycle callbacks
      * 
@@ -173,11 +184,19 @@ namespace MOONCAKE {
                 iter->app->onRunningBG();
             }
             
-            /* If App call "endApp()" internally */
-            if (iter->app->isFinished()) {
-                /* End it */
+            /* If App call "destroyApp()" internally */
+            if (iter->app->isGoingDestroy()) {
+                iter->app->resetGoingDestroyFlag();
+                /* Destroy it */
                 iter->app->onPause();
                 iter->event = ON_DESTROY;
+            }
+
+            /* If App call "closeApp()" internally */
+            if (iter->app->isGoingClose()) {
+                iter->app->resetGoingCloseFlag();
+                /* Close it */
+                iter->event = ON_PAUSE;
             }
 
             /* On create pause */
