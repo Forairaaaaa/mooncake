@@ -28,24 +28,24 @@ namespace MOONCAKE {
                 /* Get framework pointer */
                 Framework* framework = (Framework*)lv_event_get_user_data(e);
                 /* Get App pointer */
-                APP_BASE* app = (APP_BASE*)lv_obj_get_user_data(lv_event_get_target_obj(e));
+                APP_BASE* app = (APP_BASE*)lv_obj_get_user_data(lv_event_get_target(e));
                 /* Start App */
                 framework->startApp(app);
             }
 
             else if (code == LV_EVENT_PRESSED) {
                 /* If pressed, smaller Icon */
-                lv_img_set_zoom(lv_event_get_target_obj(e), lv_img_get_zoom(lv_event_get_target_obj(e)) - 10);
+                lv_img_set_zoom(lv_event_get_target(e), lv_img_get_zoom(lv_event_get_target(e)) - 10);
             }
 
             else if (code == LV_EVENT_RELEASED) {
                 /* If released, set it back */
-                lv_img_set_zoom(lv_event_get_target_obj(e), lv_img_get_zoom(lv_event_get_target_obj(e)) + 10);
+                lv_img_set_zoom(lv_event_get_target(e), lv_img_get_zoom(lv_event_get_target(e)) + 10);
             }
 
             else if (code == LV_EVENT_LONG_PRESSED) {
                 /* Get App pointer */
-                APP_BASE* app = (APP_BASE*)lv_obj_get_user_data(lv_event_get_target_obj(e));
+                APP_BASE* app = (APP_BASE*)lv_obj_get_user_data(lv_event_get_target(e));
                 // printf("%s\n", app->getAppName().c_str());
 
                 /* Draw a message box to show App infos */
@@ -81,7 +81,7 @@ namespace MOONCAKE {
             lv_coord_t zoom_area_edge_m = scroll_bar_y + *_data.dispVer / 2;
             lv_coord_t zoom_area_edge_b = scroll_bar_y + *_data.dispVer / 4 * 3;
             lv_coord_t icon_y = 0;
-            int icon_zoom = LV_ZOOM_NONE;
+            int icon_zoom = 256;
             
             /* Iterate all Icons */
             for (int i = 0; i < lv_obj_get_child_cnt(_data.appFlexCntr); i++) {
@@ -90,13 +90,13 @@ namespace MOONCAKE {
                 /* If at not zoom area */
                 if ((icon_y >= zoom_area_edge_t) && (icon_y <= zoom_area_edge_b)) {
                     /* Zoom to normal */
-                    icon_zoom = LV_ZOOM_NONE;
+                    icon_zoom = 256;
                 }
                 else {
                     /* Get how far Icon is out of edge */
                     icon_zoom = abs(icon_y - zoom_area_edge_m) - zoom_area_half_height;
                     /* Smaller it */
-                    icon_zoom = LV_ZOOM_NONE - icon_zoom;
+                    icon_zoom = 256 - icon_zoom;
                     /* If hit limit */
                     if (icon_zoom < 32) {
                         icon_zoom = 32;
@@ -129,7 +129,7 @@ namespace MOONCAKE {
             lv_obj_set_flex_flow(_data.appFlexCntr, LV_FLEX_FLOW_ROW_WRAP);
             lv_obj_set_flex_align(_data.appFlexCntr, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_END, LV_FLEX_ALIGN_START);
             /* Add event callback */
-            lv_obj_add_event(_data.appFlexCntr, _lvgl_event_cb, LV_EVENT_SCROLL, (void*)this);
+            lv_obj_add_event_cb(_data.appFlexCntr, _lvgl_event_cb, LV_EVENT_SCROLL, (void*)this);
 
             /* Put App into list */
             for (auto i : _framework->getAppList()) {
@@ -159,7 +159,7 @@ namespace MOONCAKE {
                 lv_obj_add_flag(app, LV_OBJ_FLAG_CLICKABLE);
                 lv_obj_set_style_img_recolor(app, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_PRESSED);
                 lv_obj_set_style_img_recolor_opa(app, 50, LV_PART_MAIN | LV_STATE_PRESSED);
-                lv_obj_add_event(app, _lvgl_event_cb, LV_EVENT_ALL, (void*)_framework);
+                lv_obj_add_event_cb(app, _lvgl_event_cb, LV_EVENT_ALL, (void*)_framework);
             }
 
             /* Hit event to update zoom once */

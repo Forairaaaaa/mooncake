@@ -100,8 +100,8 @@ const lv_img_dsc_t ui_img_icon_mdpi_default_png = {
     .header.w = 72,
     .header.h = 72,
     .data_size = sizeof(ui_img_icon_mdpi_default_png_data),
-    // .header.cf = LV_IMG_CF_TRUE_COLOR_ALPHA,
-    .header.cf = LV_COLOR_FORMAT_NATIVE_ALPHA,
+    .header.cf = LV_IMG_CF_TRUE_COLOR_ALPHA,
+    // .header.cf = LV_COLOR_FORMAT_NATIVE_ALPHA,
     .data = ui_img_icon_mdpi_default_png_data
 };
 
