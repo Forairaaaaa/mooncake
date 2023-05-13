@@ -65,5 +65,40 @@ namespace MOONCAKE {
         };
 
 
+        class Launcher_BubbleCloud : public APP_BASE {
+            private:
+                Framework* _framework;
+                APP_BASE* _launch_app;
+
+                /* Lvgl */
+                LauncherData_t _data;
+
+
+            public:
+                Launcher_BubbleCloud() : _framework(nullptr), _launch_app(nullptr) {}
+                ~Launcher_BubbleCloud() = default;
+
+                void updateAppIconZoom();
+                inline void setLaunchApp(APP_BASE* app) { _launch_app = app; }
+
+
+                /**
+                 * @brief Lifecycle callbacks for derived to override
+                 * 
+                 */
+                /* Setup App configs, called when App "install()" */
+                void onSetup();
+
+                /* Life cycle */
+                void onCreate();
+                void onResume();
+                void onRunning();
+                void onRunningBG();
+                void onPause();
+                void onDestroy();
+            
+        };
+
+
     }
 }

@@ -11,3 +11,4 @@
 #pragma once
 #include "system_data_def.h"
 #include "framework/framework.h"
+#include "builtin_apps/builtin_apps.h"
