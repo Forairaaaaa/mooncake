@@ -78,7 +78,7 @@ namespace MOONCAKE {
 
 
         struct BubbleConfig_t {
-            lv_coord_t iconColMax = 4;
+            lv_coord_t iconColMax = 6;
             lv_coord_t iconSpaceX = 120;
             lv_coord_t iconSpaceY = 100;
             lv_coord_t iconXoffset = 10;
@@ -114,8 +114,10 @@ namespace MOONCAKE {
                 Launcher_Bubble() : _framework(nullptr), _launch_app(nullptr) {}
                 ~Launcher_Bubble() = default;
 
-
-                void bubbleUpdate(lv_coord_t tpX, lv_coord_t tpY);
+                
+                void lastTouchReset(lv_coord_t x, lv_coord_t y);
+                void touchUpdate(lv_coord_t x, lv_coord_t y);
+                void bubbleUpdate();
 
 
                 /**

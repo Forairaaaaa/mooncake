@@ -25,51 +25,79 @@ namespace MOONCAKE {
             /* Get event code */
             lv_event_code_t code = lv_event_get_code(e);
 
-            if(code == LV_EVENT_PRESSING) {
-
-                // printf("6\n");
 
 
+
+            if (code == LV_EVENT_PRESSED) {
+
+                // printf("666\n");
 
                 lv_point_t p;
                 lv_indev_get_point(lv_indev_get_act(), &p);
-                // printf("%d %d\n", p.x, p.y);
-
 
 
                 Launcher_Bubble* launcher = (Launcher_Bubble*)lv_event_get_user_data(e);
-                launcher->bubbleUpdate(p.x, p.y);
+                launcher->lastTouchReset(p.x, p.y);
             }
+
+
+
+
+            if (code == LV_EVENT_PRESSING) {
+
+                lv_point_t p;
+                lv_indev_get_point(lv_indev_get_act(), &p);
+
+
+                Launcher_Bubble* launcher = (Launcher_Bubble*)lv_event_get_user_data(e);
+                
+
+                launcher->touchUpdate(p.x, p.y);
+                launcher->bubbleUpdate();
+            }
+
+
+
 
         }
 
 
 
+        void Launcher_Bubble::lastTouchReset(lv_coord_t x, lv_coord_t y)
+        {
+            _bubble_status.lastTpPos.x = x;
+            _bubble_status.lastTpPos.y = y;
+        }
 
-        void Launcher_Bubble::bubbleUpdate(lv_coord_t tpX, lv_coord_t tpY)
+
+
+        void Launcher_Bubble::touchUpdate(lv_coord_t x, lv_coord_t y)
+        {
+            // printf("%d %d\n", x - _bubble_status.lastTpPos.x, y - _bubble_status.lastTpPos.y);
+
+            _bubble_status.offsetPos.x = _bubble_status.offsetPos.x + x - _bubble_status.lastTpPos.x;
+            _bubble_status.offsetPos.y = _bubble_status.offsetPos.y + y - _bubble_status.lastTpPos.y;
+
+            _bubble_status.lastTpPos.x = x;
+            _bubble_status.lastTpPos.y = y;
+        }
+
+
+
+
+        void Launcher_Bubble::bubbleUpdate()
         {
 
-            // printf("%d %d\n", tpX, tpY);
 
-
-
-
-            printf("%d %d\n", tpX - _bubble_status.lastTpPos.x, tpY - _bubble_status.lastTpPos.y);
-
-            _bubble_status.offsetPos.x = _bubble_status.offsetPos.x + tpX - _bubble_status.lastTpPos.x;
-            _bubble_status.offsetPos.y = _bubble_status.offsetPos.y + tpY - _bubble_status.lastTpPos.y;
-
-            _bubble_status.lastTpPos.x = tpX;
-            _bubble_status.lastTpPos.y = tpY;
-
-
-
-
-
+            printf("%d %d\n", _bubble_status.offsetPos.x, _bubble_status.offsetPos.y);
 
 
 
             lv_canvas_fill_bg(_data.screenCanvas, lv_color_hex(0x232323), 255);
+
+
+
+
 
 
             int x = 0;
@@ -78,7 +106,7 @@ namespace MOONCAKE {
             
             
 
-            for (int i = 0; i < 20; i++) {
+            for (int i = 0; i < 32; i++) {
                 
                 
 
@@ -187,7 +215,7 @@ namespace MOONCAKE {
                 lv_scr_load_anim(_data.screenMain, LV_SCR_LOAD_ANIM_FADE_IN, 200, 0, true);
             }
 
-            bubbleUpdate(-1, -1);
+            bubbleUpdate();
 
         }
 
@@ -198,28 +226,9 @@ namespace MOONCAKE {
 
             
 
+   
+
             
-
-            // lv_point_t tp;
-            // lv_indev_get_point(lv_indev_get_act(), &tp);
-
-            // printf("%d %d\n", tp.x, tp.y);
-
-
-
-
-            // lv_indev_t * indev = lv_indev_get_act();
-            // lv_point_t p;
-            // lv_indev_get_vect(indev, &p);
-            // printf("%d %d\n", p.x, p.y);
-
-            // lv_group_t * g             = (lv_group_t*)lv_obj_get_group(_data.screenMain);
-            // bool editing               = lv_group_get_editing(g);
-            // printf("%d\n", (int)lv_indev_get_type(lv_indev_get_act()));
-
-
-
-            // _bubble_update();
 
             
         }
