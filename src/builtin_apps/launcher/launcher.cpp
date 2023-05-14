@@ -26,6 +26,7 @@ namespace MOONCAKE {
             /* Get event code */
             lv_event_code_t code = lv_event_get_code(e);
 
+            /* Start App */
             if(code == LV_EVENT_SHORT_CLICKED) {
                 /* Get framework pointer */
                 Framework* framework = (Framework*)lv_event_get_user_data(e);
@@ -35,16 +36,17 @@ namespace MOONCAKE {
                 framework->startApp(app);
             }
 
+            /* Pressed feedback */
             else if (code == LV_EVENT_PRESSED) {
                 /* If pressed, smaller Icon */
                 lv_img_set_zoom(lv_event_get_target(e), lv_img_get_zoom(lv_event_get_target(e)) - 10);
             }
-
             else if (code == LV_EVENT_RELEASED) {
                 /* If released, set it back */
                 lv_img_set_zoom(lv_event_get_target(e), lv_img_get_zoom(lv_event_get_target(e)) + 10);
             }
 
+            /* App infos */
             else if (code == LV_EVENT_LONG_PRESSED) {
                 /* Get App pointer */
                 APP_BASE* app = (APP_BASE*)lv_obj_get_user_data(lv_event_get_target(e));
@@ -64,7 +66,7 @@ namespace MOONCAKE {
                 lv_obj_center(mbox1);
             }
 
-            /* If scrolling, zoom Apps' Icon */
+            /* If scrolling, update Icon zooming */
             else if (code == LV_EVENT_SCROLL) {
                 /* Get launcher pointer */
                 Launcher* launcher = (Launcher*)lv_event_get_user_data(e);
