@@ -14,6 +14,8 @@
 
 LV_IMG_DECLARE(ui_img_icon_hdpi_default_png);
 
+#define USING_ICON ui_img_icon_hdpi_default_png
+
 
 namespace MOONCAKE {
     namespace BUILTIN_APP {
@@ -75,7 +77,7 @@ namespace MOONCAKE {
         void Launcher::updateAppIconZoom()
         {
             /* Zoom the Icons when reach edge */
-            lv_coord_t scroll_bar_y = lv_obj_get_scroll_y(_data.appFlexCntr);
+            lv_coord_t scroll_bar_y = lv_obj_get_scroll_y(_data.screenMain);
             lv_coord_t zoom_area_half_height = *_data.dispVer / 4;
             lv_coord_t zoom_area_edge_t = scroll_bar_y + *_data.dispVer / 4;
             lv_coord_t zoom_area_edge_m = scroll_bar_y + *_data.dispVer / 2;
@@ -84,9 +86,9 @@ namespace MOONCAKE {
             int icon_zoom = 256;
             
             /* Iterate all Icons */
-            for (int i = 0; i < lv_obj_get_child_cnt(_data.appFlexCntr); i++) {
+            for (int i = 0; i < lv_obj_get_child_cnt(_data.screenMain); i++) {
                 /* Update Icon y */
-                icon_y = lv_obj_get_y2(lv_obj_get_child(_data.appFlexCntr, i));
+                icon_y = lv_obj_get_y2(lv_obj_get_child(_data.screenMain, i));
                 /* If at not zoom area */
                 if ((icon_y >= zoom_area_edge_t) && (icon_y <= zoom_area_edge_b)) {
                     /* Zoom to normal */
@@ -103,35 +105,31 @@ namespace MOONCAKE {
                     }
                 }
                 /* Set zoom */
-                lv_img_set_zoom(lv_obj_get_child(_data.appFlexCntr, i), icon_zoom);
+                lv_img_set_zoom(lv_obj_get_child(_data.screenMain, i), icon_zoom);
             }
         }
 
 
         void Launcher::_update_app_list()
         {
-            /* Delete old container */
-            if (_data.appFlexCntr != nullptr) {
-                lv_obj_del(_data.appFlexCntr);
-            }
+            /* Add scroll flags */
+            lv_obj_add_flag(_data.screenMain, LV_OBJ_FLAG_SCROLL_ELASTIC | LV_OBJ_FLAG_SCROLL_MOMENTUM);
+            lv_obj_set_scrollbar_mode(_data.screenMain, LV_SCROLLBAR_MODE_OFF);
+            lv_obj_add_event_cb(_data.screenMain, _lvgl_event_cb, LV_EVENT_SCROLL, (void*)this);
 
-            /* Create a flex container for App list */
-            _data.appFlexCntr = lv_obj_create(_data.screenMain);
-            lv_obj_set_size(_data.appFlexCntr, (lv_coord_t)*_data.dispHor, (lv_coord_t)*_data.dispVer);
-            lv_obj_align(_data.appFlexCntr, LV_ALIGN_CENTER, 0, 0);
-            /* Set background */
-            lv_obj_set_style_bg_opa(_data.appFlexCntr, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_obj_set_style_border_width(_data.appFlexCntr, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-            /* Set scroll bar */
-            lv_obj_add_flag(_data.appFlexCntr, LV_OBJ_FLAG_SCROLL_ELASTIC | LV_OBJ_FLAG_SCROLL_MOMENTUM);
-            lv_obj_set_scrollbar_mode(_data.appFlexCntr, LV_SCROLLBAR_MODE_OFF);
-            /* Setup flex configs */
-            lv_obj_set_flex_flow(_data.appFlexCntr, LV_FLEX_FLOW_ROW_WRAP);
-            lv_obj_set_flex_align(_data.appFlexCntr, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_END, LV_FLEX_ALIGN_START);
-            /* Add event callback */
-            lv_obj_add_event_cb(_data.appFlexCntr, _lvgl_event_cb, LV_EVENT_SCROLL, (void*)this);
+            /* Update bubble config */
+            _bubble_cfg.iconColMax = (lv_coord_t)*_data.dispHor / USING_ICON.header.w;
+            _bubble_cfg.iconSpaceX = (lv_coord_t)*_data.dispHor / _bubble_cfg.iconColMax;
+            _bubble_cfg.iconSpaceY = USING_ICON.header.h - (((lv_coord_t)*_data.dispHor - USING_ICON.header.w * _bubble_cfg.iconColMax) / (_bubble_cfg.iconColMax + 1) / 2);
+            _bubble_cfg.iconXoffset = -_bubble_cfg.iconSpaceX;
+            _bubble_cfg.iconYoffset = -_bubble_cfg.iconSpaceY / 2 * 3;
 
-            /* Put App into list */
+
+            int icon_x = 0;
+            int icon_y = 0;
+            bool is_long_row = false;
+
+            /* Put App Icon into bubble pool */
             for (auto i : _framework->getAppList()) {
                 /* If is launcher */
                 if (i.app == this) {
@@ -139,18 +137,41 @@ namespace MOONCAKE {
                 }
 
                 /* Create a object */
-                lv_obj_t* app = lv_img_create(_data.appFlexCntr);
+                lv_obj_t* app = lv_img_create(_data.screenMain);
+                lv_obj_center(app);
 
-                /* If App Icon not set, use default */
+                /* If App Icon is not set, use default */
                 if (i.app->getAppIcon() == nullptr) {
-                    lv_img_set_src(app, &ui_img_icon_hdpi_default_png);
+                    lv_img_set_src(app, &USING_ICON);
                 }
                 else {
                     lv_img_set_src(app, i.app->getAppIcon());
                 }
 
-                lv_obj_set_width(app, ui_img_icon_hdpi_default_png.header.w);
-                lv_obj_set_height(app, ui_img_icon_hdpi_default_png.header.h);
+                /* Put App in hexagon mesh */
+                if (!is_long_row) {
+                    lv_obj_set_pos(app, icon_x + _bubble_cfg.iconSpaceX / 2 + _bubble_cfg.iconXoffset, icon_y + _bubble_cfg.iconYoffset);
+                }
+                else {
+                    lv_obj_set_pos(app, icon_x + _bubble_cfg.iconXoffset, icon_y + _bubble_cfg.iconYoffset);
+                }
+
+                /* Go to next col */
+                icon_x += _bubble_cfg.iconSpaceX;
+
+                /* Go to next more Apps row */
+                if (!is_long_row && ((icon_x / _bubble_cfg.iconSpaceX) >= (_bubble_cfg.iconColMax - 1))) {
+                    is_long_row = true;
+                    icon_x = 0;
+                    icon_y += _bubble_cfg.iconSpaceY;
+                }
+                /* Go to next less Apps row */
+                else if (is_long_row && ((icon_x / _bubble_cfg.iconSpaceX) >= _bubble_cfg.iconColMax)) { 
+                    is_long_row = false;
+                    icon_x = 0;
+                    icon_y += _bubble_cfg.iconSpaceY;
+                }
+
 
                 /* Set App pointer as user data */
                 lv_obj_set_user_data(app, (void*)i.app);
@@ -163,7 +184,7 @@ namespace MOONCAKE {
             }
 
             /* Hit event to update zoom once */
-            lv_obj_scroll_to_y(_data.appFlexCntr, 1, LV_ANIM_OFF);
+            lv_obj_scroll_to_y(_data.screenMain, 1, LV_ANIM_OFF);
         }
 
 

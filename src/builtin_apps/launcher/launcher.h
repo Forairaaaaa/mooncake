@@ -27,6 +27,15 @@ namespace MOONCAKE {
             lv_obj_t* appFlexCntr = nullptr;
         };
 
+
+        struct BubbleConfig_t {
+            lv_coord_t iconColMax = 3;
+            lv_coord_t iconSpaceX = 120;
+            lv_coord_t iconSpaceY = 100;
+            lv_coord_t iconXoffset = 0;
+            lv_coord_t iconYoffset = 0;
+        };
+
     
         class Launcher : public APP_BASE {
             private:
@@ -35,6 +44,7 @@ namespace MOONCAKE {
 
                 /* Lvgl */
                 LauncherData_t _data;
+                BubbleConfig_t _bubble_cfg;
                 static void _lvgl_event_cb(lv_event_t* e);
                 void _update_app_list();
 
@@ -77,13 +87,13 @@ namespace MOONCAKE {
         };
 
 
-        struct BubbleConfig_t {
-            lv_coord_t iconColMax = 6;
-            lv_coord_t iconSpaceX = 120;
-            lv_coord_t iconSpaceY = 100;
-            lv_coord_t iconXoffset = 10;
-            lv_coord_t iconYoffset = 10;
-        };
+        // struct BubbleConfig_t {
+        //     lv_coord_t iconColMax = 6;
+        //     lv_coord_t iconSpaceX = 120;
+        //     lv_coord_t iconSpaceY = 100;
+        //     lv_coord_t iconXoffset = 10;
+        //     lv_coord_t iconYoffset = 10;
+        // };
 
 
         struct BubbleStatus_t {

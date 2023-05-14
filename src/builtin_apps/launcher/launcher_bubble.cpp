@@ -93,7 +93,7 @@ namespace MOONCAKE {
 
 
 
-            lv_canvas_fill_bg(_data.screenCanvas, lv_color_hex(0x232323), 255);
+            // lv_canvas_fill_bg(_data.screenCanvas, lv_color_hex(0x232323), 255);
 
 
 
@@ -108,13 +108,22 @@ namespace MOONCAKE {
 
             for (int i = 0; i < 32; i++) {
                 
+
+                lv_obj_t* img = lv_img_create(_data.screenMain);
+                lv_img_set_src(img, &ui_img_icon_hdpi_default_png);
                 
 
                 if (!is_long) {
-                    lv_canvas_draw_img(_data.screenCanvas, _bubble_status.offsetPos.x + x + _bubble_cfg.iconSpaceX / 2 + _bubble_cfg.iconXoffset, _bubble_status.offsetPos.y + y + _bubble_cfg.iconYoffset, &ui_img_icon_hdpi_default_png, &_data.iconDsc);
+                    // lv_canvas_draw_img(_data.screenCanvas, _bubble_status.offsetPos.x + x + _bubble_cfg.iconSpaceX / 2 + _bubble_cfg.iconXoffset, _bubble_status.offsetPos.y + y + _bubble_cfg.iconYoffset, &ui_img_icon_hdpi_default_png, &_data.iconDsc);
+                    
+                    lv_obj_set_pos(img, _bubble_status.offsetPos.x + x + _bubble_cfg.iconSpaceX / 2 + _bubble_cfg.iconXoffset, _bubble_status.offsetPos.y + y + _bubble_cfg.iconYoffset);
+
                 }
                 else {
-                    lv_canvas_draw_img(_data.screenCanvas, _bubble_status.offsetPos.x + x + _bubble_cfg.iconXoffset, _bubble_status.offsetPos.y + y + _bubble_cfg.iconYoffset, &ui_img_icon_hdpi_default_png, &_data.iconDsc);
+                    // lv_canvas_draw_img(_data.screenCanvas, _bubble_status.offsetPos.x + x + _bubble_cfg.iconXoffset, _bubble_status.offsetPos.y + y + _bubble_cfg.iconYoffset, &ui_img_icon_hdpi_default_png, &_data.iconDsc);
+                
+                    
+                    lv_obj_set_pos(img, _bubble_status.offsetPos.x + x + _bubble_cfg.iconXoffset, _bubble_status.offsetPos.y + y + _bubble_cfg.iconYoffset);
                 }
                 
 
@@ -170,6 +179,7 @@ namespace MOONCAKE {
 
             /* Crete main screen */
             _data.screenMain = lv_obj_create(NULL);
+            lv_obj_clear_flag(_data.screenMain, LV_OBJ_FLAG_SCROLL_CHAIN);
 
 
 
@@ -177,11 +187,11 @@ namespace MOONCAKE {
 
 
             /* Create canvas */
-            _data.screenCanvas = lv_canvas_create(_data.screenMain);
-            _data.canvasBuffer = (lv_color_t*)_buffer_malloc(*_data.dispHor, *_data.dispVer);
-            lv_canvas_set_buffer(_data.screenCanvas, _data.canvasBuffer, *_data.dispHor, *_data.dispVer, LV_IMG_CF_TRUE_COLOR_ALPHA);
-            lv_obj_center(_data.screenCanvas);
-            lv_obj_add_event_cb(_data.screenMain, _lvgl_event_cb, LV_EVENT_ALL, this);
+            // _data.screenCanvas = lv_canvas_create(_data.screenMain);
+            // _data.canvasBuffer = (lv_color_t*)_buffer_malloc(*_data.dispHor, *_data.dispVer);
+            // lv_canvas_set_buffer(_data.screenCanvas, _data.canvasBuffer, *_data.dispHor, *_data.dispVer, LV_IMG_CF_TRUE_COLOR_ALPHA);
+            // lv_obj_center(_data.screenCanvas);
+            // lv_obj_add_event_cb(_data.screenMain, _lvgl_event_cb, LV_EVENT_ALL, this);
 
 
 
@@ -190,7 +200,7 @@ namespace MOONCAKE {
             // lv_draw_img_dsc_t shit;
             // lv_draw_img_dsc_init(&shit);
 
-            lv_draw_img_dsc_init(&_data.iconDsc);
+            // lv_draw_img_dsc_init(&_data.iconDsc);
             
 
             // lv_canvas_fill_bg(_data.screenCanvas, lv_color_hex(0x232323), 255);
