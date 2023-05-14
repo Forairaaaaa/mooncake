@@ -120,9 +120,10 @@ namespace MOONCAKE {
             /* Update bubble config */
             _bubble_cfg.iconColMax = (lv_coord_t)*_data.dispHor / USING_ICON.header.w;
             _bubble_cfg.iconSpaceX = (lv_coord_t)*_data.dispHor / _bubble_cfg.iconColMax;
-            _bubble_cfg.iconSpaceY = USING_ICON.header.h - (((lv_coord_t)*_data.dispHor - USING_ICON.header.w * _bubble_cfg.iconColMax) / (_bubble_cfg.iconColMax + 1) / 2);
-            _bubble_cfg.iconXoffset = -_bubble_cfg.iconSpaceX;
-            _bubble_cfg.iconYoffset = -_bubble_cfg.iconSpaceY / 2 * 3;
+            lv_coord_t gap_between_icon = ((lv_coord_t)*_data.dispHor - USING_ICON.header.w * _bubble_cfg.iconColMax) / (_bubble_cfg.iconColMax + 1);
+            _bubble_cfg.iconSpaceY = USING_ICON.header.h - (gap_between_icon / 2);
+            _bubble_cfg.iconXoffset = -((lv_coord_t)*_data.dispHor / 2) + (_bubble_cfg.iconSpaceX / 2);
+            _bubble_cfg.iconYoffset = -((lv_coord_t)*_data.dispVer / 2) + (_bubble_cfg.iconSpaceY / 2) + gap_between_icon;
 
 
             int icon_x = 0;
