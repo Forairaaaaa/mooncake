@@ -53,7 +53,7 @@ namespace MOONCAKE {
             }
 
 
-            lv_label_set_text_fmt(label2, "%d", lv_tick_get());
+            lv_label_set_text_fmt(label2, "%ld", lv_tick_get());
             lv_obj_align(label2, LV_ALIGN_CENTER, 0, 0);
             lv_timer_handler();
         }
