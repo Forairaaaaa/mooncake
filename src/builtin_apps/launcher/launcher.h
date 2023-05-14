@@ -43,8 +43,8 @@ namespace MOONCAKE {
                 Launcher() : _framework(nullptr), _launch_app(nullptr) {}
                 ~Launcher() = default;
 
+
                 void updateAppIconZoom();
-                inline void setLaunchApp(APP_BASE* app) { _launch_app = app; }
 
 
                 /**
@@ -65,21 +65,57 @@ namespace MOONCAKE {
         };
 
 
-        class Launcher_BubbleCloud : public APP_BASE {
+        struct LauncherBubbleData__t {
+            int16_t* dispHor = nullptr;
+            int16_t* dispVer = nullptr;
+            bool dispModePortrait = false;
+
+            lv_obj_t* screenMain = nullptr;
+            lv_obj_t* screenCanvas = nullptr;
+            lv_color_t* canvasBuffer = nullptr;
+            lv_draw_img_dsc_t iconDsc;
+        };
+
+
+        struct BubbleConfig_t {
+            lv_coord_t iconColMax = 4;
+            lv_coord_t iconSpaceX = 120;
+            lv_coord_t iconSpaceY = 100;
+            lv_coord_t iconXoffset = 10;
+            lv_coord_t iconYoffset = 10;
+        };
+
+
+        struct BubbleStatus_t {
+            lv_point_t offsetPos = {0, 0};
+            lv_point_t lastTpPos = {0, 0};
+        };
+
+
+
+        class Launcher_Bubble : public APP_BASE {
             private:
                 Framework* _framework;
                 APP_BASE* _launch_app;
 
                 /* Lvgl */
-                LauncherData_t _data;
+                LauncherBubbleData__t _data;
+                BubbleConfig_t _bubble_cfg;
+                BubbleStatus_t _bubble_status;
+                static void _lvgl_event_cb(lv_event_t* e);
+
+
+            protected:
+                /* Override this to fit your memory alloc */
+                virtual void* _buffer_malloc(lv_coord_t w, lv_coord_t h);
 
 
             public:
-                Launcher_BubbleCloud() : _framework(nullptr), _launch_app(nullptr) {}
-                ~Launcher_BubbleCloud() = default;
+                Launcher_Bubble() : _framework(nullptr), _launch_app(nullptr) {}
+                ~Launcher_Bubble() = default;
 
-                void updateAppIconZoom();
-                inline void setLaunchApp(APP_BASE* app) { _launch_app = app; }
+
+                void bubbleUpdate(lv_coord_t tpX, lv_coord_t tpY);
 
 
                 /**

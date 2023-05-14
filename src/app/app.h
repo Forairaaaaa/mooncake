@@ -87,7 +87,7 @@ namespace MOONCAKE {
                 _go_close(false),
                 _go_destroy(false),
                 _database(nullptr) {}
-            ~APP_BASE() = default;
+            virtual ~APP_BASE() {}
 
 
             /* API for App manager */
