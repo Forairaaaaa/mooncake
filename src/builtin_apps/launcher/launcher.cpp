@@ -128,6 +128,12 @@ namespace MOONCAKE {
             lv_obj_set_size(_data.appPanel, _data.appPanelHor, _data.appPanelVer);
             lv_obj_align(_data.appPanel, LV_ALIGN_BOTTOM_MID, 0, 0);
 
+            lv_obj_set_style_radius(_data.appPanel, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            // lv_obj_set_style_bg_color(_data.appPanel, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_opa(_data.appPanel, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            // lv_obj_set_style_border_color(_data.appPanel, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_border_opa(_data.appPanel, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+
             /* Add scroll flags */
             lv_obj_add_flag(_data.appPanel, LV_OBJ_FLAG_SCROLL_ELASTIC | LV_OBJ_FLAG_SCROLL_MOMENTUM);
             lv_obj_set_scrollbar_mode(_data.appPanel, LV_SCROLLBAR_MODE_OFF);
