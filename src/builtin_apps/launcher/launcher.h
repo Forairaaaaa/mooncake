@@ -31,9 +31,11 @@ namespace MOONCAKE {
 
 
         struct BubbleConfig_t {
-            lv_coord_t iconColMax = 3;
-            lv_coord_t iconSpaceX = 120;
-            lv_coord_t iconSpaceY = 100;
+            lv_coord_t iconColMax = 0;
+            lv_coord_t iconColNum = 0;
+            lv_coord_t iconRowMax = 0;
+            lv_coord_t iconSpaceX = 0;
+            lv_coord_t iconSpaceY = 0;
             lv_coord_t iconXoffset = 0;
             lv_coord_t iconYoffset = 0;
         };

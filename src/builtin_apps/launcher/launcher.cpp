@@ -12,9 +12,14 @@
 #include "../../system_data_def.h"
 
 
-LV_IMG_DECLARE(ui_img_icon_hdpi_default_png);
+#define SCROLL_VER 0
+
+#define ICON_ZOOM_LIMIT 32
 
 #define USING_ICON ui_img_icon_hdpi_default_png
+
+
+LV_IMG_DECLARE(ui_img_icon_hdpi_default_png);
 
 
 namespace MOONCAKE {
@@ -78,6 +83,8 @@ namespace MOONCAKE {
 
         void Launcher::updateAppIconZoom()
         {
+            #if SCROLL_VER
+
             /* Zoom the Icons when reach edge */
             lv_coord_t scroll_bar_y = lv_obj_get_scroll_y(_data.appPanel);
             lv_coord_t zoom_area_half_height = _data.appPanelVer / 4;
@@ -102,13 +109,50 @@ namespace MOONCAKE {
                     /* Smaller it */
                     icon_zoom = 256 - icon_zoom;
                     /* If hit limit */
-                    if (icon_zoom < 32) {
-                        icon_zoom = 32;
+                    if (icon_zoom < ICON_ZOOM_LIMIT) {
+                        icon_zoom = ICON_ZOOM_LIMIT;
                     }
                 }
                 /* Set zoom */
                 lv_img_set_zoom(lv_obj_get_child(_data.appPanel, i), icon_zoom);
             }
+
+            #else
+
+            /* Zoom the Icons when reach edge */
+            lv_coord_t scroll_bar_y = lv_obj_get_scroll_x(_data.appPanel);
+            lv_coord_t zoom_area_half_height = _data.appPanelHor / 4;
+            lv_coord_t zoom_area_edge_t = scroll_bar_y + _data.appPanelHor / 4;
+            lv_coord_t zoom_area_edge_m = scroll_bar_y + _data.appPanelHor / 2;
+            lv_coord_t zoom_area_edge_b = scroll_bar_y + _data.appPanelHor / 4 * 3;
+            lv_coord_t icon_y = 0;
+            int icon_zoom = 256;
+            
+            /* Iterate all Icons */
+            for (int i = 0; i < lv_obj_get_child_cnt(_data.appPanel); i++) {
+                /* Update Icon y */
+                icon_y = lv_obj_get_x2(lv_obj_get_child(_data.appPanel, i));
+                /* If at not zoom area */
+                if ((icon_y >= zoom_area_edge_t) && (icon_y <= zoom_area_edge_b)) {
+                    /* Zoom to normal */
+                    icon_zoom = 256;
+                }
+                else {
+                    /* Get how far Icon is out of edge */
+                    icon_zoom = abs(icon_y - zoom_area_edge_m) - zoom_area_half_height;
+                    icon_zoom = icon_zoom / 3 * 2;
+                    /* Smaller it */
+                    icon_zoom = 256 - icon_zoom;
+                    /* If hit limit */
+                    if (icon_zoom < ICON_ZOOM_LIMIT) {
+                        icon_zoom = ICON_ZOOM_LIMIT;
+                    }
+                }
+                /* Set zoom */
+                lv_img_set_zoom(lv_obj_get_child(_data.appPanel, i), icon_zoom);
+            }
+
+            #endif
         }
 
 
@@ -137,7 +181,13 @@ namespace MOONCAKE {
             /* Add scroll flags */
             lv_obj_add_flag(_data.appPanel, LV_OBJ_FLAG_SCROLL_ELASTIC | LV_OBJ_FLAG_SCROLL_MOMENTUM);
             lv_obj_set_scrollbar_mode(_data.appPanel, LV_SCROLLBAR_MODE_OFF);
+
+            #if SCROLL_VER
             lv_obj_set_scroll_dir(_data.appPanel, LV_DIR_VER);
+            #else 
+            lv_obj_set_scroll_dir(_data.appPanel, LV_DIR_HOR);
+            #endif
+            
             lv_obj_add_event_cb(_data.appPanel, _lvgl_event_cb, LV_EVENT_SCROLL, (void*)this);
 
 
@@ -148,6 +198,8 @@ namespace MOONCAKE {
 
             /* Update bubble config */
             _bubble_cfg.iconColMax = _data.appPanelHor / USING_ICON.header.w;
+            _bubble_cfg.iconRowMax = _data.appPanelVer / USING_ICON.header.h;
+            _bubble_cfg.iconColNum = (_framework->getAppNum() - 1) / _bubble_cfg.iconRowMax;
             _bubble_cfg.iconSpaceX = _data.appPanelHor / _bubble_cfg.iconColMax;
             lv_coord_t gap_between_icon = (_data.appPanelHor - USING_ICON.header.w * _bubble_cfg.iconColMax) / (_bubble_cfg.iconColMax + 1);
             _bubble_cfg.iconSpaceY = USING_ICON.header.h - (gap_between_icon / 2);
@@ -179,6 +231,14 @@ namespace MOONCAKE {
                     lv_img_set_src(app, i.app->getAppIcon());
                 }
 
+
+
+                /**
+                 * @brief Vertical
+                 * 
+                 */
+                #if SCROLL_VER
+
                 /* Put App in hexagon mesh */
                 if (!is_long_row) {
                     lv_obj_set_pos(app, icon_x + _bubble_cfg.iconSpaceX / 2 + _bubble_cfg.iconXoffset, icon_y + _bubble_cfg.iconYoffset);
@@ -203,6 +263,33 @@ namespace MOONCAKE {
                     icon_y += _bubble_cfg.iconSpaceY;
                 }
 
+                /**
+                 * @brief Horizontal
+                 * 
+                 */
+                #else
+
+                /* Put App in hexagon mesh */
+                if (!is_long_row) {
+                    lv_obj_set_pos(app, icon_x + _bubble_cfg.iconSpaceX / 2 + _bubble_cfg.iconXoffset, icon_y + _bubble_cfg.iconYoffset);
+                }
+                else {
+                    lv_obj_set_pos(app, icon_x + _bubble_cfg.iconXoffset, icon_y + _bubble_cfg.iconYoffset);
+                }
+
+                /* Go to next col */
+                icon_x += _bubble_cfg.iconSpaceX;
+
+                /* Next row */
+                if ((icon_x / _bubble_cfg.iconSpaceX) >= _bubble_cfg.iconColNum) {
+                    is_long_row = is_long_row ? false : true;
+                    printf("%d\n", is_long_row);
+                    icon_x = 0;
+                    icon_y += _bubble_cfg.iconSpaceY;
+                }
+
+                #endif
+
 
                 /* Set App pointer as user data */
                 lv_obj_set_user_data(app, (void*)i.app);
@@ -215,7 +302,11 @@ namespace MOONCAKE {
             }
 
             /* Hit an event to update icon zoom once */
+            #if SCROLL_VER
             lv_obj_scroll_to_y(_data.appPanel, 1, LV_ANIM_OFF);
+            #else
+            lv_obj_scroll_to_x(_data.appPanel, 1, LV_ANIM_OFF);
+            #endif
         }
 
 
