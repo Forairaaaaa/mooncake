@@ -13,8 +13,9 @@
 #include "icon/launcher_icon.h"
 
 
-#define SCROLL_VER 0
-#define ICON_ZOOM_LIMIT 32
+#define SCROLL_VER          0
+#define ICON_ZOOM_LIMIT     32
+#define PLAY_WALKING_ANIM   1
 
 
 namespace MOONCAKE {
@@ -167,11 +168,11 @@ namespace MOONCAKE {
             lv_obj_set_size(_data.appPanel, _data.appPanelHor, _data.appPanelVer);
             lv_obj_align(_data.appPanel, LV_ALIGN_BOTTOM_MID, 0, 0);
 
-            lv_obj_set_style_radius(_data.appPanel, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_radius(_data.appPanel, 0, LV_STATE_DEFAULT);
             // lv_obj_set_style_bg_color(_data.appPanel, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_obj_set_style_bg_opa(_data.appPanel, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_opa(_data.appPanel, 0, LV_STATE_DEFAULT);
             // lv_obj_set_style_border_color(_data.appPanel, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_obj_set_style_border_opa(_data.appPanel, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_border_opa(_data.appPanel, 0, LV_STATE_DEFAULT);
 
             /* Add scroll flags */
             lv_obj_add_flag(_data.appPanel, LV_OBJ_FLAG_SCROLL_ELASTIC | LV_OBJ_FLAG_SCROLL_MOMENTUM);
@@ -291,8 +292,8 @@ namespace MOONCAKE {
                 
                 /* Add event callback */
                 lv_obj_add_flag(app, LV_OBJ_FLAG_CLICKABLE);
-                lv_obj_set_style_img_recolor(app, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_PRESSED);
-                lv_obj_set_style_img_recolor_opa(app, 50, LV_PART_MAIN | LV_STATE_PRESSED);
+                lv_obj_set_style_img_recolor(app, lv_color_hex(0x000000), LV_STATE_PRESSED);
+                lv_obj_set_style_img_recolor_opa(app, 50, LV_STATE_PRESSED);
                 lv_obj_add_event_cb(app, _lvgl_event_cb, LV_EVENT_ALL, (void*)_framework);
             }
 
@@ -331,7 +332,7 @@ namespace MOONCAKE {
 
             /* Crete main screen */
             _data.screenMain = lv_obj_create(NULL);
-            lv_obj_set_style_bg_color(_data.screenMain, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(_data.screenMain, lv_color_hex(0x000000), LV_STATE_DEFAULT);
 
 
             lv_obj_t* animimg0 = lv_animimg_create(_data.screenMain);
