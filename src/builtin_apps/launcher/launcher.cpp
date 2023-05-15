@@ -10,16 +10,11 @@
  */
 #include "launcher.h"
 #include "../../system_data_def.h"
+#include "icon/launcher_icon.h"
 
 
 #define SCROLL_VER 0
-
 #define ICON_ZOOM_LIMIT 32
-
-#define USING_ICON ui_img_icon_hdpi_default_png
-
-
-LV_IMG_DECLARE(ui_img_icon_hdpi_default_png);
 
 
 namespace MOONCAKE {
@@ -336,7 +331,18 @@ namespace MOONCAKE {
 
             /* Crete main screen */
             _data.screenMain = lv_obj_create(NULL);
-            // lv_obj_set_style_bg_color(_data.screenMain, lv_color_hex(0x202020), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(_data.screenMain, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+
+
+            lv_obj_t* animimg0 = lv_animimg_create(_data.screenMain);
+            lv_obj_align(animimg0, LV_ALIGN_CENTER, 0, -120);
+            // lv_obj_center(animimg0);
+            lv_animimg_set_src(animimg0, (const void**)anim_lc_walking, NUM_ANIM_LC_WALKING);
+            lv_animimg_set_duration(animimg0, 1209);
+            lv_animimg_set_repeat_count(animimg0, LV_ANIM_REPEAT_INFINITE);
+            lv_animimg_start(animimg0);
+
+
 
             /* Update app list */
             _update_app_list();
