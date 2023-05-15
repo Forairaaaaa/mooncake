@@ -351,7 +351,7 @@ namespace MOONCAKE {
             
             /* Load main screen and delete last one */
             if (lv_scr_act() != _data.screenMain) {
-                lv_scr_load_anim(_data.screenMain, LV_SCR_LOAD_ANIM_FADE_IN, 200, 0, true);
+                lv_scr_load_anim(_data.screenMain, LV_SCR_LOAD_ANIM_MOVE_BOTTOM, 200, 0, true);
             }
 
         }
