@@ -1,2 +1,2 @@
 # Mooncake
-A lightweight app framework designed for DIY smart watch
+App framework designed for DIY smart watch
