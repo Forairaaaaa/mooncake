@@ -13,3 +13,13 @@
 /* App default icon */
 LV_IMG_DECLARE(ui_img_icon_hdpi_default_png);
 #define USING_ICON ui_img_icon_hdpi_default_png
+
+
+/* Status icon */
+LV_IMG_DECLARE(ui_img_icon_battery_png);
+LV_IMG_DECLARE(ui_img_icon_ble_off_png);   
+LV_IMG_DECLARE(ui_img_icon_ble_on_png);    
+LV_IMG_DECLARE(ui_img_icon_note_off_png);   
+LV_IMG_DECLARE(ui_img_icon_note_on_png);  
+LV_IMG_DECLARE(ui_img_icon_wifi_off_png);  
+LV_IMG_DECLARE(ui_img_icon_wifi_on_png);   

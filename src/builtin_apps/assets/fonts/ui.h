@@ -1,5 +1,5 @@
 /**
- * @file assets.h
+ * @file ui.h
  * @author Forairaaaaa
  * @brief 
  * @version 0.1
@@ -8,6 +8,4 @@
  * @copyright Copyright (c) 2023
  * 
  */
-#include "fonts/fonts.h"
-#include "icon/anim/icon_anim.h"
-#include "icon/static/icon_static.h"
+#include <lvgl.h>
