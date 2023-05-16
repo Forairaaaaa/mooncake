@@ -20,6 +20,7 @@ set(MOONCAKE_BUILTIN_APPS_SRC_DIRS
     ${MOONCAKE_ROOT_DIR}/src/builtin_apps/boot_anim/
     ${MOONCAKE_ROOT_DIR}/src/builtin_apps/launcher/
     ${MOONCAKE_ROOT_DIR}/src/builtin_apps/launcher/icon
+    ${MOONCAKE_ROOT_DIR}/src/builtin_apps/launcher/icon/anim/walking/walking/
 )
 
 # Head files directories
@@ -27,6 +28,7 @@ set(MOONCAKE_BUILTIN_APPS_INC_DIRS
     ${MOONCAKE_ROOT_DIR}/src/builtin_apps/
     ${MOONCAKE_ROOT_DIR}/src/builtin_apps/boot_anim/
     ${MOONCAKE_ROOT_DIR}/src/builtin_apps/launcher/
+    ${MOONCAKE_ROOT_DIR}/src/builtin_apps/launcher/icon/anim/walking/
 )
 
 # Public component requirement

@@ -19,6 +19,11 @@ namespace MOONCAKE {
     namespace BUILTIN_APP {
 
 
+        struct LauncherConfig_t {
+            
+        };
+
+
         struct LauncherData_t {
             int16_t* dispHor = nullptr;
             int16_t* dispVer = nullptr;
@@ -43,6 +48,7 @@ namespace MOONCAKE {
     
         class Launcher : public APP_BASE {
             private:
+                LauncherConfig_t _config;
                 Framework* _framework;
                 APP_BASE* _launch_app;
 
@@ -56,6 +62,10 @@ namespace MOONCAKE {
             public:
                 Launcher() : _framework(nullptr), _launch_app(nullptr) {}
                 ~Launcher() = default;
+
+
+                inline void config(const LauncherConfig_t& cfg) { _config = cfg; }
+                inline LauncherConfig_t config(void) { return _config; }
 
 
                 void updateAppIconZoom();
