@@ -8,6 +8,7 @@
  * @copyright Copyright (c) 2023
  * 
  */
+#pragma once
 #include <lvgl.h>
 
 /* App default icon */

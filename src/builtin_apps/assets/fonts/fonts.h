@@ -8,6 +8,7 @@
  * @copyright Copyright (c) 2023
  * 
  */
+#pragma once
 #include <lvgl.h>
 
 LV_FONT_DECLARE(ui_font_OpenSansMedium96);

@@ -20,18 +20,35 @@ namespace MOONCAKE {
 
 
         struct LauncherConfig_t {
-            
+            void* backGroundImg = nullptr;
+            lv_color_t backGroundColor = lv_color_hex(0x000000);
         };
 
 
         struct LauncherData_t {
+            /* Display data */
             int16_t* dispHor = nullptr;
             int16_t* dispVer = nullptr;
             bool dispModePortrait = false;
+
+            /* Widget */
             lv_obj_t* screenMain = nullptr;
+
             lv_obj_t* appPanel = nullptr;
             lv_coord_t appPanelHor = 0;
             lv_coord_t appPanelVer = 0;
+
+            lv_obj_t* infoPanel = nullptr;
+            lv_coord_t infoPanelHor = 0;
+            lv_coord_t infoPanelVer = 0;
+            lv_obj_t* infoClockHour = nullptr;
+            lv_obj_t* infoClockMin = nullptr;
+            lv_obj_t* infoStepNum = nullptr;
+            lv_obj_t* infoBatLevel = nullptr;
+            lv_obj_t* infoBatIcon = nullptr;
+            lv_obj_t* infoWifiIcon = nullptr;
+            lv_obj_t* infoBleIcon = nullptr;
+            lv_obj_t* infoNoteIcon = nullptr;
         };
 
 
@@ -56,7 +73,8 @@ namespace MOONCAKE {
                 LauncherData_t _data;
                 BubbleConfig_t _bubble_cfg;
                 static void _lvgl_event_cb(lv_event_t* e);
-                void _update_app_list();
+                void _create_app_panel();
+                void _create_info_panel();
 
 
             public:

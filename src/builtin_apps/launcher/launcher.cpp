@@ -152,7 +152,7 @@ namespace MOONCAKE {
         }
 
 
-        void Launcher::_update_app_list()
+        void Launcher::_create_app_panel()
         {
             /**
              * @brief App panel
@@ -168,10 +168,9 @@ namespace MOONCAKE {
             lv_obj_set_size(_data.appPanel, _data.appPanelHor, _data.appPanelVer);
             lv_obj_align(_data.appPanel, LV_ALIGN_BOTTOM_MID, 0, 0);
 
+            /* Ser style */
             lv_obj_set_style_radius(_data.appPanel, 0, LV_STATE_DEFAULT);
-            // lv_obj_set_style_bg_color(_data.appPanel, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_bg_opa(_data.appPanel, 0, LV_STATE_DEFAULT);
-            // lv_obj_set_style_border_color(_data.appPanel, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_border_opa(_data.appPanel, 0, LV_STATE_DEFAULT);
 
             /* Add scroll flags */
@@ -306,6 +305,111 @@ namespace MOONCAKE {
         }
 
 
+        void Launcher::_create_info_panel()
+        {
+            /* Set size */
+            _data.infoPanelHor = *_data.dispHor;
+            _data.infoPanelVer = *_data.dispVer / 2;
+
+            /* Create info panel */
+            _data.infoPanel = lv_obj_create(_data.screenMain);
+            lv_obj_set_size(_data.infoPanel, _data.infoPanelHor, _data.infoPanelVer);
+            lv_obj_align(_data.infoPanel, LV_ALIGN_TOP_MID, 0, 0);
+
+            /* Ser style */
+            lv_obj_set_style_radius(_data.infoPanel, 0, LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_opa(_data.infoPanel, 0, LV_STATE_DEFAULT);
+            lv_obj_set_style_border_opa(_data.infoPanel, 0, LV_STATE_DEFAULT);
+
+            /* Add scroll flags */
+            lv_obj_add_flag(_data.infoPanel, LV_OBJ_FLAG_SCROLL_ELASTIC | LV_OBJ_FLAG_SCROLL_MOMENTUM | LV_OBJ_FLAG_SCROLL_ONE);
+            lv_obj_set_scrollbar_mode(_data.infoPanel, LV_SCROLLBAR_MODE_OFF);
+            lv_obj_set_scroll_dir(_data.infoPanel, LV_DIR_NONE);
+
+
+            /* Walking man anim */
+            #if PLAY_WALKING_ANIM
+            lv_obj_t* walking_man = lv_animimg_create(_data.infoPanel);
+            lv_obj_align(walking_man, LV_ALIGN_CENTER, lv_pct(3), lv_pct(2));
+            lv_animimg_set_src(walking_man, (const void**)anim_lc_walking, NUM_ANIM_LC_WALKING);
+            lv_animimg_set_duration(walking_man, 1209);
+            lv_animimg_set_repeat_count(walking_man, LV_ANIM_REPEAT_INFINITE);
+            lv_animimg_start(walking_man);
+            #else
+            lv_obj_t* walking_man = lv_img_create(_data.infoPanel);
+            lv_obj_align(walking_man, LV_ALIGN_CENTER, lv_pct(3), lv_pct(2));
+            lv_img_set_src(walking_man, (const void*)&ui_img_icon_lc_walking_00_png);
+            #endif
+
+            /* Clock */
+            _data.infoClockHour = lv_label_create(_data.infoPanel);
+            lv_obj_set_x(_data.infoClockHour, lv_pct(-34));
+            lv_obj_set_y(_data.infoClockHour, lv_pct(-25));
+            lv_obj_set_align(_data.infoClockHour, LV_ALIGN_CENTER);
+            lv_label_set_text(_data.infoClockHour, "23");
+            lv_obj_set_style_text_color(_data.infoClockHour, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_font(_data.infoClockHour, &ui_font_OpenSansMedium96, LV_PART_MAIN | LV_STATE_DEFAULT);
+            
+            _data.infoClockMin = lv_label_create(_data.infoPanel);
+            lv_obj_set_x(_data.infoClockMin, lv_pct(-34));
+            lv_obj_set_y(_data.infoClockMin, lv_pct(25));
+            lv_obj_set_align(_data.infoClockMin, LV_ALIGN_CENTER);
+            lv_label_set_text(_data.infoClockMin, "32");
+            lv_obj_set_style_text_color(_data.infoClockMin, lv_color_hex(0xBEBEBE), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_font(_data.infoClockMin, &ui_font_OpenSansMedium96, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+
+            /* Step number */
+            _data.infoStepNum = lv_label_create(_data.infoPanel);
+            lv_obj_set_x(_data.infoStepNum, lv_pct(33));
+            lv_obj_set_y(_data.infoStepNum, lv_pct(35));
+            lv_obj_set_align(_data.infoStepNum, LV_ALIGN_CENTER);
+            lv_label_set_text(_data.infoStepNum, "2366 steps!");
+            lv_obj_set_style_text_color(_data.infoStepNum, lv_color_hex(0xBEBEBE), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_font(_data.infoStepNum, &ui_font_OpenSansMediumItalic24, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+
+            /* Battery */
+            _data.infoBatIcon = lv_img_create(_data.infoPanel);
+            lv_img_set_src(_data.infoBatIcon, &ui_img_icon_battery_png);
+            lv_obj_set_x(_data.infoBatIcon, lv_pct(28));
+            lv_obj_set_y(_data.infoBatIcon, lv_pct(-13));
+            lv_obj_set_align(_data.infoBatIcon, LV_ALIGN_CENTER);
+
+            _data.infoBatLevel = lv_label_create(_data.infoPanel);
+            lv_obj_set_x(_data.infoBatLevel, lv_pct(43));
+            lv_obj_set_y(_data.infoBatLevel, lv_pct(-12));
+            lv_obj_set_align(_data.infoBatLevel, LV_ALIGN_CENTER);
+            lv_label_set_text(_data.infoBatLevel, "96%");
+            lv_obj_set_style_text_color(_data.infoBatLevel, lv_color_hex(0xBEBEBE), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_font(_data.infoBatLevel, &ui_font_OpenSansMediumItalic24, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+            
+            /* Wifi */
+            _data.infoWifiIcon = lv_img_create(_data.infoPanel);
+            lv_img_set_src(_data.infoWifiIcon, &ui_img_icon_wifi_off_png);
+            lv_obj_set_x(_data.infoWifiIcon, lv_pct(28));
+            lv_obj_set_y(_data.infoWifiIcon, lv_pct(5));
+            lv_obj_set_align(_data.infoWifiIcon, LV_ALIGN_CENTER);
+
+
+            /* BLE */
+            _data.infoBleIcon = lv_img_create(_data.infoPanel);
+            lv_img_set_src(_data.infoBleIcon, &ui_img_icon_ble_off_png);
+            lv_obj_set_x(_data.infoBleIcon, lv_pct(38));
+            lv_obj_set_y(_data.infoBleIcon, lv_pct(5));
+            lv_obj_set_align(_data.infoBleIcon, LV_ALIGN_CENTER);
+
+
+            /* Notification */
+            _data.infoNoteIcon = lv_img_create(_data.infoPanel);
+            lv_img_set_src(_data.infoNoteIcon, &ui_img_icon_note_on_png);
+            lv_obj_set_x(_data.infoNoteIcon, lv_pct(48));
+            lv_obj_set_y(_data.infoNoteIcon, lv_pct(5));
+            lv_obj_set_align(_data.infoNoteIcon, LV_ALIGN_CENTER);
+        }
+
+
         void Launcher::onSetup()
         {
             setAppName("Launcher");
@@ -330,23 +434,20 @@ namespace MOONCAKE {
                 _data.dispModePortrait = true;
             }
 
+
             /* Crete main screen */
             _data.screenMain = lv_obj_create(NULL);
-            lv_obj_set_style_bg_color(_data.screenMain, lv_color_hex(0x000000), LV_STATE_DEFAULT);
+            /* Set background color */
+            lv_obj_set_style_bg_color(_data.screenMain, _config.backGroundColor, LV_STATE_DEFAULT);
+            /* Set backgound img */
+            if (_config.backGroundImg != nullptr) {
+                lv_obj_set_style_bg_img_src(_data.screenMain, _config.backGroundImg, 0);
+            }
 
 
-            lv_obj_t* animimg0 = lv_animimg_create(_data.screenMain);
-            lv_obj_align(animimg0, LV_ALIGN_CENTER, 0, -120);
-            // lv_obj_center(animimg0);
-            lv_animimg_set_src(animimg0, (const void**)anim_lc_walking, NUM_ANIM_LC_WALKING);
-            lv_animimg_set_duration(animimg0, 1209);
-            lv_animimg_set_repeat_count(animimg0, LV_ANIM_REPEAT_INFINITE);
-            lv_animimg_start(animimg0);
-
-
-
-            /* Update app list */
-            _update_app_list();
+            /* Create panels */
+            _create_info_panel();
+            _create_app_panel();
         }
 
 
