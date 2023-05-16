@@ -10,7 +10,7 @@
  */
 #include "launcher.h"
 #include "../../system_data_def.h"
-#include "icon/launcher_icon.h"
+#include "../assets/assets.h"
 
 
 #define SCROLL_VER 0

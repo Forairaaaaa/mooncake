@@ -1,0 +1,15 @@
+/**
+ * @file icon_static.h
+ * @author Forairaaaaa
+ * @brief 
+ * @version 0.1
+ * @date 2023-05-16
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+#include <lvgl.h>
+
+/* App default icon */
+LV_IMG_DECLARE(ui_img_icon_hdpi_default_png);
+#define USING_ICON ui_img_icon_hdpi_default_png

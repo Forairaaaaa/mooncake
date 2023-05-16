@@ -26,6 +26,7 @@ file(GLOB_RECURSE BUILTIN_SRCS
 )
 set(BUILTIN_INCS
     ${MOONCAKE_ROOT_DIR}/builtin_apps/
+    ${MOONCAKE_ROOT_DIR}/builtin_apps/assets/
     ${MOONCAKE_ROOT_DIR}/builtin_apps/boot_anim/
     ${MOONCAKE_ROOT_DIR}/builtin_apps/launcher/
 )

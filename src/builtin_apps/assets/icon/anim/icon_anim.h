@@ -10,10 +10,6 @@
  */
 #include <lvgl.h>
 
-/* App default icon */
-LV_IMG_DECLARE(ui_img_icon_hdpi_default_png);
-#define USING_ICON ui_img_icon_hdpi_default_png
-
 /* Walking anim, thanks to Bashir Ahmed */
 /* https://lottiefiles.com/directdesign22 */
 LV_IMG_DECLARE(ui_img_icon_lc_walking_00_png);
