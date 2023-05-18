@@ -22,6 +22,8 @@
 #define MC_KEY_HOME             "_KEY_HOME"     // bool
 #define MC_KEY_BACK             "_KEY_BACK"     // bool
 #define MC_KEY_POWER            "_KEY_PWR"      // bool
+#define MC_KEY_UP               "_KEY_UP"       // bool
+#define MC_KEY_DOWN             "_KEY_DOWN"     // bool
 #endif
 
 
@@ -30,14 +32,15 @@
 #define MC_TIME                 "_TIME"         // MOONCAKE::DataTime_t
 namespace MOONCAKE {
     struct DataTime_t {
-        uint8_t sec;		/* Seconds.	[0-60] (1 leap second) */
-        uint8_t min;		/* Minutes.	[0-59] */
-        uint8_t hour;		/* Hours.	[0-23] */
-        uint8_t mday;		/* Day.		[1-31] */
-        uint8_t mon;		/* Month.	[0-11] */
-        uint8_t wday;		/* Day of week.	[0-6] */
-        int year;			/* Year	- 1900.  */
-        long int gmtoff;	/* Seconds east of UTC.  */
+        uint8_t sec = 0;		/* Seconds.	[0-60] (1 leap second) */
+        uint8_t min = 32;		/* Minutes.	[0-59] */
+        uint8_t hour = 23;		/* Hours.	[0-23] */
+        uint8_t mday = 4;		/* Day.		[1-31] */
+        uint8_t mon = 6;		/* Month.	[0-11] */
+        uint8_t wday = 0;		/* Day of week.	[0-6] */
+        int year = 99;			/* Year	- 1900.  */
+        long int gmtoff = 0;	/* Seconds east of UTC */
+        bool wasSet = false;    /* Flag to set time*/
     };
 }
 #endif

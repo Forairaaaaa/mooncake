@@ -22,6 +22,7 @@ namespace MOONCAKE {
         struct LauncherConfig_t {
             void* backGroundImg = nullptr;
             lv_color_t backGroundColor = lv_color_hex(0x000000);
+            uint32_t infoUpdateInterval = 2000;
         };
 
 
@@ -49,6 +50,9 @@ namespace MOONCAKE {
             lv_obj_t* infoWifiIcon = nullptr;
             lv_obj_t* infoBleIcon = nullptr;
             lv_obj_t* infoNoteIcon = nullptr;
+
+            uint32_t infoUpdateTickCount = 0;
+            char infoUpdateBuffer[24];
         };
 
 
@@ -87,6 +91,7 @@ namespace MOONCAKE {
 
 
                 void updateAppIconZoom();
+                void updateInfos();
 
 
                 /**

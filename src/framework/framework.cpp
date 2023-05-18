@@ -50,17 +50,14 @@ namespace MOONCAKE {
         /* Clear database */
         _config.database->DeleteAll();
 
-        /* System infos */
-        #ifdef MC_SYSTEM_TICKS
-        _config.database->Add<uint32_t>(MC_SYSTEM_TICKS, uint32_t(0));
-        #endif
-
         /* Navigation */
         #ifdef MC_KEY_MENU
         _config.database->Add<bool>(MC_KEY_MENU, bool(false));
         _config.database->Add<bool>(MC_KEY_HOME, bool(false));
         _config.database->Add<bool>(MC_KEY_BACK, bool(false));
         _config.database->Add<bool>(MC_KEY_POWER, bool(false));
+        _config.database->Add<bool>(MC_KEY_UP, bool(false));
+        _config.database->Add<bool>(MC_KEY_DOWN, bool(false));
         #endif
 
         /* Time */
@@ -70,9 +67,26 @@ namespace MOONCAKE {
 
         /* Hardware */
         #ifdef MC_DISP_HOR
+
+        /* Display */
         _config.database->Add<int16_t>(MC_DISP_HOR, _config.displayHor);
         _config.database->Add<int16_t>(MC_DISP_VER, _config.displayVer);
         _config.database->Add<uint8_t>(MC_DISP_BRIGHTNESS, uint8_t(100));
+
+        /* System tick */
+        _config.database->Add<uint32_t>(MC_SYSTEM_TICKS, uint32_t(0));
+
+        /* Power */
+        _config.database->Add<uint8_t>(MC_BATTERY_LEVEL, uint8_t(100));
+        _config.database->Add<bool>(MC_BATTERY_IS_CHARGING, bool(false));
+
+        /* Wireless */
+        _config.database->Add<bool>(MC_WIFI_IS_CONNECTED, bool(false));
+        _config.database->Add<bool>(MC_BLE_IS_CONNECTED, bool(false));
+
+        /* Notification */
+        _config.database->Add<bool>(MC_NOTIFICATION_IS_ON, bool(false));
+
         #endif
     }
 

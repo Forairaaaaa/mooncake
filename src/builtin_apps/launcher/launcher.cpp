@@ -152,6 +152,27 @@ namespace MOONCAKE {
         }
 
 
+        void Launcher::updateInfos()
+        {
+            /* Update time */
+            if (getDatabase()->Get(MC_TIME)->addr != nullptr) {
+                /* Hour */
+                snprintf(_data.infoUpdateBuffer, sizeof(_data.infoUpdateBuffer), "%.2d", getDatabase()->Get(MC_TIME)->value<DataTime_t>().hour);
+                lv_label_set_text(_data.infoClockHour, _data.infoUpdateBuffer);
+                /* Min */
+                snprintf(_data.infoUpdateBuffer, sizeof(_data.infoUpdateBuffer), "%.2d", getDatabase()->Get(MC_TIME)->value<DataTime_t>().min);
+                lv_label_set_text(_data.infoClockMin, _data.infoUpdateBuffer);
+            }
+
+            /* Update Battery */
+            if (getDatabase()->Get(MC_BATTERY_LEVEL)->addr != nullptr) {
+                /* Level */
+                snprintf(_data.infoUpdateBuffer, sizeof(_data.infoUpdateBuffer), "%d%%", getDatabase()->Get(MC_BATTERY_LEVEL)->value<uint8_t>());
+                lv_label_set_text(_data.infoBatLevel, _data.infoUpdateBuffer);
+            }
+        }
+
+
         void Launcher::_create_app_panel()
         {
             /**
@@ -469,15 +490,14 @@ namespace MOONCAKE {
         {
             // printf("[%s] onRunning\n", getAppName().c_str());
 
+
+            /* Update infos */
+            if ((_data.infoUpdateTickCount == 0) || ((lv_tick_get() - _data.infoUpdateTickCount) > _config.infoUpdateInterval)) {
+                updateInfos();
+                _data.infoUpdateTickCount = lv_tick_get();
+            }
             
 
-            // _framework->closeApp(this);
-
-
-
-  
-
-            
         }
 
 
@@ -485,15 +505,10 @@ namespace MOONCAKE {
         {
             // printf("[%s] onRunningBG\n", getAppName().c_str());
 
-            // printf("%d\n", _framework->isAnyAppRunningFG());
-
             /* If no App is running on foreground */
             if (!_framework->isAnyAppRunningFG()) {
                 _framework->startApp(this);
             }
-
-
-
         }
 
 

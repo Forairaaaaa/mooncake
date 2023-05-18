@@ -46,16 +46,19 @@ namespace MOONCAKE {
 
         void Boot_Anim::onRunning()
         {
-            static lv_obj_t * label2 = lv_label_create(lv_scr_act());
+            // static lv_obj_t * label2 = lv_label_create(lv_scr_act());
 
-            if (lv_tick_get() > 500) {
-                destroyApp();
-            }
+            // if (lv_tick_get() > 500) {
+            //     destroyApp();
+            // }
 
 
-            lv_label_set_text_fmt(label2, "%ld", lv_tick_get());
-            lv_obj_align(label2, LV_ALIGN_CENTER, 0, 0);
-            lv_timer_handler();
+            // lv_label_set_text_fmt(label2, "%ld", lv_tick_get());
+            // lv_obj_align(label2, LV_ALIGN_CENTER, 0, 0);
+            // lv_timer_handler();
+
+
+            destroyApp();
         }
 
 
