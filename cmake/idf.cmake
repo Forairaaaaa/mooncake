@@ -1,13 +1,11 @@
 # CMakeLists.txt of MOONCAKE component
 
-# Source files directories
-set(MOONCAKE_SRC_DIRS
-    ${MOONCAKE_ROOT_DIR}/src/app/
-    ${MOONCAKE_ROOT_DIR}/src/framework/
-    ${MOONCAKE_ROOT_DIR}/src/simplekv/
+# Mooncake
+file(GLOB_RECURSE MOONCAKE_SRCS
+    ${MOONCAKE_ROOT_DIR}/src/app/*.cpp
+    ${MOONCAKE_ROOT_DIR}/src/framework/*.cpp
+    ${MOONCAKE_ROOT_DIR}/src/simplekv/simplekv.cpp
 )
-
-# Head files directories
 set(MOONCAKE_INC_DIRS
     ${MOONCAKE_ROOT_DIR}/src/
     ${MOONCAKE_ROOT_DIR}/src/app/
@@ -15,20 +13,16 @@ set(MOONCAKE_INC_DIRS
     ${MOONCAKE_ROOT_DIR}/src/simplekv/
 )
 
-# Source files directories
-set(MOONCAKE_BUILTIN_APPS_SRC_DIRS
-    ${MOONCAKE_ROOT_DIR}/src/builtin_apps/boot_anim/
-    ${MOONCAKE_ROOT_DIR}/src/builtin_apps/launcher/
-    ${MOONCAKE_ROOT_DIR}/src/builtin_apps/launcher/icon
-    ${MOONCAKE_ROOT_DIR}/src/builtin_apps/launcher/icon/anim/walking/walking/
+# Built-in Apps
+file(GLOB_RECURSE BUILTIN_APPS_SRCS
+    ${MOONCAKE_ROOT_DIR}/src/builtin_apps/*.c
+    ${MOONCAKE_ROOT_DIR}/src/builtin_apps/*.cpp
 )
-
-# Head files directories
 set(MOONCAKE_BUILTIN_APPS_INC_DIRS
     ${MOONCAKE_ROOT_DIR}/src/builtin_apps/
     ${MOONCAKE_ROOT_DIR}/src/builtin_apps/boot_anim/
     ${MOONCAKE_ROOT_DIR}/src/builtin_apps/launcher/
-    ${MOONCAKE_ROOT_DIR}/src/builtin_apps/launcher/icon/anim/walking/
+    ${MOONCAKE_ROOT_DIR}/src/builtin_apps/assets/
 )
 
 # Public component requirement
@@ -41,7 +35,8 @@ set(MOONCAKE_PRIV_REQUIRES
 )
 
 # Register component
-idf_component_register(SRC_DIRS ${MOONCAKE_SRC_DIRS} ${MOONCAKE_BUILTIN_APPS_SRC_DIRS}
+idf_component_register(SRCS ${MOONCAKE_SRCS} ${BUILTIN_APPS_SRCS}
+                #   SRC_DIRS ${MOONCAKE_SRC_DIRS}
                   INCLUDE_DIRS ${MOONCAKE_INC_DIRS} ${MOONCAKE_BUILTIN_APPS_INC_DIRS}
                   REQUIRES ${MOONCAKE_REQUIRES}
                   PRIV_REQUIRES ${MOONCAKE_PRIV_REQUIRES}
