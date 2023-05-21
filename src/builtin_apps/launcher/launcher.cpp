@@ -216,6 +216,9 @@ namespace MOONCAKE {
             _bubble_cfg.iconColMax = _data.appPanelHor / USING_ICON.header.w;
             _bubble_cfg.iconRowMax = _data.appPanelVer / USING_ICON.header.h;
             _bubble_cfg.iconColNum = (_framework->getAppNum() - 1) / _bubble_cfg.iconRowMax;
+            if (((_framework->getAppNum() - 1) % _bubble_cfg.iconRowMax) != 0) {
+                _bubble_cfg.iconColNum++;
+            }
             _bubble_cfg.iconSpaceX = _data.appPanelHor / _bubble_cfg.iconColMax;
             lv_coord_t gap_between_icon = (_data.appPanelHor - USING_ICON.header.w * _bubble_cfg.iconColMax) / (_bubble_cfg.iconColMax + 1);
             _bubble_cfg.iconSpaceY = USING_ICON.header.h - (gap_between_icon / 2);
@@ -480,7 +483,7 @@ namespace MOONCAKE {
             
             /* Load main screen and delete last one */
             if (lv_scr_act() != _data.screenMain) {
-                lv_scr_load_anim(_data.screenMain, LV_SCR_LOAD_ANIM_MOVE_BOTTOM, 100, 0, true);
+                lv_scr_load_anim(_data.screenMain, LV_SCR_LOAD_ANIM_MOVE_BOTTOM, 50, 0, true);
             }
 
         }
