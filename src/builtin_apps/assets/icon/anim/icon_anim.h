@@ -44,7 +44,6 @@ LV_IMG_DECLARE(ui_img_icon_lc_walking_27_png);
 LV_IMG_DECLARE(ui_img_icon_lc_walking_28_png);
 LV_IMG_DECLARE(ui_img_icon_lc_walking_29_png);
 LV_IMG_DECLARE(ui_img_icon_lc_walking_30_png);
-LV_IMG_DECLARE(ui_img_icon_lc_walking_31_png);
 
 static const lv_img_dsc_t * anim_lc_walking[] = {
     &ui_img_icon_lc_walking_00_png,
@@ -78,7 +77,6 @@ static const lv_img_dsc_t * anim_lc_walking[] = {
     &ui_img_icon_lc_walking_28_png,
     &ui_img_icon_lc_walking_29_png,
     &ui_img_icon_lc_walking_30_png,
-    &ui_img_icon_lc_walking_31_png,
 };
-#define NUM_ANIM_LC_WALKING 32
+#define NUM_ANIM_LC_WALKING 31
 
