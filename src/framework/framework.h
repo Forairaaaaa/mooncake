@@ -51,6 +51,7 @@ namespace MOONCAKE {
             inline void config(const FrameworkConfig_t& cfg) { if (_inited) { return; } else { _config = cfg;} }
             inline FrameworkConfig_t config(void) { return _config; }
             inline void setDatabase(SIMPLEKV::SimpleKV* db) { if (_inited) { return; } else { _config.database = db; } }
+            inline SIMPLEKV::SimpleKV* getDatabase() { return _config.database; }
             inline void setBootAnim(APP_BASE* bootAnim) { if (_inited) { return; } else { _config.bootAnim = bootAnim; } }
             inline void setLauncher(APP_BASE* luancher) { if (_inited) { return; } else { _config.launcher = luancher; } }
             inline void setDisplay(uint16_t hor, uint16_t ver) { if (_inited) { return; } else { _config.displayHor = hor; _config.displayVer = ver; } }
