@@ -170,6 +170,13 @@ namespace MOONCAKE {
                 snprintf(_data.infoUpdateBuffer, sizeof(_data.infoUpdateBuffer), "%d%%", getDatabase()->Get(MC_BATTERY_LEVEL)->value<uint8_t>());
                 lv_label_set_text(_data.infoBatLevel, _data.infoUpdateBuffer);
             }
+
+            /* Update step counter */
+            if (getDatabase()->Get(MC_STEPS)->addr != nullptr) {
+                /* Level */
+                snprintf(_data.infoUpdateBuffer, sizeof(_data.infoUpdateBuffer), "%ld steps!", getDatabase()->Get(MC_STEPS)->value<uint32_t>());
+                lv_label_set_text(_data.infoStepCounter, _data.infoUpdateBuffer);
+            }
         }
 
 
@@ -384,13 +391,13 @@ namespace MOONCAKE {
 
 
             /* Step number */
-            _data.infoStepNum = lv_label_create(_data.infoPanel);
-            lv_obj_set_x(_data.infoStepNum, lv_pct(33));
-            lv_obj_set_y(_data.infoStepNum, lv_pct(35));
-            lv_obj_set_align(_data.infoStepNum, LV_ALIGN_CENTER);
-            lv_label_set_text(_data.infoStepNum, "2366 steps!");
-            lv_obj_set_style_text_color(_data.infoStepNum, lv_color_hex(0xBEBEBE), LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_obj_set_style_text_font(_data.infoStepNum, &ui_font_OpenSansMediumItalic24, LV_PART_MAIN | LV_STATE_DEFAULT);
+            _data.infoStepCounter = lv_label_create(_data.infoPanel);
+            lv_obj_set_x(_data.infoStepCounter, lv_pct(33));
+            lv_obj_set_y(_data.infoStepCounter, lv_pct(35));
+            lv_obj_set_align(_data.infoStepCounter, LV_ALIGN_CENTER);
+            lv_label_set_text(_data.infoStepCounter, "2366 steps!");
+            lv_obj_set_style_text_color(_data.infoStepCounter, lv_color_hex(0xBEBEBE), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_font(_data.infoStepCounter, &ui_font_OpenSansMediumItalic24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
 
             /* Battery */

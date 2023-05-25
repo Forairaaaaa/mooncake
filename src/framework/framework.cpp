@@ -87,6 +87,9 @@ namespace MOONCAKE {
         /* Notification */
         _config.database->Add<bool>(MC_NOTIFICATION_IS_ON, bool(false));
 
+        /* Steps */
+        _config.database->Add<uint32_t>(MC_STEPS, uint32_t(2333));
+
         #endif
     }
 

@@ -70,4 +70,9 @@ namespace MOONCAKE {
 
 /* Notification */
 #define MC_NOTIFICATION_IS_ON   "_NOTE_ON"      // bool
+
+
+/* Setps */
+#define MC_STEPS                "_STEPS"        // uint32_t
+
 #endif

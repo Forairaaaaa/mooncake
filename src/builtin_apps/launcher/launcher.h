@@ -44,7 +44,7 @@ namespace MOONCAKE {
             lv_coord_t infoPanelVer = 0;
             lv_obj_t* infoClockHour = nullptr;
             lv_obj_t* infoClockMin = nullptr;
-            lv_obj_t* infoStepNum = nullptr;
+            lv_obj_t* infoStepCounter = nullptr;
             lv_obj_t* infoBatLevel = nullptr;
             lv_obj_t* infoBatIcon = nullptr;
             lv_obj_t* infoWifiIcon = nullptr;
