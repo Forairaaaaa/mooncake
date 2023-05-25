@@ -22,7 +22,7 @@ namespace MOONCAKE {
         struct LauncherConfig_t {
             void* backGroundImg = nullptr;
             lv_color_t backGroundColor = lv_color_hex(0x000000);
-            uint32_t infoUpdateInterval = 1000;
+            uint32_t infoUpdateInterval = 100;
         };
 
 
