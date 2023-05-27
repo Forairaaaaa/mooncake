@@ -12,6 +12,10 @@
 #include "../assets/assets.h"
 
 
+/* Works like shit on esp32 */
+#define RANDOM_ROTATION 0
+
+
 namespace MOONCAKE {
     namespace BUILTIN_APP {
 
@@ -27,11 +31,13 @@ namespace MOONCAKE {
 
                 WF_Spring_Wreath* app = (WF_Spring_Wreath*)lv_event_get_user_data(e);
 
+                #if RANDOM_ROTATION
                 /* Random angle */
                 if (!app->_anim.isPlaying()) {
                     lv_img_set_angle(app->_anim._img, (int16_t)std::rand());
-                    app->_anim.startPlaying();
                 }
+                #endif
+                app->_anim.startPlaying();
             }
 
             /* Quit */
@@ -71,12 +77,16 @@ namespace MOONCAKE {
                 /* Update data at once */
                 _update_data();
 
+                #if RANDOM_ROTATION
                 /* Random angle */
                 lv_img_set_angle(_anim._img, (int16_t)std::rand());
+                #endif
 
                 /* Play from start */
                 _anim.setIndex(0);
                 _anim.startPlaying();
+                /* Update at once */
+                lv_img_set_src(_anim._img, anim_spring_wreath[0]);
             }
 
             /* If pressed key Home */
@@ -97,9 +107,9 @@ namespace MOONCAKE {
             lv_label_set_text(_data.label_clock, _data.string_buffer);
 
             /* Infos */
-            snprintf(_data.string_buffer, sizeof(_data.string_buffer), "~~~~~~~~~~~~~~~~\n%d/%d %s.  %d steps",
+            snprintf(_data.string_buffer, sizeof(_data.string_buffer), "~~~~~~~~~~~~~~~~\n%d/%d %s.  %ld steps",
                     _data.time_ptr->mday,
-                    _data.time_ptr->mon,
+                    _data.time_ptr->mon + 1,
                     _data.day_of_week[_data.time_ptr->wday],
                     *_data.step_counter_ptr);
             lv_label_set_text(_data.label_infos, _data.string_buffer);
@@ -152,8 +162,8 @@ namespace MOONCAKE {
             lv_obj_set_y(_data.label_clock, -32);
             lv_obj_set_align(_data.label_clock, LV_ALIGN_CENTER);
             lv_label_set_text(_data.label_clock, "23:32");
-            lv_obj_set_style_text_color(_data.label_clock, lv_color_hex(0xEFF2A5), LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_obj_set_style_text_font(_data.label_clock, &ui_font_OpenSansMedium96, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_color(_data.label_clock, lv_color_hex(0xEFF2A5), LV_PART_MAIN);
+            lv_obj_set_style_text_font(_data.label_clock, &ui_font_OpenSansMedium96, LV_PART_MAIN);
 
 
             /* infos */
@@ -162,8 +172,8 @@ namespace MOONCAKE {
             lv_obj_set_y(_data.label_infos, 26);
             lv_obj_set_align(_data.label_infos, LV_ALIGN_CENTER);
             lv_label_set_text(_data.label_infos, "~~~~~~~~~~~~~~~~\n3/7 Mon.  2333 steps");
-            lv_obj_set_style_text_color(_data.label_infos, lv_color_hex(0xEFF2A5), LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_obj_set_style_text_font(_data.label_infos, &ui_font_OpenSansMediumItalic24, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_color(_data.label_infos, lv_color_hex(0xEFF2A5), LV_PART_MAIN);
+            lv_obj_set_style_text_font(_data.label_infos, &ui_font_OpenSansMediumItalic24, LV_PART_MAIN);
         }
 
 
