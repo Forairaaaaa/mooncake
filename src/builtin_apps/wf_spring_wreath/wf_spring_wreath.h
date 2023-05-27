@@ -35,18 +35,21 @@ namespace MOONCAKE {
             };
 
             struct Data_t {
-                /* Update data in 20Hz */
-                uint32_t data_update_interval = 50;
-                uint32_t data_update_count = 0;
+                /* Update data in 1Hz */
+                uint32_t update_interval = 1000;
+                uint32_t update_count = 0;
 
                 lv_obj_t* screen = nullptr;
                 lv_obj_t* label_clock = nullptr;
-                lv_obj_t* label_step_counter = nullptr;
+                lv_obj_t* label_infos = nullptr;
 
                 DataTime_t* time_ptr = nullptr;
                 uint32_t* step_counter_ptr = nullptr;
                 bool* just_wake_up_ptr = nullptr;
                 bool* key_pwr_home_ptr = nullptr;
+
+                const char* day_of_week[7] = {"Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"};
+                char string_buffer[48] = ""; 
             };
 
         }
@@ -57,7 +60,9 @@ namespace MOONCAKE {
                 WF_SPRING_WREATH::Data_t _data;
                 WF_SPRING_WREATH::Anim_t _anim;
 
-                void _anim_update();
+                static void _lvgl_event_cb(lv_event_t* e);
+                void _update_anim();
+                void _update_data();
 
 
             public:
