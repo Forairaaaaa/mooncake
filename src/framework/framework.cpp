@@ -90,6 +90,9 @@ namespace MOONCAKE {
         /* Steps */
         _config.database->Add<uint32_t>(MC_STEPS, uint32_t(2333));
 
+        /* Flag of just wake up from sleep */
+        _config.database->Add<bool>(MC_JUST_WAKEUP, bool(false));
+
         #endif
     }
 
@@ -114,7 +117,7 @@ namespace MOONCAKE {
             }
         }
 
-        /* Init system data */
+        /* Init basic system data */
         _system_data_init();
 
         /* Boot anim */
@@ -162,13 +165,9 @@ namespace MOONCAKE {
 
     void Framework::update()
     {
-
-
-
         /* Update App manager */
         APP_Manger::update();
     }
     
-
 
 }

@@ -57,7 +57,7 @@ namespace MOONCAKE {
             inline void setDisplay(uint16_t hor, uint16_t ver) { if (_inited) { return; } else { _config.displayHor = hor; _config.displayVer = ver; } }
             
 
-            /* Framework init */
+            /* Init framework */
             bool init();
 
 

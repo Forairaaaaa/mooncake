@@ -14,7 +14,7 @@ file(GLOB_RECURSE MOONCAKE_SRCS
 set(MOONCAKE_INCS
     ${MOONCAKE_ROOT_DIR}/src/
     ${MOONCAKE_ROOT_DIR}/src/app/
-    ${MOONCAKE_ROOT_DIR}/framework/
+    ${MOONCAKE_ROOT_DIR}/src/framework/
     ${MOONCAKE_ROOT_DIR}/src/simplekv/
 )
 
@@ -25,16 +25,18 @@ file(GLOB_RECURSE BUILTIN_SRCS
     ${MOONCAKE_ROOT_DIR}/src/builtin_apps/*.cpp
 )
 set(BUILTIN_INCS
-    ${MOONCAKE_ROOT_DIR}/builtin_apps/
-    ${MOONCAKE_ROOT_DIR}/builtin_apps/assets/
-    ${MOONCAKE_ROOT_DIR}/builtin_apps/boot_anim/
-    ${MOONCAKE_ROOT_DIR}/builtin_apps/launcher/
+    ${MOONCAKE_ROOT_DIR}/src/builtin_apps/
+    ${MOONCAKE_ROOT_DIR}/src/builtin_apps/assets/
+    ${MOONCAKE_ROOT_DIR}/src/builtin_apps/boot_anim/
+    ${MOONCAKE_ROOT_DIR}/src/builtin_apps/launcher/
+    ${MOONCAKE_ROOT_DIR}/src/builtin_apps/wf_spring_wreath/
 )
 
 
 
 #  Build library
 add_library(mooncake
+    ${MOONCAKE_ROOT_DIR}/src/mooncake.cpp
     ${MOONCAKE_SRCS}
     ${BUILTIN_SRCS}
 )

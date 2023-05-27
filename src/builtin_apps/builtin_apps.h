@@ -10,3 +10,4 @@
  */
 #include "boot_anim/boot_anim.h"
 #include "launcher/launcher.h"
+#include "wf_spring_wreath/wf_spring_wreath.h"

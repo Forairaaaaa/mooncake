@@ -63,7 +63,7 @@ namespace MOONCAKE {
                 else {
                     app_infos += "No";
                 }
-                lv_obj_t * mbox1 = lv_msgbox_create(NULL, "App infos", app_infos.c_str(), btns, true);
+                lv_obj_t * mbox1 = lv_msgbox_create(NULL, app->getAppName().c_str(), app_infos.c_str(), btns, true);
                 lv_obj_center(mbox1);
             }
 

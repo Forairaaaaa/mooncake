@@ -75,4 +75,8 @@ namespace MOONCAKE {
 /* Setps */
 #define MC_STEPS                "_STEPS"        // uint32_t
 
+
+/* Flag of just wake up from sleep */
+#define MC_JUST_WAKEUP          "_WAKE_UP"      // bool
+
 #endif
