@@ -110,7 +110,7 @@ LV_IMG_DECLARE(ui_img_anim_spring_wreath_7_png);    // assets\anim_spring_wreath
 LV_IMG_DECLARE(ui_img_anim_spring_wreath_8_png);    // assets\anim_spring_wreath_8.png
 LV_IMG_DECLARE(ui_img_anim_spring_wreath_9_png);    // assets\anim_spring_wreath_9.png
 
-static const lv_img_dsc_t * anim_lc_spring_wreath[] = {
+static const lv_img_dsc_t * anim_spring_wreath[] = {
     &ui_img_anim_spring_wreath_0_png,
     &ui_img_anim_spring_wreath_1_png,
     &ui_img_anim_spring_wreath_2_png,
