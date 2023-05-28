@@ -12,6 +12,9 @@
 #include "../../app/app.h"
 #include "../../system_data_def.h"
 #include <lvgl.h>
+#include <iostream>
+#include <string>
+#include <vector>
 
 
 namespace MOONCAKE {
@@ -20,12 +23,79 @@ namespace MOONCAKE {
 
         namespace WF_USER_CUSTOM {
 
+            /*
+            * [File structure]:
+
+                watch_faces/
+                ├── watch_faces.json                [Watch-faces description]
+                ├── wf_a
+                │   ├── background                  [Back fround assets]
+                │   ├── number                      [Clock number assets]
+                │   └── face.json                   [Custom-watch-face description]
+                └── wf_b
+                    ├── background
+                    ├── number
+                    └── face.json
+
+
+            * [Watch-faces description]: contains the waatch faces's path
+
+                {
+                    "watch_faces_path" : [
+                        "wf_a",
+                        "wf_b"
+                    ]
+                }
+
+
+            * [Custom-watch-face description]
+
+                {
+                    "name" : "Watch face A",
+                    "use_gif_background" : "yes",
+                    "pos_clock_hour_a" : [-120, 0],
+                    "pos_clock_hour_b" : [-60, 0],
+                    "pos_clock_colon" : [0, 0],
+                    "pos_clock_min_a" : [60, 0],
+                    "pos_clock_min_b" : [120, 0]
+                }
+
+            */
+
+           
+            struct Pos_t {
+                int x = 0;
+                int y = 0;
+            };
+
+            struct CustomData_t {
+                const char* wf_folder_path = "A:sdcard/watch_faces";
+                const char* wf_custom_description_path = "face.json";
+                const char* wf_custom_bg_asset_path = "background/";
+                const char* wf_custom_num_asset_path = "number/";
+                const char* wf_custom_static_asset_suffix = ".png";
+                const char* wf_custom_gif_asset_suffix = ".gif";
+                const char* wf_custom_bg_asset_name = "background";
+
+
+                std::string wf_current_using_path = "null";
+                bool using_gif_bg = false;
+
+                Pos_t pos_clock_hour_a;
+                Pos_t pos_clock_hour_b;
+                Pos_t pos_clock_min_a;
+                Pos_t pos_clock_min_b;
+            };
+
+
             struct Data_t {
                 /* Update data in 1Hz */
                 uint32_t update_interval = 1000;
                 uint32_t update_count = 0;
+                bool running = false;
 
                 lv_obj_t* screen = nullptr;
+                lv_obj_t* roller = nullptr;
                 lv_obj_t* img_bg_static = nullptr;
                 lv_obj_t* img_bk_gif = nullptr;
                 lv_obj_t* img_clock_hour_a = nullptr;
@@ -44,10 +114,15 @@ namespace MOONCAKE {
 
         class WF_User_Custom : public APP_BASE {
             private:
+                WF_USER_CUSTOM::CustomData_t _custom_data;
                 WF_USER_CUSTOM::Data_t _data;
 
                 static void _lvgl_event_cb(lv_event_t* e);
                 void _update_data();
+
+                bool _choose_watch_face();
+                void _create_watch_face();
+
 
 
             public:

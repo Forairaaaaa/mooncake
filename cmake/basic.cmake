@@ -53,4 +53,4 @@ target_include_directories(mooncake PUBLIC
 
 
 # Link
-target_link_libraries(mooncake PUBLIC lvgl lvgl::examples lvgl::demos)
+target_link_libraries(mooncake PUBLIC lvgl lvgl::examples lvgl::demos ArduinoJson)
