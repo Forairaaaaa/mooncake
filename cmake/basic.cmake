@@ -16,8 +16,6 @@ set(MOONCAKE_INCS
     ${MOONCAKE_ROOT_DIR}/src/app/
     ${MOONCAKE_ROOT_DIR}/src/framework/
     ${MOONCAKE_ROOT_DIR}/src/simplekv/
-    # ${MOONCAKE_ROOT_DIR}/src/ArduinoJson/
-    ${MOONCAKE_ROOT_DIR}/src/ArduinoJson/src/ArduinoJson/
 )
 
 

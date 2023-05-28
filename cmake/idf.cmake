@@ -23,12 +23,13 @@ set(MOONCAKE_BUILTIN_APPS_INC_DIRS
     ${MOONCAKE_ROOT_DIR}/src/builtin_apps/boot_anim/
     ${MOONCAKE_ROOT_DIR}/src/builtin_apps/launcher/
     ${MOONCAKE_ROOT_DIR}/src/builtin_apps/wf_spring_wreath/
+    ${MOONCAKE_ROOT_DIR}/src/builtin_apps/wf_user_custom/
     ${MOONCAKE_ROOT_DIR}/src/builtin_apps/assets/
 )
 
 # Public component requirement
 set(MOONCAKE_REQUIRES
-    lvgl
+    lvgl ArduinoJson
 )
 
 # Private component requirement

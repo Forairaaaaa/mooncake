@@ -35,7 +35,7 @@ namespace MOONCAKE {
 
 
                 /* Set using face path */
-                if ((const char*)lv_obj_get_user_data(roller) == "rl") {
+                if (strcmp((const char*)lv_obj_get_user_data(roller), "rl") == 0) {
                     
                     char string_buffer[256];
                     lv_roller_get_selected_str(roller, string_buffer, 256);
