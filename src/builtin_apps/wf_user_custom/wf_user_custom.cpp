@@ -30,8 +30,11 @@ namespace MOONCAKE {
             if (code == LV_EVENT_SHORT_CLICKED) {
                 // printf("clicked\n");
                 
-                /* Set using face path */
+                
                 lv_obj_t* roller = lv_event_get_target(e);
+
+
+                /* Set using face path */
                 if ((const char*)lv_obj_get_user_data(roller) == "rl") {
                     
                     char string_buffer[256];
@@ -60,9 +63,13 @@ namespace MOONCAKE {
 
         void WF_User_Custom::_update_data()
         {
+            // printf("666\n");
 
 
-            printf("666\n");
+
+            
+
+            
         }
 
 
@@ -99,7 +106,7 @@ namespace MOONCAKE {
             }
             /* Remove extra \n */
             wf_custom_path_list = wf_custom_path_list.substr(0, wf_custom_path_list.size() - 1);
-            printf("%s\n", wf_custom_path_list.c_str());
+            // printf("%s\n", wf_custom_path_list.c_str());
 
             /* Close folder */
             lv_fs_dir_close(&dir);
@@ -107,7 +114,7 @@ namespace MOONCAKE {
 
             /* Create a roller as selector */
             _data.roller = lv_roller_create(_data.screen);
-            lv_roller_set_options(_data.roller, wf_custom_path_list.c_str(), LV_ROLLER_MODE_NORMAL);
+            lv_roller_set_options(_data.roller, wf_custom_path_list.c_str(), LV_ROLLER_MODE_INFINITE);
             lv_roller_set_visible_row_count(_data.roller, 4);
             lv_obj_center(_data.roller);
             lv_obj_add_event_cb(_data.roller, _lvgl_event_cb, LV_EVENT_ALL, (void*)this);
@@ -118,33 +125,113 @@ namespace MOONCAKE {
         }
 
 
-        void WF_User_Custom::_create_watch_face()
+        bool WF_User_Custom::_get_face_description()
         {
             /* Get description */
-            std::string buffer;
-            buffer = _custom_data.wf_folder_path;
-            buffer += "/";
-            buffer += _custom_data.wf_current_using_path;
-            buffer += "/";
-            buffer += _custom_data.wf_custom_description_path;
-            printf("[%s] read desc: %s\n", getAppName().c_str(), buffer.c_str());
+            std::string string_buffer;
+            string_buffer = _custom_data.wf_folder_path;
+            string_buffer += "/";
+            string_buffer += _custom_data.wf_current_using_path;
+            string_buffer += "/";
+            string_buffer += _custom_data.wf_custom_description_path;
 
             /* Read description */
             lv_fs_file_t desc;
-            lv_fs_res_t res = lv_fs_open(&desc, buffer.c_str(), LV_FS_MODE_WR);
+            lv_fs_res_t res = lv_fs_open(&desc, string_buffer.c_str(), LV_FS_MODE_RD);
             if(res != LV_FS_RES_OK) {
-                printf("[%s] error: %d\n", getAppName().c_str(), res);
-                return;
+                printf("[%s] open %s error: %d\n", getAppName().c_str(), string_buffer.c_str(), res);
+                return false;
+            }
+
+            string_buffer = "";
+            char read_buffer = 0;
+            uint32_t read_num = 0;
+            while (1) {
+                res = lv_fs_read(&desc, (void*)&read_buffer, sizeof(read_buffer), &read_num);
+                if(res != LV_FS_RES_OK) {
+                    printf("[%s] read error: %d\n", getAppName().c_str(), res);
+                    return false;
+                }
+
+                /* If finish reading */
+                if (read_num == 0) {
+                    break;
+                }
+
+                // printf("%c", read_buffer);
+                string_buffer += read_buffer;
+            }
+            // printf("\n%s\n\n", string_buffer.c_str());
+
+            /* Close description file */
+            lv_fs_close(&desc);
+            
+
+            /* Deserialization */
+            ArduinoJson::DynamicJsonDocument doc(1024);
+            ArduinoJson::DeserializationError error = deserializeJson(doc, string_buffer);
+            if (error) {
+                printf("[%s] deserializeJson error\n", getAppName().c_str());
+                return false;
             }
 
 
+            /* Store data */
+            _custom_data.wf_name = doc["name"].as<std::string>();
 
-            /* Close description */
-            lv_fs_close(&desc);
+            if (doc["use_gif_background"].as<std::string>() == "yes") {
+                _custom_data.using_gif_bg = true;
+            }
+            else {
+                _custom_data.using_gif_bg = false;
+            }
 
+            _custom_data.pos_clock_hour_a.x = doc["pos_clock_hour_a"][0];
+            _custom_data.pos_clock_hour_a.y = doc["pos_clock_hour_a"][1];
+
+            _custom_data.pos_clock_hour_b.x = doc["pos_clock_hour_b"][0];
+            _custom_data.pos_clock_hour_b.y = doc["pos_clock_hour_b"][1];
+
+            _custom_data.pos_clock_colon.x = doc["pos_clock_colon"][0];
+            _custom_data.pos_clock_colon.y = doc["pos_clock_colon"][1];
+
+            _custom_data.pos_clock_min_a.x = doc["pos_clock_min_a"][0];
+            _custom_data.pos_clock_min_a.y = doc["pos_clock_min_a"][1];
+
+            _custom_data.pos_clock_min_b.x = doc["pos_clock_min_b"][0];
+            _custom_data.pos_clock_min_b.y = doc["pos_clock_min_b"][1];
+
+            printf("%s %d : %d,%d %d,%d %d,%d %d,%d %d,%d\n", 
+                _custom_data.wf_name.c_str(),
+                _custom_data.using_gif_bg,
+                _custom_data.pos_clock_hour_a.x,
+                _custom_data.pos_clock_hour_a.y,
+                _custom_data.pos_clock_hour_b.x,
+                _custom_data.pos_clock_hour_b.y,
+                _custom_data.pos_clock_colon.x,
+                _custom_data.pos_clock_colon.y,
+                _custom_data.pos_clock_min_a.x,
+                _custom_data.pos_clock_min_a.y,
+                _custom_data.pos_clock_min_b.x,
+                _custom_data.pos_clock_min_b.y
+            );
+
+            return true;
+        }
+
+
+        bool WF_User_Custom::_create_watch_face()
+        {
+            /* Get description */
+            if (!_get_face_description()) {
+                return false;
+            }
 
             /* Delect roller */
             lv_obj_del(_data.roller);
+
+
+
 
         }
 
@@ -162,6 +249,13 @@ namespace MOONCAKE {
         {
             printf("[%s] onCreate\n", getAppName().c_str());
 
+            /* make data goes default */
+            {
+                WF_USER_CUSTOM::CustomData_t custom_data;
+                _custom_data = custom_data;
+                WF_USER_CUSTOM::Data_t data;
+                _data = data;
+            }
 
             /* Get data's pointer from database */
             _data.time_ptr = (DataTime_t*)getDatabase()->Get(MC_TIME)->addr;

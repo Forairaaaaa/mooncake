@@ -79,10 +79,12 @@ namespace MOONCAKE {
 
 
                 std::string wf_current_using_path = "null";
+                std::string wf_name;
                 bool using_gif_bg = false;
 
                 Pos_t pos_clock_hour_a;
                 Pos_t pos_clock_hour_b;
+                Pos_t pos_clock_colon;
                 Pos_t pos_clock_min_a;
                 Pos_t pos_clock_min_b;
             };
@@ -121,7 +123,8 @@ namespace MOONCAKE {
                 void _update_data();
 
                 bool _choose_watch_face();
-                void _create_watch_face();
+                bool _create_watch_face();
+                bool _get_face_description();
 
 
 
