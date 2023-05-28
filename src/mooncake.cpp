@@ -28,6 +28,10 @@ namespace MOONCAKE {
         app_ptr = new BUILTIN_APP::WF_Spring_Wreath;
         install(app_ptr, nullptr);
 
+        /* User custom watch face */
+        app_ptr = new BUILTIN_APP::WF_User_Custom;
+        install(app_ptr, nullptr);
+
     }
 
 
