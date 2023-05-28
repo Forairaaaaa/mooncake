@@ -27,3 +27,4 @@ LV_IMG_DECLARE(ui_img_icon_wifi_on_png);
 
 
 LV_IMG_DECLARE(ui_img_app_icon_hdpi_wf_spring_wreath_png);    // assets\app_icon_hdpi_wf_spring_wreath.png
+LV_IMG_DECLARE(ui_img_app_icon_hdpi_wf_user_custom_png);    // assets\app_icon_hdpi_wf_user_custom.png

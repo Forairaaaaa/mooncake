@@ -65,11 +65,47 @@ namespace MOONCAKE {
         {
             // printf("666\n");
 
+            std::string string_buffer;
+            std::string base_path;
+
+            /* Base path */
+            base_path = _custom_data.wf_folder_path;
+            base_path += "/";
+            base_path += _custom_data.wf_current_using_path;
+            base_path += "/";
+            base_path += _custom_data.wf_custom_num_asset_path;
 
 
-            
+            string_buffer = base_path;
+            string_buffer += std::to_string((_data.time_ptr->min % 10));
+            string_buffer += _custom_data.wf_custom_static_asset_suffix;
+            // printf("%s\n", string_buffer.c_str());
+            lv_img_set_src(_data.img_clock_min_b, string_buffer.c_str());
 
-            
+            string_buffer = base_path;
+            string_buffer += std::to_string((_data.time_ptr->min / 10));
+            string_buffer += _custom_data.wf_custom_static_asset_suffix;
+            // printf("%s\n", string_buffer.c_str());
+            lv_img_set_src(_data.img_clock_min_a, string_buffer.c_str());
+
+            string_buffer = base_path;
+            string_buffer += "colon";
+            string_buffer += _custom_data.wf_custom_static_asset_suffix;
+            // printf("%s\n", string_buffer.c_str());
+            lv_img_set_src(_data.img_clock_colon, string_buffer.c_str());
+
+            string_buffer = base_path;
+            string_buffer += std::to_string((_data.time_ptr->hour % 10));
+            string_buffer += _custom_data.wf_custom_static_asset_suffix;
+            // printf("%s\n", string_buffer.c_str());
+            lv_img_set_src(_data.img_clock_hour_b, string_buffer.c_str());
+
+            string_buffer = base_path;
+            string_buffer += std::to_string((_data.time_ptr->hour / 10));
+            string_buffer += _custom_data.wf_custom_static_asset_suffix;
+            // printf("%s\n", string_buffer.c_str());
+            lv_img_set_src(_data.img_clock_hour_a, string_buffer.c_str());
+
         }
 
 
@@ -231,8 +267,54 @@ namespace MOONCAKE {
             lv_obj_del(_data.roller);
 
 
+            /* Create imgs */
+            std::string string_buffer;
+
+            /* Base path */
+            string_buffer = _custom_data.wf_folder_path;
+            string_buffer += "/";
+            string_buffer += _custom_data.wf_current_using_path;
+            string_buffer += "/";
+
+            /* Background */
+            string_buffer += _custom_data.wf_custom_bg_asset_path;
+            string_buffer += _custom_data.wf_custom_bg_asset_name;
+
+            if (_custom_data.using_gif_bg) {
+                /* GIF */
+                string_buffer += _custom_data.wf_custom_gif_asset_suffix;
+                printf("%s\n", string_buffer.c_str());
+
+                _data.img_bk_gif = lv_gif_create(_data.screen);
+                lv_gif_set_src(_data.img_bk_gif, string_buffer.c_str());
+                lv_obj_align(_data.img_bk_gif, LV_ALIGN_CENTER, 0, 0);
+            }
+            else {
+                /* Static */
+                string_buffer += _custom_data.wf_custom_static_asset_suffix;
+                printf("%s\n", string_buffer.c_str());
+
+                _data.img_bg_static = lv_img_create(_data.screen);
+                lv_img_set_src(_data.img_bg_static, string_buffer.c_str());
+                lv_obj_align(_data.img_bg_static, LV_ALIGN_CENTER, 0, 0);
+            }
 
 
+            /* Clock */
+            _data.img_clock_min_b = lv_img_create(_data.screen);
+            lv_obj_align(_data.img_clock_min_b, LV_ALIGN_CENTER, _custom_data.pos_clock_min_b.x, _custom_data.pos_clock_min_b.y);
+            _data.img_clock_min_a = lv_img_create(_data.screen);
+            lv_obj_align(_data.img_clock_min_a, LV_ALIGN_CENTER, _custom_data.pos_clock_min_a.x, _custom_data.pos_clock_min_a.y);
+
+            _data.img_clock_colon = lv_img_create(_data.screen);
+            lv_obj_align(_data.img_clock_colon, LV_ALIGN_CENTER, _custom_data.pos_clock_colon.x, _custom_data.pos_clock_colon.y);
+
+            _data.img_clock_hour_b = lv_img_create(_data.screen);
+            lv_obj_align(_data.img_clock_hour_b, LV_ALIGN_CENTER, _custom_data.pos_clock_hour_b.x, _custom_data.pos_clock_hour_b.y);
+            _data.img_clock_hour_a = lv_img_create(_data.screen);
+            lv_obj_align(_data.img_clock_hour_a, LV_ALIGN_CENTER, _custom_data.pos_clock_hour_a.x, _custom_data.pos_clock_hour_a.y);
+
+            return true;
         }
 
 
@@ -240,7 +322,7 @@ namespace MOONCAKE {
         {
             setAppName("Cutom Watch Face");
             setAllowBgRunning(false);
-            setAppIcon(nullptr);
+            setAppIcon((void*)&ui_img_app_icon_hdpi_wf_user_custom_png);
         }
 
 
@@ -268,6 +350,8 @@ namespace MOONCAKE {
             lv_scr_load_anim(_data.screen, LV_SCR_LOAD_ANIM_FADE_IN, 50, 0, false);
             /* Set background color */
             lv_obj_set_style_bg_color(_data.screen, lv_color_hex(0x000000), LV_STATE_DEFAULT);
+            /* Lock scroll */
+            lv_obj_set_scroll_dir(_data.screen, LV_DIR_NONE);
             /* Add event callback */
             lv_obj_add_event_cb(_data.screen, _lvgl_event_cb, LV_EVENT_ALL, (void*)this);
 
@@ -321,7 +405,12 @@ namespace MOONCAKE {
                 /* If watch face selected */
                 if (_custom_data.wf_current_using_path != "null") {
                     _data.running = true;
-                    _create_watch_face();
+
+                    if (!_create_watch_face()) {
+                        destroyApp();
+                        return;
+                    }
+                    _update_data();
                 }
 
             }
