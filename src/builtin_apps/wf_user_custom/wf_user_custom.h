@@ -97,7 +97,7 @@ namespace MOONCAKE {
                 bool running = false;
 
                 lv_obj_t* screen = nullptr;
-                lv_obj_t* roller = nullptr;
+                lv_obj_t* panel_wf_select = nullptr;
                 lv_obj_t* img_bg_static = nullptr;
                 lv_obj_t* img_bk_gif = nullptr;
                 lv_obj_t* img_clock_hour_a = nullptr;
@@ -120,6 +120,8 @@ namespace MOONCAKE {
                 WF_USER_CUSTOM::Data_t _data;
 
                 static void _lvgl_event_cb(lv_event_t* e);
+                static void _roller_event_cb(lv_event_t* e);
+                static void _button_event_cb(lv_event_t* e);
                 void _update_data();
 
                 bool _choose_watch_face();

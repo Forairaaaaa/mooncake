@@ -26,38 +26,42 @@ namespace MOONCAKE {
             /* Get event code */
             lv_event_code_t code = lv_event_get_code(e);
 
-            /* Clicked */
-            if (code == LV_EVENT_SHORT_CLICKED) {
-                // printf("clicked\n");
-                
-                
-                lv_obj_t* roller = lv_event_get_target(e);
-
-
-                /* Set using face path */
-                if (strcmp((const char*)lv_obj_get_user_data(roller), "rl") == 0) {
-                    
-                    char string_buffer[256];
-                    lv_roller_get_selected_str(roller, string_buffer, 256);
-
-                    // printf("select %s\n", string_buffer);
-                    WF_User_Custom* app = (WF_User_Custom*)lv_event_get_user_data(e);
-                    app->_custom_data.wf_current_using_path = string_buffer;
-                }
-
-            }
-
             /* Quit */
-            else if (code == LV_EVENT_GESTURE) {
+            if (code == LV_EVENT_GESTURE) {
                 // printf("gesture\n");
 
                 WF_User_Custom* app = (WF_User_Custom*)lv_event_get_user_data(e);
 
                 if (lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_BOTTOM) {
+                    #ifdef ESP_PLATFORM
+                    /* Go back home with anim will crash */
+                    lv_obj_t* scr = lv_obj_create(NULL);
+                    lv_scr_load_anim(scr, LV_SCR_LOAD_ANIM_NONE, 0, 0, true);
+                    #endif
                     app->destroyApp();
                 }
             }
 
+        }
+
+
+        void WF_User_Custom::_button_event_cb(lv_event_t* e)
+        {
+            /* Get event code */
+            lv_event_code_t code = lv_event_get_code(e);
+
+            if (code == LV_EVENT_CLICKED) {
+
+                lv_obj_t* roller = (lv_obj_t*)lv_obj_get_user_data(lv_event_get_target(e));
+                
+                char string_buffer[256];
+                lv_roller_get_selected_str(roller, string_buffer, 256);
+
+                printf("select %s\n", string_buffer);
+                WF_User_Custom* app = (WF_User_Custom*)lv_event_get_user_data(e);
+                app->_custom_data.wf_current_using_path = string_buffer;
+
+            }
         }
 
 
@@ -148,13 +152,67 @@ namespace MOONCAKE {
             lv_fs_dir_close(&dir);
 
 
-            /* Create a roller as selector */
-            _data.roller = lv_roller_create(_data.screen);
-            lv_roller_set_options(_data.roller, wf_custom_path_list.c_str(), LV_ROLLER_MODE_INFINITE);
-            lv_roller_set_visible_row_count(_data.roller, 4);
-            lv_obj_center(_data.roller);
-            lv_obj_add_event_cb(_data.roller, _lvgl_event_cb, LV_EVENT_ALL, (void*)this);
-            lv_obj_set_user_data(_data.roller, (void*)"rl");
+
+            /* Create a panel to select watch face */
+            _data.panel_wf_select = lv_obj_create(_data.screen);
+            lv_obj_set_width(_data.panel_wf_select, lv_pct(100));
+            lv_obj_set_height(_data.panel_wf_select, lv_pct(100));
+            lv_obj_set_align(_data.panel_wf_select, LV_ALIGN_CENTER);
+            lv_obj_set_style_radius(_data.panel_wf_select, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(_data.panel_wf_select, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_border_color(_data.panel_wf_select, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_clear_flag(_data.panel_wf_select, LV_OBJ_FLAG_SCROLLABLE);
+
+
+            /* Create a label */
+            lv_obj_t* ui_Label = lv_label_create(_data.panel_wf_select);
+            lv_obj_set_x(ui_Label, 0);
+            lv_obj_set_y(ui_Label, -121);
+            lv_obj_set_align(ui_Label, LV_ALIGN_CENTER);
+            lv_label_set_text(ui_Label, "Watch\nFace :)");
+            lv_obj_set_style_text_color(ui_Label, lv_color_hex(0x6269B4), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_opa(ui_Label, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_font(ui_Label, &ui_font_OpenSansMedium96, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+
+            /* Create a roller */
+            lv_obj_t* ui_Roller = lv_roller_create(_data.panel_wf_select);
+            lv_roller_set_options(ui_Roller, wf_custom_path_list.c_str(), LV_ROLLER_MODE_NORMAL);
+            lv_obj_set_width(ui_Roller, lv_pct(95));
+            lv_obj_set_height(ui_Roller, lv_pct(40));
+            lv_obj_set_x(ui_Roller, 0);
+            lv_obj_set_y(ui_Roller, 62);
+            lv_obj_set_align(ui_Roller, LV_ALIGN_CENTER);
+            lv_obj_set_style_text_color(ui_Roller, lv_color_hex(0x808080), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_font(ui_Roller, &ui_font_OpenSansMediumItalic24, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_radius(ui_Roller, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(ui_Roller, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_border_width(ui_Roller, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+            lv_obj_set_style_text_font(ui_Roller, &ui_font_OpenSansMediumItalic24, LV_PART_SELECTED | LV_STATE_DEFAULT);
+            lv_obj_set_style_radius(ui_Roller, 15, LV_PART_SELECTED | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(ui_Roller, lv_color_hex(0xD45252), LV_PART_SELECTED | LV_STATE_DEFAULT);
+
+
+            /* Create a button */
+            lv_obj_t* ui_Button = lv_btn_create(_data.panel_wf_select);
+            lv_obj_set_width(ui_Button, 218);
+            lv_obj_set_height(ui_Button, 40);
+            lv_obj_set_x(ui_Button, 0);
+            lv_obj_set_y(ui_Button, 190);
+            lv_obj_set_align(ui_Button, LV_ALIGN_CENTER);
+            lv_obj_add_flag(ui_Button, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+            lv_obj_clear_flag(ui_Button, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+            lv_obj_set_style_radius(ui_Button, 15, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(ui_Button, lv_color_hex(0x6669B2), LV_PART_MAIN | LV_STATE_DEFAULT);
+
+            lv_obj_t* ui_Label_button = lv_label_create(ui_Button);
+            lv_obj_set_align(ui_Label_button, LV_ALIGN_CENTER);
+            lv_label_set_text(ui_Label_button, "Go!");
+            lv_obj_set_style_text_font(ui_Label_button, &ui_font_OpenSansMediumItalic24, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+            lv_obj_add_event_cb(ui_Button, _button_event_cb, LV_EVENT_CLICKED, (void*)this);
+            lv_obj_set_user_data(ui_Button, (void*)ui_Roller);
 
             
             return true;
@@ -263,8 +321,8 @@ namespace MOONCAKE {
                 return false;
             }
 
-            /* Delect roller */
-            lv_obj_del(_data.roller);
+            /* Delect selector panel */
+            lv_obj_del(_data.panel_wf_select);
 
 
             /* Create imgs */
@@ -358,6 +416,11 @@ namespace MOONCAKE {
 
             /* Select watch face */
             if (!_choose_watch_face()) {
+                #ifdef ESP_PLATFORM
+                /* Go back home with anim will crash */
+                lv_obj_t* scr = lv_obj_create(NULL);
+                lv_scr_load_anim(scr, LV_SCR_LOAD_ANIM_NONE, 0, 0, true);
+                #endif
                 destroyApp();
             }
 
@@ -396,6 +459,11 @@ namespace MOONCAKE {
                     *_data.key_pwr_home_ptr = false;
 
                     /* Quit */
+                    #ifdef ESP_PLATFORM
+                    /* Go back home with anim will crash */
+                    lv_obj_t* scr = lv_obj_create(NULL);
+                    lv_scr_load_anim(scr, LV_SCR_LOAD_ANIM_NONE, 0, 0, true);
+                    #endif
                     destroyApp();
                 }
 
@@ -407,6 +475,11 @@ namespace MOONCAKE {
                     _data.running = true;
 
                     if (!_create_watch_face()) {
+                        #ifdef ESP_PLATFORM
+                        /* Go back home with anim will crash */
+                        lv_obj_t* scr = lv_obj_create(NULL);
+                        lv_scr_load_anim(scr, LV_SCR_LOAD_ANIM_NONE, 0, 0, true);
+                        #endif
                         destroyApp();
                         return;
                     }
