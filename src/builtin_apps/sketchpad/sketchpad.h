@@ -23,6 +23,10 @@ namespace MOONCAKE {
             struct Data_t {
 
                 lv_obj_t* screen = nullptr;
+                lv_obj_t* canvas = nullptr;
+                lv_color_t* canvas_buffer = nullptr;
+                lv_color_t pen_color = lv_color_hex(0xFFFFFF);
+                
 
                 bool* key_pwr_home_ptr = nullptr;
                 

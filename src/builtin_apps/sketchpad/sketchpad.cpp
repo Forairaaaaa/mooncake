@@ -32,6 +32,7 @@ namespace MOONCAKE {
                 }
             }
 
+            /* Drawing */
             if (code == LV_EVENT_PRESSING) {
                 lv_point_t tp;
                 lv_indev_get_point(lv_indev_get_act(), &tp);
@@ -69,6 +70,16 @@ namespace MOONCAKE {
             lv_obj_add_event_cb(_data.screen, _lvgl_event_cb, LV_EVENT_ALL, (void*)this);
 
 
+            /* Create canvas buffer */
+            // static lv_color_t cbuf[LV_CANVAS_BUF_SIZE_TRUE_COLOR(CANVAS_WIDTH, CANVAS_HEIGHT)];
+            _data.canvas_buffer = new lv_color_t[LV_CANVAS_BUF_SIZE_TRUE_COLOR(lv_obj_get_width(_data.screen), lv_obj_get_height(_data.screen))];
+            printf("[%s] alloc buffer %d x %d\n", getAppName().c_str(), lv_obj_get_width(_data.screen), lv_obj_get_height(_data.screen));
+
+            /*Create a canvas and initialize its palette*/
+            _data.canvas = lv_canvas_create(_data.screen);
+            lv_canvas_set_buffer(_data.canvas, _data.canvas_buffer, lv_obj_get_width(_data.screen), lv_obj_get_height(_data.screen), LV_IMG_CF_TRUE_COLOR);
+            lv_obj_center(_data.canvas);
+            lv_canvas_fill_bg(_data.canvas, lv_color_hex(0x000000), LV_OPA_COVER);
 
         }
 
@@ -83,9 +94,6 @@ namespace MOONCAKE {
         void Sketchpad::onRunning()
         {
             
-
-
-
 
         }
 
@@ -105,6 +113,11 @@ namespace MOONCAKE {
         void Sketchpad::onDestroy()
         {
             printf("[%s] onDestroy\n", getAppName().c_str());
+            
+            /* Free buffer */
+            /* Stop lvgl use that buffer before freeing */
+            lv_canvas_set_buffer(_data.canvas, _data.canvas_buffer, 0, 0, LV_IMG_CF_TRUE_COLOR);
+            delete [] _data.canvas_buffer;
         }
 
 
