@@ -108,7 +108,7 @@ namespace MOONCAKE {
 
                 DataTime_t* time_ptr = nullptr;
                 bool* just_wake_up_ptr = nullptr;
-                bool* key_pwr_home_ptr = nullptr;
+                bool* key_home_ptr = nullptr;
             };
 
         }

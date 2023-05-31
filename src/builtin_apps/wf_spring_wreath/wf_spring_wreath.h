@@ -46,7 +46,7 @@ namespace MOONCAKE {
                 DataTime_t* time_ptr = nullptr;
                 uint32_t* step_counter_ptr = nullptr;
                 bool* just_wake_up_ptr = nullptr;
-                bool* key_pwr_home_ptr = nullptr;
+                bool* key_home_ptr = nullptr;
 
                 const char* day_of_week[7] = {"Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"};
                 char string_buffer[48] = ""; 

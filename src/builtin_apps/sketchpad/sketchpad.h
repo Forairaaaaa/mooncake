@@ -30,7 +30,7 @@ namespace MOONCAKE {
                 lv_color_t pen_color = lv_palette_main(LV_PALETTE_GREEN);
                 lv_coord_t pen_size = 12;
 
-                bool* key_pwr_home_ptr = nullptr;
+                bool* key_home_ptr = nullptr;
                 
             };
 

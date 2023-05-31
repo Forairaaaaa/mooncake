@@ -17,6 +17,7 @@
 #include <stdlib.h>
 
 
+
 namespace MOONCAKE {
     namespace BUILTIN_APP {
 
@@ -27,20 +28,17 @@ namespace MOONCAKE {
             lv_event_code_t code = lv_event_get_code(e);
 
             /* Quit */
+            #ifndef ESP_PLATFORM
             if (code == LV_EVENT_GESTURE) {
                 // printf("gesture\n");
 
                 WF_User_Custom* app = (WF_User_Custom*)lv_event_get_user_data(e);
 
                 if (lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_BOTTOM) {
-                    #ifdef ESP_PLATFORM
-                    /* Go back home with anim will crash */
-                    lv_obj_t* scr = lv_obj_create(NULL);
-                    lv_scr_load_anim(scr, LV_SCR_LOAD_ANIM_NONE, 0, 0, true);
-                    #endif
                     app->destroyApp();
                 }
             }
+            #endif
 
         }
 
@@ -400,7 +398,10 @@ namespace MOONCAKE {
             /* Get data's pointer from database */
             _data.time_ptr = (DataTime_t*)getDatabase()->Get(MC_TIME)->addr;
             _data.just_wake_up_ptr = (bool*)getDatabase()->Get(MC_JUST_WAKEUP)->addr;
-            _data.key_pwr_home_ptr = (bool*)getDatabase()->Get(MC_KEY_HOME)->addr;
+
+            _data.key_home_ptr = (bool*)getDatabase()->Get(MC_KEY_HOME)->addr;
+            /* Reset at first */
+            *_data.key_home_ptr = false;
 
 
             /* Create screen */
@@ -454,9 +455,9 @@ namespace MOONCAKE {
                 }
 
                 /* If pressed key Home */
-                if (*_data.key_pwr_home_ptr) {
+                if (*_data.key_home_ptr) {
                     /* Reset */
-                    *_data.key_pwr_home_ptr = false;
+                    *_data.key_home_ptr = false;
 
                     /* Quit */
                     #ifdef ESP_PLATFORM

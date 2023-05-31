@@ -41,6 +41,7 @@ namespace MOONCAKE {
             }
 
             /* Quit */
+            #ifndef ESP_PLATFORM
             else if (code == LV_EVENT_GESTURE) {
                 // printf("gesture\n");
 
@@ -50,6 +51,7 @@ namespace MOONCAKE {
                     app->destroyApp();
                 }
             }
+            #endif
         }
 
 
@@ -90,9 +92,9 @@ namespace MOONCAKE {
             }
 
             /* If pressed key Home */
-            if (*_data.key_pwr_home_ptr) {
+            if (*_data.key_home_ptr) {
                 /* Reset */
-                *_data.key_pwr_home_ptr = false;
+                *_data.key_home_ptr = false;
 
                 /* Quit */
                 destroyApp();
@@ -136,7 +138,9 @@ namespace MOONCAKE {
             _data.time_ptr = (DataTime_t*)getDatabase()->Get(MC_TIME)->addr;
             _data.step_counter_ptr = (uint32_t*)getDatabase()->Get(MC_STEPS)->addr;
             _data.just_wake_up_ptr = (bool*)getDatabase()->Get(MC_JUST_WAKEUP)->addr;
-            _data.key_pwr_home_ptr = (bool*)getDatabase()->Get(MC_KEY_HOME)->addr;
+            _data.key_home_ptr = (bool*)getDatabase()->Get(MC_KEY_HOME)->addr;
+            /* Reset at first */
+            *_data.key_home_ptr = false;
 
 
             /* Create screen */

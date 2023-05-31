@@ -131,6 +131,7 @@ namespace MOONCAKE {
             lv_event_code_t code = lv_event_get_code(e);
 
             /* Quit */
+            #ifndef ESP_PLATFORM
             if (code == LV_EVENT_GESTURE) {
                 // printf("gesture\n");
 
@@ -140,6 +141,7 @@ namespace MOONCAKE {
                     app->destroyApp();
                 }
             }
+            #endif
 
             /* Drawing */
             if (code == LV_EVENT_PRESSING) {
@@ -186,7 +188,9 @@ namespace MOONCAKE {
 
 
             /* Get data's pointer from database */
-            _data.key_pwr_home_ptr = (bool*)getDatabase()->Get(MC_KEY_HOME)->addr;
+            _data.key_home_ptr = (bool*)getDatabase()->Get(MC_KEY_HOME)->addr;
+            /* Reset at first */
+            *_data.key_home_ptr = false;
 
 
             /* Create screen */
@@ -225,7 +229,14 @@ namespace MOONCAKE {
 
         void Sketchpad::onRunning()
         {
+            /* If pressed key Home */
+            if (*_data.key_home_ptr) {
+                /* Reset */
+                *_data.key_home_ptr = false;
 
+                /* Quit */
+                destroyApp();
+            }
         }
 
 
