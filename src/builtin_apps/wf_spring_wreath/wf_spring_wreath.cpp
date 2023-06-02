@@ -110,8 +110,8 @@ namespace MOONCAKE {
 
             /* Infos */
             snprintf(_data.string_buffer, sizeof(_data.string_buffer), "~~~~~~~~~~~~~~~~\n%d/%d %s.  %ld steps",
-                    _data.time_ptr->mday,
                     _data.time_ptr->mon + 1,
+                    _data.time_ptr->mday,
                     _data.day_of_week[_data.time_ptr->wday],
                     *_data.step_counter_ptr);
             lv_label_set_text(_data.label_infos, _data.string_buffer);

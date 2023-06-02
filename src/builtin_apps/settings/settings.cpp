@@ -187,7 +187,6 @@ namespace MOONCAKE {
             lv_obj_set_y(_data.roller_hour, -45);
             lv_obj_set_align(_data.roller_hour, LV_ALIGN_CENTER);
             lv_obj_set_style_text_color(_data.roller_hour, lv_color_hex(0x808080), LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_obj_set_style_text_opa(_data.roller_hour, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_text_font(_data.roller_hour, &ui_font_OpenSansMediumItalic24, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_radius(_data.roller_hour, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_bg_color(_data.roller_hour, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -200,7 +199,7 @@ namespace MOONCAKE {
 
             _data.roller_min = lv_roller_create(_data.screen);
             lv_roller_set_options(_data.roller_min,
-                                "0\n1\n2\n3\n4\n5\n6 \n7 \n8 \n9 \n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35\n36\n37\n38\n39\n40\n41\n42\n43\n44\n45\n46\n47\n48\n49\n50\n51\n52\n53\n54\n55\n56\n57\n58\n59",
+                                "0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35\n36\n37\n38\n39\n40\n41\n42\n43\n44\n45\n46\n47\n48\n49\n50\n51\n52\n53\n54\n55\n56\n57\n58\n59",
                                 LV_ROLLER_MODE_NORMAL);
             lv_obj_set_width(_data.roller_min, lv_pct(45));
             lv_obj_set_height(_data.roller_min, lv_pct(25));
@@ -208,7 +207,6 @@ namespace MOONCAKE {
             lv_obj_set_y(_data.roller_min, -45);
             lv_obj_set_align(_data.roller_min, LV_ALIGN_CENTER);
             lv_obj_set_style_text_color(_data.roller_min, lv_color_hex(0x808080), LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_obj_set_style_text_opa(_data.roller_min, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_text_font(_data.roller_min, &ui_font_OpenSansMediumItalic24, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_radius(_data.roller_min, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_bg_color(_data.roller_min, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -227,7 +225,6 @@ namespace MOONCAKE {
             lv_obj_set_y(_data.roller_month, 100);
             lv_obj_set_align(_data.roller_month, LV_ALIGN_CENTER);
             lv_obj_set_style_text_color(_data.roller_month, lv_color_hex(0x808080), LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_obj_set_style_text_opa(_data.roller_month, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_text_font(_data.roller_month, &ui_font_OpenSansMediumItalic24, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_radius(_data.roller_month, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_bg_color(_data.roller_month, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -248,7 +245,6 @@ namespace MOONCAKE {
             lv_obj_set_y(_data.roller_mday, 103);
             lv_obj_set_align(_data.roller_mday, LV_ALIGN_CENTER);
             lv_obj_set_style_text_color(_data.roller_mday, lv_color_hex(0x808080), LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_obj_set_style_text_opa(_data.roller_mday, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_text_font(_data.roller_mday, &ui_font_OpenSansMediumItalic24, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_radius(_data.roller_mday, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_bg_color(_data.roller_mday, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
