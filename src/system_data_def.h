@@ -43,6 +43,7 @@ namespace MOONCAKE {
         bool wasSet = false;    /* Flag to set time*/
     };
 }
+#define MC_TIME_JSUT_SET        "_TIME_SET"     // bool
 #endif
 
 

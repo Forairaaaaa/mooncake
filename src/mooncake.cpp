@@ -35,7 +35,10 @@ namespace MOONCAKE {
         /* Sketchpad */
         app_ptr = new BUILTIN_APP::Sketchpad;
         install(app_ptr, nullptr);
-    
+        
+        /* Settings */
+        app_ptr = new BUILTIN_APP::Settings;
+        install(app_ptr, nullptr);
     }
 
 
