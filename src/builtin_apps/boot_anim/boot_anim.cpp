@@ -19,6 +19,7 @@ namespace MOONCAKE {
         void Boot_Anim::onSetup()
         {
             setAppName("BootAnim");
+            setAllowBgRunning(false);
         }
 
 
@@ -28,10 +29,24 @@ namespace MOONCAKE {
             printf("[%s] onCreate\n", getAppName().c_str());
 
 
+            /* Create screen */
+            _data.screen = lv_obj_create(NULL);
+            lv_scr_load_anim(_data.screen, LV_SCR_LOAD_ANIM_NONE, 0, 0, true);
+            /* Set background color */
+            lv_obj_set_style_bg_color(_data.screen, lv_color_hex(0x000000), LV_STATE_DEFAULT);
+            /* Lock scroll */
+            lv_obj_set_scroll_dir(_data.screen, LV_DIR_NONE);
 
-            lv_obj_t * label1 = lv_label_create(lv_scr_act());
-            lv_label_set_text(label1, "Boot Anim");
-            lv_obj_align(label1, LV_ALIGN_CENTER, 0, -30);
+
+            /* Static bg */
+            _data.img_bg_static = lv_img_create(_data.screen);
+            lv_img_set_src(_data.img_bg_static, _data.img_bg_static_path);
+            lv_obj_align(_data.img_bg_static, LV_ALIGN_CENTER, 0, 0);
+
+            /* GIF bg */
+            _data.img_bk_gif = lv_gif_create(_data.screen);
+            lv_gif_set_src(_data.img_bk_gif, _data.img_bg_gif_path);
+            lv_obj_align(_data.img_bk_gif, LV_ALIGN_CENTER, 0, 0);
             
 
         }
@@ -39,26 +54,19 @@ namespace MOONCAKE {
 
         void Boot_Anim::onResume()
         {
-            
-
+            _data.anim_time_count = lv_tick_get();
         }
 
 
         void Boot_Anim::onRunning()
         {
-            // static lv_obj_t * label2 = lv_label_create(lv_scr_act());
+            /* Update lvgl timer */
+            lv_timer_handler();
 
-            // if (lv_tick_get() > 500) {
-            //     destroyApp();
-            // }
-
-
-            // lv_label_set_text_fmt(label2, "%ld", lv_tick_get());
-            // lv_obj_align(label2, LV_ALIGN_CENTER, 0, 0);
-            // lv_timer_handler();
-
-
-            destroyApp();
+            /* Quit */
+            if ((lv_tick_get() - _data.anim_time_count) > _data.anim_time_duration) {
+                destroyApp();
+            }
         }
 
 
