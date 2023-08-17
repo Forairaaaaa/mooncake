@@ -15,8 +15,8 @@
 namespace MOONCAKE
 {   
     /* App base class */
-    /* Contains states for life cycle control */
-    /* Polymorphic life cycle makes different app */
+    /* Contains states for life cycle control (FSM) */
+    /* Polymorphism of the life cycle makes different apps */
     class APP_BASE
     {
         private:
@@ -87,14 +87,10 @@ namespace MOONCAKE
             inline void resetGoingDestroyFlag() { _go_destroy = false; }
 
 
-            /**
-             * @brief Lifecycle callbacks for derived to override
-             * 
-             */
-            /* Setup App configs, called when App "install()" */
-            virtual void onSetup() {}
 
             /* Life cycle */
+            /* The only thing you need to care about */
+            /* Override and do what you want */
             virtual void onCreate() {}
             virtual void onResume() {}
             virtual void onRunning() {}
@@ -108,6 +104,7 @@ namespace MOONCAKE
     /* App packer base */
     /* Contains the static elements of an app, like name, icon... */
     /* Also an app's memory allocation, freeing... */
+    /* This class is designed for a better resource and memory manager, like launcher's usage */
     class APP_PACKER_BASE
     {
         public:
@@ -129,9 +126,11 @@ namespace MOONCAKE
             /**
              * @brief Override and return a new app's pointer
              * 
+             * @param database 
+             * @param userData 
              * @return APP_BASE* 
              */
-            virtual APP_BASE* newApp() { return nullptr; }
+            virtual APP_BASE* newApp(SIMPLEKV::SimpleKV* database, void* userData) { return nullptr; }
 
             /**
              * @brief Override and delete the passing app 
