@@ -2,8 +2,8 @@
  * @file app.h
  * @author Forairaaaaa
  * @brief 
- * @version 0.1
- * @date 2023-05-07
+ * @version 0.2
+ * @date 2023-08-17
  * 
  * @copyright Copyright (c) 2023
  * 
@@ -12,15 +12,15 @@
 #include "../simplekv/simplekv.h"
 
 
-namespace MOONCAKE {
-
-
-    /* Inherit and override "Life cycle" to create your own App */
-    class APP_BASE {
+namespace MOONCAKE
+{   
+    /* App base class */
+    /* Contains states for life cycle control */
+    /* Polymorphic life cycle makes different app */
+    class APP_BASE
+    {
         private:
-            std::string _name;
             void* _user_data;
-            void* _icon_addr;
             bool _allow_bg_running;
             bool _go_close;
             bool _go_destroy;
@@ -29,20 +29,6 @@ namespace MOONCAKE {
 
         protected:
             /* App internal API */
-
-            /**
-             * @brief Set the App Name
-             * 
-             * @param name 
-             */
-            inline void setAppName(const std::string& name) { _name = name; }
-
-            /**
-             * @brief Set the App Icon
-             * 
-             * @param icon 
-             */
-            inline void setAppIcon(void* icon) { _icon_addr = icon; }
 
             /**
              * @brief Set if is App running background after closed
@@ -80,14 +66,12 @@ namespace MOONCAKE {
 
         public:
             APP_BASE() :
-                _name(""),
                 _user_data(nullptr),
-                _icon_addr(nullptr),
                 _allow_bg_running(false),
                 _go_close(false),
                 _go_destroy(false),
-                _database(nullptr) {}
-            virtual ~APP_BASE() {}
+                _database(nullptr)
+                {}
 
 
             /* API for App manager */
@@ -96,8 +80,6 @@ namespace MOONCAKE {
 
             
             /* Basic API */
-            inline std::string getAppName() { return _name; }
-            inline void* getAppIcon() { return _icon_addr; }
             inline bool isAllowBgRunning() { return _allow_bg_running; }
             inline bool isGoingClose() { return _go_close; }
             inline bool isGoingDestroy() { return _go_destroy; }
@@ -123,4 +105,40 @@ namespace MOONCAKE {
     };
 
 
+    /* App packer base */
+    /* Contains the static elements of an app, like name, icon... */
+    /* Also an app's memory allocation, freeing... */
+    class APP_PACKER_BASE
+    {
+        public:
+
+            /**
+             * @brief Override and return app's name
+             * 
+             * @return std::string 
+             */
+            virtual std::string getAppName() { return ""; };
+
+            /**
+             * @brief Override and return app's icon pointer
+             * 
+             * @return void* 
+             */
+            virtual void* getAppIcon() { return nullptr; }
+
+            /**
+             * @brief Override and return a new app's pointer
+             * 
+             * @return APP_BASE* 
+             */
+            virtual APP_BASE* newApp() { return nullptr; }
+
+            /**
+             * @brief Override and delete the passing app 
+             * 
+             * @param app 
+             */
+            virtual void deleteApp(APP_BASE* app) {}
+
+    };
 }
