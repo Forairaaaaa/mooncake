@@ -3,6 +3,8 @@ Simple Key-Value database (in memory so far)
 
 #### Usage
 
+##### [More detials](https://github.com/Forairaaaaa/simplekv/blob/main/example/basic_usage.cpp)
+
 ```cpp
 #include <simplekv.h>
 
@@ -66,17 +68,5 @@ printf("%d %.2f %s\n", my_type_temp.a, my_type_temp.b, my_type_temp.status.c_str
 // > -22 -2.22 wohao
 ```
 
-```cpp
-/* << Bug >>: Add like this causes string become the same, don't know why */
-db.Add("MyType_3", my_type_1);
-db.Add("MyType_4", my_type_2);
 
-my_type_temp = db.Get("MyType_3")->value<MyType_t>();
-printf("%d %.2f %s\n", my_type_temp.a, my_type_temp.b, my_type_temp.status.c_str());
-// > 11 1.11 wohao
-
-my_type_temp = db.Get("MyType_4")->value<MyType_t>();
-printf("%d %.2f %s\n", my_type_temp.a, my_type_temp.b, my_type_temp.status.c_str());
-// > -22 -2.22 wohao
-```
 
