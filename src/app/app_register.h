@@ -48,16 +48,27 @@ namespace MOONCAKE
              * @param appPacker 
              * @param database 
              * @param userData 
+             * @return true 
+             * @return false 
              */
-            void install(APP_PACKER_BASE* appPacker, SIMPLEKV::SimpleKV* database, void* userData = nullptr);
+            bool install(APP_PACKER_BASE* appPacker, SIMPLEKV::SimpleKV* database, void* userData = nullptr);
 
             /**
              * @brief Uninstall an app (Remove it from the register)
              * 
-             * @param app 
+             * @param appPacker 
              * @return true ok
              * @return false failed
              */
-            bool uninstall(APP_PACKER_BASE* app);
+            bool uninstall(APP_PACKER_BASE* appPacker);
+            
+            /**
+             * @brief Check if app is installed
+             * 
+             * @param appPacker 
+             * @return true 
+             * @return false 
+             */
+            bool isAppInstalled(APP_PACKER_BASE* appPacker);
     };
 }
