@@ -96,6 +96,13 @@ namespace MOONCAKE
         protected:
             /* API for app internal usage */
 
+            /* Wrap for resource getting from app packer */
+            inline APP_PACKER_BASE* getAppPacker() { return _app_packer; }
+            inline std::string getAppName() { return getAppPacker()->getAppName(); }
+            inline void* getAppIcon() { return getAppPacker()->getAppIcon(); }
+            inline SIMPLEKV::SimpleKV* getDatabase() { return getAppPacker()->getDatabase(); }
+            inline void* getUserData() { return getAppPacker()->getUserData(); }
+
             /**
              * @brief Set if is App running background after closed
              * 
@@ -114,17 +121,6 @@ namespace MOONCAKE
              * 
              */
             inline void destroyApp() { _go_destroy = true; }
-
-            /**
-             * @brief Get the App Packer object
-             * 
-             * @return APP_PACKER_BASE* 
-             */
-            inline APP_PACKER_BASE* getAppPacker() { return _app_packer; }
-
-            /* Warp of resource getting from app packer */
-            inline std::string getAppName() { return getAppPacker()->getAppName(); }
-            
 
 
         public:
