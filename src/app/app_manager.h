@@ -96,7 +96,7 @@ namespace MOONCAKE
              * @brief Destroy all apps 
              * 
              */
-            void detroyAllApps();
+            void destroyAllApps();
             
             /**
              * @brief Get the Total App Num 

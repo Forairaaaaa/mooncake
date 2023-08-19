@@ -107,15 +107,14 @@ int main()
     APP_Manager app_manager;
 
 
-    /* "App_1111_packer" contains "App_1111"'s basic resouces, and methods to actually create and delete an "App_1111" */
+    /* "App_1111_packer" contains "App_1111"'s basic resouces, and the method to instantiate an "App_1111" */
     App_1111_packer app_1111_packer;
     /* So do "App_2222_packer" to the "App_2222" */
     App_2222_packer app_2222_packer;
     
 
-    /* Use createApp() to instantiate an app */
-    /* Manager will instantiate an app by the app packer we pass */
-    /* And store them inside, return a pointer for you to controll the app's lifecycle */
+    /* We can call createApp() with app packer to create an app */
+    /* Manager will instantiates an app and return it's pointer to us */
     APP_BASE* app_1111_ptr = app_manager.createApp(app_1111_packer.getAddr());
     APP_BASE* app_2222_ptr = app_manager.createApp(app_2222_packer.getAddr());
     /* Two apps' onCreate() should be called already, and you can see the output on console: */
@@ -128,10 +127,10 @@ int main()
     /* Now we can call update() to keep our apps running */
     for (int i = 0; i < 66; i++)
         app_manager.update();
-    /* But nothing happened, because they're not "start" yet */
-    /* We can start them manually, with the pointers we're just got */
-    /* Or we can call "startApp()" inside the app like line-26 */
-    /* So the app will start automatically after it's creation */
+    /* But nothing happened, because no apps were "start" yet */
+    /* We can start them manually, with the pointers that manager just return */
+    /* Or we can call "startApp()" inside the app, like line-26 */
+    /* Which tells the manager to start it */
 
 
     /* Let's start them manually and try again */
@@ -195,6 +194,71 @@ int main()
         app manager now have 0 apps
     */
 
+
+    /* Because the app packer only contains an app's basic resources */
+    /* And the app's memory alloction, freeing */
+    /* We can create a bunch of same apps like this: */
+    std::cout << "\n";
+    for (int i = 0; i < 5; i++)
+    {
+        APP_BASE* new_app = app_manager.createApp(app_1111_packer.getAddr());
+        app_manager.startApp(new_app);
+    }
+    std::cout << "\napp manager now have " << app_manager.getTotalAppNum() << " apps\n";
+    /*
+        App-1111 > onCreate
+        App-1111 > onCreate
+        App-1111 > onCreate
+        App-1111 > onCreate
+        App-1111 > onCreate
+
+        app manager now have 5 apps
+    */
+
+    
+    /* We can just treat them as 5 different apps, whoes sharing the resources the packer provides, like app name */
+    std::cout << "\n";
+    for (int i = 0; i < 2; i++)
+    {
+        app_manager.update();
+    }
+    /*
+        1)  App-1111 > onResume
+            App-1111 > onResume
+            App-1111 > onResume
+            App-1111 > onResume
+            App-1111 > onResume
+        2)  App-1111 > onRunning
+            App-1111 > onRunning
+            App-1111 > onRunning
+            App-1111 > onRunning
+            App-1111 > onRunning
+    */
+
+
+    /* :) */
+    std::cout << "\n";
+    app_manager.destroyAllApps();
+    std::cout << "\napp manager now have " << app_manager.getTotalAppNum() << " apps\n";
+    /*
+        App-1111 > onPause
+        App-1111 > onDestroy
+        App-1111 > I'm deleted :(
+        App-1111 > onPause
+        App-1111 > onDestroy
+        App-1111 > I'm deleted :(
+        App-1111 > onPause
+        App-1111 > onDestroy
+        App-1111 > I'm deleted :(
+        App-1111 > onPause
+        App-1111 > onDestroy
+        App-1111 > I'm deleted :(
+        App-1111 > onPause
+        App-1111 > onDestroy
+        App-1111 > I'm deleted :(
+
+        app manager now have 0 apps
+    */
 
     return 0;
 }

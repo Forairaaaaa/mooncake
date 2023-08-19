@@ -234,21 +234,20 @@ bool APP_Manager::destroyApp(APP_BASE* app)
 }
 
 
-void APP_Manager::detroyAllApps()
+void APP_Manager::destroyAllApps()
 {
     /* Iterate the shit out */
-    for (auto iter = _app_lifecycle_list.begin(); iter != _app_lifecycle_list.end(); iter++)
+    for (auto& i : _app_lifecycle_list)
     {
         /* Call app's onPause method */
-        iter->app->onPause();
+        i.app->onPause();
 
         /* Call app's onDestroy method */
-        iter->app->onDestroy();
+        i.app->onDestroy();
 
         /* Delete this app by it's app packer */
-        iter->app->getAppPacker()->deleteApp(iter->app);
-
-        /* Remove it from the lifecycle list */
-        _app_lifecycle_list.erase(iter);
+        i.app->getAppPacker()->deleteApp(i.app);
     }
+
+    _app_lifecycle_list.clear();
 }
