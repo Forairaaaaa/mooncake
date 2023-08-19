@@ -12,13 +12,20 @@
 #include <mooncake.h>
 
 
+using namespace MOONCAKE;
+
+
 int main()
 {
     std::cout << "[Mooncake basic example]\n";
 
-    _mc_log_info("nihao %d %f", 123, 123.0);
-    _mc_log_warnning("nihao %s %X", "asdasd", 0x99);
-    _mc_log_error("ni\thao\t%ld", 123123123123);
+
+    Mooncake mooncake;
+
+    mooncake.init();
+
+    for (int i = 0; i < 66; i++)
+        mooncake.update();
 
 
     return 0;

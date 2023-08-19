@@ -14,7 +14,8 @@
     #include "../../mc_conf.h"
 #else
 
-// ANSI color 
+
+/* ANSI colors */ 
 #define MC_ANSI_BLK "\e[0;30m"
 #define MC_ANSI_RED "\e[0;31m"
 #define MC_ANSI_GRN "\e[0;32m"
@@ -27,8 +28,18 @@
 
 /* Simple logging */
 #include <cstdio>
-#define _mc_log_info(fmt, args...) printf(MC_ANSI_GRN); printf(fmt, ##args); printf("\n"); printf(MC_ANSI_RST);
-#define _mc_log_warnning(fmt, args...) printf(MC_ANSI_YEL); printf(fmt, ##args); printf("\n"); printf(MC_ANSI_RST);
-#define _mc_log_error(fmt, args...) printf(MC_ANSI_RED); printf(fmt, ##args); printf("\n"); printf(MC_ANSI_RST);
+#define MC_LOG_INFO(fmt, args...)       printf(MC_ANSI_GRN); printf(fmt, ##args); printf("\n"); printf(MC_ANSI_RST);
+#define MC_LOG_WARNNING(fmt, args...)   printf(MC_ANSI_YEL); printf(fmt, ##args); printf("\n"); printf(MC_ANSI_RST);
+#define MC_LOG_ERROR(fmt, args...)      printf(MC_ANSI_RED); printf(fmt, ##args); printf("\n"); printf(MC_ANSI_RST);
+
+
+
+/* The type of userdata, for apps to conovert to (void* -> MC_USER_DATA_TYPE) */
+#define MC_USER_DATA_TYPE APP_UserData_t
+
+
+#define MC_ENABLE_BUILTIN_APPS_LVGL__BootAnim_Gif               0
+#define MC_ENABLE_BUILTIN_APPS_LVGL__Launcher_Basic             0
+
 
 #endif
