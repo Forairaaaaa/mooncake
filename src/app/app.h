@@ -111,14 +111,14 @@ namespace MOONCAKE
             inline void setAllowBgRunning(bool allow) { _allow_bg_running = allow; }
 
             /**
-             * @brief Close App
-             * 
+             * @brief Close App, going to backgound (depends on setAllowBgRunning)
+             * Better call this in onRunning() or onRunningBG() to avoid repeated callback
              */
             inline void closeApp() { _go_close = true; }
 
             /**
              * @brief Destroy App, not going background
-             * 
+             * Better call this in onRunning() or onRunningBG() to avoid repeated callback
              */
             inline void destroyApp() { _go_destroy = true; }
 
@@ -148,9 +148,11 @@ namespace MOONCAKE
             inline void setAppPacker(APP_PACKER_BASE* appPacker) { _app_packer = appPacker; }
 
 
-            /* Life cycle */
-            /* The only thing you need to care about */
+            /* Lifecycle methonds */
+            /* basically the only thing you need to care about */
             /* Override and do what you want */
+            /* It's very lite version of andriod's lifecycle :( */
+            /* https://developer.android.com/guide/components/activities/activity-lifecycle */
             virtual void onCreate() {}
             virtual void onResume() {}
             virtual void onRunning() {}

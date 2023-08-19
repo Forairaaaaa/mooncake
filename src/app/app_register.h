@@ -19,11 +19,11 @@ namespace MOONCAKE
 {
     /* App register */
     /* This class contains a list of "APP_PACKER" */
-    /* Which tells the "APP_Manager" what apps do you have */
+    /* Which can tells the "APP_Manager" what apps do you have, to open or close them */
     /* "install" will add a packer into the list, "uninstall" will remove it */
     class APP_Register
     {
-        protected:
+        private:
             std::vector<APP_PACKER_BASE*> _app_packer_list;
 
         public:
@@ -33,14 +33,14 @@ namespace MOONCAKE
              * 
              * @return const std::vector<APP_PACKER_BASE*>& 
              */
-            inline const std::vector<APP_PACKER_BASE*>& getAppList() { return _app_packer_list; }
+            inline const std::vector<APP_PACKER_BASE*>& getInstalledAppList() { return _app_packer_list; }
 
             /**
              * @brief Get the total number of the installed apps 
              * 
              * @return std::size_t 
              */
-            inline std::size_t getAppNum() { return _app_packer_list.size(); }
+            inline std::size_t getInstalledAppNum() { return _app_packer_list.size(); }
 
             /**
              * @brief Install an app (Register an app packer)
