@@ -51,6 +51,12 @@ bool APP_Register::uninstall(APP_PACKER_BASE* appPacker)
 }
 
 
+void APP_Register::uninstallAllApps()
+{
+    _app_packer_list.clear();
+}
+
+
 bool APP_Register::isAppInstalled(APP_PACKER_BASE* appPacker)
 {
     if (appPacker == nullptr)

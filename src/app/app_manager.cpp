@@ -22,13 +22,16 @@ APP_BASE* APP_Manager::createApp(APP_PACKER_BASE* appPacker)
     if (!APP_Register::isAppInstalled(appPacker))
         return nullptr;
 
-    /* Create a new app with the passing app packer */
+    /* Create a new app with app packer */
     APP_BASE* new_app = (APP_BASE*)appPacker->newApp();
     if (new_app == nullptr)
         return nullptr;
 
-    /* pass app packer to the new app */
+    /* Pass the app packer to the new app */
     new_app->setAppPacker(appPacker);
+
+    /* Call app's onCreate method */
+    new_app->onCreate();
 
     /* Create a new lifecycle container */
     AppLifecycle_t new_lifecycle;
@@ -127,13 +130,121 @@ bool APP_Manager::closeApp(APP_BASE* app)
 }
 
 
+void APP_Manager::update()
+{
+    /* Iterate the shit out */
+    for (auto iter = _app_lifecycle_list.begin(); iter != _app_lifecycle_list.end(); iter++)
+    {
+        /* If app wants to be started */
+        if (iter->app->isGoingStart())
+        {
+            /* Reset flag */
+            iter->app->resetGoingStartFlag();
+
+            /* Update state */
+            iter->state = ON_RESUME;
+        }
+
+        /* If app wants to be closed */
+        if (iter->app->isGoingClose())
+        {
+            /* Reset flag */
+            iter->app->resetGoingCloseFlag();
+
+            /* Update state */
+            if (iter->app->isAllowBgRunning())
+                iter->state = ON_PAUSE;
+            else
+                iter->state = ON_DESTROY;
+        }
+
+        /* If app wants to be destroyed */
+        if (iter->app->isGoingDestroy())
+        {
+            /* Reset flag */
+            iter->app->resetGoingDestroyFlag();
+
+            /* Update state */
+            iter->state = ON_DESTROY;
+        }
+
+
+        /* Lifecycle FSM */
+        switch (iter->state)
+        {
+            case ON_CREATE:
+                /* Do nothing */
+                break;
+            case ON_RESUME:
+                iter->app->onResume();
+                iter->state = ON_RUNNING;
+                break;
+            case ON_RUNNING:
+                iter->app->onRunning();
+                break;
+            case ON_RUNNING_BG:
+                iter->app->onRunningBG();
+                break;
+            case ON_PAUSE:
+                iter->app->onPause();
+                iter->state = ON_RUNNING_BG;
+                break;
+            case ON_DESTROY:
+                destroyApp(iter->app);
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+
 bool APP_Manager::destroyApp(APP_BASE* app)
 {
-    int index = _search_app_lifecycle_list(app);
-    if (index < 0)
+    if (app == nullptr)
         return false;
+
+    /* Iterate the shit out */
+    for (auto iter = _app_lifecycle_list.begin(); iter != _app_lifecycle_list.end(); iter++)
+    {
+        if (iter->app == app)
+        {
+            /* Call app's onPause method */
+            iter->app->onPause();
+
+            /* Call app's onDestroy method */
+            iter->app->onDestroy();
+
+            /* Delete this app by it's app packer */
+            iter->app->getAppPacker()->deleteApp(iter->app);
+
+            /* Remove it from the lifecycle list */
+            _app_lifecycle_list.erase(iter);
+
+            return true;
+        }
+    }
 
     return false;
 }
 
 
+void APP_Manager::detroyAllApps()
+{
+    /* Iterate the shit out */
+    for (auto iter = _app_lifecycle_list.begin(); iter != _app_lifecycle_list.end(); iter++)
+    {
+        /* Call app's onPause method */
+        iter->app->onPause();
+
+        /* Call app's onDestroy method */
+        iter->app->onDestroy();
+
+        /* Delete this app by it's app packer */
+        iter->app->getAppPacker()->deleteApp(iter->app);
+
+        /* Remove it from the lifecycle list */
+        _app_lifecycle_list.erase(iter);
+
+    }
+}

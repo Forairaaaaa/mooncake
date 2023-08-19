@@ -61,6 +61,12 @@ namespace MOONCAKE
              * @return false failed
              */
             bool uninstall(APP_PACKER_BASE* appPacker);
+
+            /**
+             * @brief Uninstall all apps 
+             * 
+             */
+            void uninstallAllApps();
             
             /**
              * @brief Check if app is installed

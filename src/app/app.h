@@ -89,19 +89,13 @@ namespace MOONCAKE
 
             /* Internal state */
             bool _allow_bg_running;
+            bool _go_start;
             bool _go_close;
             bool _go_destroy;
             
 
         protected:
-            /* API for app internal usage */
-
-            /* Wrap for resource getting from app packer */
-            inline APP_PACKER_BASE* getAppPacker() { return _app_packer; }
-            inline std::string getAppName() { return getAppPacker()->getAppName(); }
-            inline void* getAppIcon() { return getAppPacker()->getAppIcon(); }
-            inline SIMPLEKV::SimpleKV* getDatabase() { return getAppPacker()->getDatabase(); }
-            inline void* getUserData() { return getAppPacker()->getUserData(); }
+            /* API to control app's lifecycle state (internal) */
 
             /**
              * @brief Set if is App running background after closed
@@ -111,14 +105,20 @@ namespace MOONCAKE
             inline void setAllowBgRunning(bool allow) { _allow_bg_running = allow; }
 
             /**
-             * @brief Close App, going to backgound (depends on setAllowBgRunning)
-             * Better call this in onRunning() or onRunningBG() to avoid repeated callback
+             * @brief Notice the app manager, that this app want to be started
+             * 
+             */
+            inline void startApp() { _go_start = true; }
+
+            /**
+             * @brief Notice the app manager, that this app want to be cloesd 
+             * , better call this in onRunning() only, to avoid repeat method callback
              */
             inline void closeApp() { _go_close = true; }
 
             /**
-             * @brief Destroy App, not going background
-             * Better call this in onRunning() or onRunningBG() to avoid repeated callback
+             * @brief Notice the app manager, that this app want to be destroyed 
+             * , better call this in onRunning() or onRunningBG() only, to avoid repeat method callback
              */
             inline void destroyApp() { _go_destroy = true; }
 
@@ -127,15 +127,26 @@ namespace MOONCAKE
             APP_BASE() :
                 _app_packer(nullptr),
                 _allow_bg_running(false),
+                _go_start(false),
                 _go_close(false),
                 _go_destroy(false)
                 {}
 
 
-            /* API for App manager's state machine control */
+            /* Wrap for resource getting from app packer */
+            inline APP_PACKER_BASE* getAppPacker() { return _app_packer; }
+            inline std::string getAppName() { return getAppPacker()->getAppName(); }
+            inline void* getAppIcon() { return getAppPacker()->getAppIcon(); }
+            inline SIMPLEKV::SimpleKV* getDatabase() { return getAppPacker()->getDatabase(); }
+            inline void* getUserData() { return getAppPacker()->getUserData(); }
+
+
+            /* API for lifecycle's state checking */
             inline bool isAllowBgRunning() { return _allow_bg_running; }
+            inline bool isGoingStart() { return _go_start; }
             inline bool isGoingClose() { return _go_close; }
             inline bool isGoingDestroy() { return _go_destroy; }
+            inline void resetGoingStartFlag() { _go_start = false; }
             inline void resetGoingCloseFlag() { _go_close = false; }
             inline void resetGoingDestroyFlag() { _go_destroy = false; }
 

@@ -91,6 +91,17 @@ namespace MOONCAKE
              */
             bool destroyApp(APP_BASE* app);
 
+            /**
+             * @brief Destroy all apps 
+             * 
+             */
+            void detroyAllApps();
 
+            /**
+             * @brief Get the managing app lifecycle list 
+             * 
+             * @return const std::vector<AppLifecycle_t>& 
+             */
+            inline const std::vector<AppLifecycle_t>& getAppLifecycleList() { return _app_lifecycle_list; }
     };      
 }
