@@ -19,9 +19,6 @@ APP_BASE* APP_Manager::createApp(APP_PACKER_BASE* appPacker)
     if (appPacker == nullptr)
         return nullptr;
 
-    if (!APP_Register::isAppInstalled(appPacker))
-        return nullptr;
-
     /* Create a new app with app packer */
     APP_BASE* new_app = (APP_BASE*)appPacker->newApp();
     if (new_app == nullptr)
@@ -133,7 +130,7 @@ bool APP_Manager::closeApp(APP_BASE* app)
 void APP_Manager::update()
 {
     /* Iterate the shit out */
-    for (auto iter = _app_lifecycle_list.begin(); iter != _app_lifecycle_list.end(); iter++)
+    for (auto iter = _app_lifecycle_list.begin(); iter != _app_lifecycle_list.end();)
     {
         /* If app wants to be started */
         if (iter->app->isGoingStart())
@@ -190,11 +187,19 @@ void APP_Manager::update()
                 iter->state = ON_RUNNING_BG;
                 break;
             case ON_DESTROY:
-                destroyApp(iter->app);
-                break;
+                /* Same as destroyApp() */
+                iter->app->onPause();
+                iter->app->onDestroy();
+                iter->app->getAppPacker()->deleteApp(iter->app);
+                /* Remove and update iterator */
+                iter = _app_lifecycle_list.erase(iter);
+                continue;
             default:
                 break;
         }
+
+        /* Next */
+        iter++;
     }
 }
 
@@ -245,6 +250,5 @@ void APP_Manager::detroyAllApps()
 
         /* Remove it from the lifecycle list */
         _app_lifecycle_list.erase(iter);
-
     }
 }

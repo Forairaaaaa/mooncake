@@ -9,7 +9,9 @@
  * 
  */
 #pragma once
-#include "app_register.h"
+#include "app.h"
+#include <cstddef>
+#include <iostream>
 #include <vector>
 
 
@@ -17,8 +19,7 @@ namespace MOONCAKE
 {
     /* App manager */
     /* This class control app's opening, running or closing */
-    /* It inherit from APP_Register, so we know what apps do we have */
-    class APP_Manager : public APP_Register
+    class APP_Manager
     {
         public:
             /* This enum describe an app's current status of lifecycle */
@@ -96,6 +97,13 @@ namespace MOONCAKE
              * 
              */
             void detroyAllApps();
+            
+            /**
+             * @brief Get the Total App Num 
+             * 
+             * @return std::size_t 
+             */
+            inline std::size_t getTotalAppNum() { return _app_lifecycle_list.size(); }
 
             /**
              * @brief Get the managing app lifecycle list 

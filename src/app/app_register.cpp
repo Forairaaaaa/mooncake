@@ -14,7 +14,7 @@
 using namespace MOONCAKE;
 
 
-bool APP_Register::install(APP_PACKER_BASE* appPacker, SIMPLEKV::SimpleKV* database, void* userData)
+bool APP_Register::install(APP_PACKER_BASE* appPacker, void* userData)
 {
     if (appPacker == nullptr)
         return false;
@@ -22,8 +22,7 @@ bool APP_Register::install(APP_PACKER_BASE* appPacker, SIMPLEKV::SimpleKV* datab
     if (isAppInstalled(appPacker))
         return false;
 
-    /* Copy resource */
-    appPacker->setDatabase(database);
+    /* Copy user data */
     appPacker->setUserData(userData);
 
     /* Push into list */

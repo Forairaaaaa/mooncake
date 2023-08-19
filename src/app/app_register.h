@@ -10,7 +10,6 @@
  */
 #pragma once
 #include "app.h"
-#include <cstddef>
 #include <iostream>
 #include <vector>
 
@@ -51,7 +50,7 @@ namespace MOONCAKE
              * @return true 
              * @return false 
              */
-            bool install(APP_PACKER_BASE* appPacker, SIMPLEKV::SimpleKV* database, void* userData = nullptr);
+            bool install(APP_PACKER_BASE* appPacker, void* userData = nullptr);
 
             /**
              * @brief Uninstall an app (Remove it from the register)

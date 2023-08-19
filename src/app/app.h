@@ -9,7 +9,6 @@
  * 
  */
 #pragma once
-#include "../simplekv/simplekv.h"
 #include <string>
 
 
@@ -22,20 +21,17 @@ namespace MOONCAKE
     class APP_PACKER_BASE
     {
         private:
-            SIMPLEKV::SimpleKV* _database;
             void* _user_data;
 
         public:
             APP_PACKER_BASE() :
-                _database(nullptr),
                 _user_data(nullptr)
                 {}
 
             /* Basic wrap */
-            inline void setDatabase(SIMPLEKV::SimpleKV* database) { _database = database; }
-            inline SIMPLEKV::SimpleKV* getDatabase() { return _database; }
             inline void setUserData(void* userData) { _user_data = userData; }
             inline void* getUserData() { return _user_data; }
+            inline APP_PACKER_BASE* getAddr() { return this; }
 
 
             /* ---------------------------------------------------------------------------------- */
@@ -137,7 +133,6 @@ namespace MOONCAKE
             inline APP_PACKER_BASE* getAppPacker() { return _app_packer; }
             inline std::string getAppName() { return getAppPacker()->getAppName(); }
             inline void* getAppIcon() { return getAppPacker()->getAppIcon(); }
-            inline SIMPLEKV::SimpleKV* getDatabase() { return getAppPacker()->getDatabase(); }
             inline void* getUserData() { return getAppPacker()->getUserData(); }
 
 
