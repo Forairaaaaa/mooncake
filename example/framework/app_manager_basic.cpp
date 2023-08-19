@@ -107,13 +107,13 @@ int main()
     APP_Manager app_manager;
 
 
-    /* "App_1111_packer" contains "App_1111"'s basic resouces, and method to actually create an "App_1111" */
+    /* "App_1111_packer" contains "App_1111"'s basic resouces, and methods to actually create and delete an "App_1111" */
     App_1111_packer app_1111_packer;
     /* So do "App_2222_packer" to the "App_2222" */
     App_2222_packer app_2222_packer;
     
 
-    /* Use createApp to instantiate an app */
+    /* Use createApp() to instantiate an app */
     /* Manager will instantiate an app by the app packer we pass */
     /* And store them inside, return a pointer for you to controll the app's lifecycle */
     APP_BASE* app_1111_ptr = app_manager.createApp(app_1111_packer.getAddr());
