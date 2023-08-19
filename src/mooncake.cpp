@@ -37,7 +37,7 @@ Mooncake::~Mooncake()
 
 void Mooncake::init()
 {
-    MC_LOG_INFO("Mooncake init");
+    MC_LOG_INFO("Mooncake init :)");
 }
 
 
