@@ -9,7 +9,7 @@
  * 
  */
 #include "mooncake.h"
-#include "../apps/common_apps/BootAnim_ASCII/boot_anim_ascii.h"
+#include "../apps/common_apps/boot_anim_ascii/boot_anim_ascii.h"
 #include "app/app.h"
 #include "simplekv/simplekv.h"
 #include "spdlog/spdlog.h"
