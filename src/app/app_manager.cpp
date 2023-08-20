@@ -2,8 +2,8 @@
  * @file app_manager.cpp
  * @author Forairaaaaa
  * @brief 
- * @version 0.1
- * @date 2023-05-07
+ * @version 0.2
+ * @date 2023-08-19
  * 
  * @copyright Copyright (c) 2023
  * 
@@ -11,272 +11,243 @@
 #include "app_manager.h"
 
 
-namespace MOONCAKE {
+using namespace MOONCAKE;
 
 
-    bool APP_Manger::startApp(APP_BASE* app)
+APP_BASE* APP_Manager::createApp(APP_PACKER_BASE* appPacker)
+{
+    if (appPacker == nullptr)
+        return nullptr;
+
+    /* Create a new app with app packer */
+    APP_BASE* new_app = (APP_BASE*)appPacker->newApp();
+    if (new_app == nullptr)
+        return nullptr;
+
+    /* Pass the app packer to the new app */
+    new_app->setAppPacker(appPacker);
+
+    /* Call app's onCreate method */
+    new_app->onCreate();
+
+    /* Create a new lifecycle container */
+    AppLifecycle_t new_lifecycle;
+    new_lifecycle.app = new_app;
+    new_lifecycle.state = ON_CREATE;
+
+    /* Push into lifecycle list */
+    _app_lifecycle_list.push_back(new_lifecycle);
+
+    /* Return the app pointer for further mangement */
+    return new_app;
+}
+
+
+int APP_Manager::_search_app_lifecycle_list(APP_BASE* app)
+{
+    if (app == nullptr)
+        return -1;
+
+    for (int i = 0; i < _app_lifecycle_list.size(); i++)
     {
-        if (app == nullptr) {
-            return false;
-        }
-
-        /* If already running */
-        for (auto iter = _running_apps.begin(); iter != _running_apps.end(); iter++) {
-            if (iter->app == app) {
-
-                /* If App is running on foregound  */
-                if (iter->event == ON_RUNNING) {
-                    return true;
-                }
-
-                /* Send event */
-                iter->event = ON_RESUME;
-                /* Update foreground */
-                _foreground_app = app;
-                /* Setup flag to update the first element after next update */
-                _update_first_element = true;                
-                return true;
-            }
-        }
-
-        /* If not, create a new one */
-        APPManager_t new_app;
-        new_app.app = app;
-        new_app.event = ON_CREATE;
-        _running_apps.push_back(new_app);
-
-        /* Update foreground */
-        _foreground_app = app;
-        /* Setup flag to update the first element after next update */
-        _update_first_element = true;  
-        return true;
+        if (_app_lifecycle_list[i].app == app)
+            return i;
     }
+    return -1;
+}
 
 
-    bool APP_Manger::closeApp(APP_BASE* app)
-    {
-        if (app == nullptr) {
-            return false;
-        }
-
-        /* Search in running list */
-        for (auto iter = _running_apps.begin(); iter != _running_apps.end(); iter++) {
-            if (iter->app == app) {
-                
-                /* If already running on background */
-                if (iter->event == ON_RUNNING_BG) {
-                    return false;
-                }
-
-                /* If just start */
-                if (iter->event == ON_CREATE) {
-                    iter->event = ON_CREATE_PAUSE;
-                    return true;
-                }
-
-                /* If called repeatly or jsut start and destroy */
-                if ((iter->event == ON_CREATE_PAUSE) || (iter->event == ON_CREATE_DESTROY)) {
-                    return true;
-                }
-
-                iter->event = ON_PAUSE;
-                return true;
-            }
-        }
+bool APP_Manager::startApp(APP_BASE* app)
+{
+    int index = _search_app_lifecycle_list(app);
+    if (index < 0)
         return false;
+
+    /* Update state */
+    switch (_app_lifecycle_list[index].state)
+    {
+        case ON_CREATE:
+            _app_lifecycle_list[index].state = ON_RESUME;
+            break;
+        case ON_RESUME:
+            /* Do nothing */
+            break;
+        case ON_RUNNING:
+            /* Do nothing */
+            break;
+        case ON_RUNNING_BG:
+            _app_lifecycle_list[index].state = ON_RESUME;
+            break;
+        case ON_PAUSE:
+            _app_lifecycle_list[index].state = ON_RESUME;
+            break;
+        case ON_DESTROY:
+            /* Not gonna happen */
+            break;
+        default:
+            break;
     }
 
+    return true;
+}
 
-    bool APP_Manger::destroyApp(APP_BASE* app)
-    {
-        if (app == nullptr) {
-            return false;
-        }
 
-        /* Search in running list */
-        for (auto iter = _running_apps.begin(); iter != _running_apps.end(); iter++) {
-            if (iter->app == app) {
-
-                /* If just start or start and close */
-                if ((iter->event == ON_CREATE) || (iter->event == ON_CREATE_PAUSE)) {
-                    iter->event = ON_CREATE_DESTROY;
-                    return true;
-                }
-
-                /* If called repeatly */
-                if (iter->event == ON_CREATE_DESTROY) {
-                    return true;
-                }
-
-                iter->event = ON_PAUSE_DESTROY;
-                return true;
-            }
-        }
+bool APP_Manager::closeApp(APP_BASE* app)
+{
+    int index = _search_app_lifecycle_list(app);
+    if (index < 0)
         return false;
+    
+    /* Update state */
+    switch (_app_lifecycle_list[index].state)
+    {
+        case ON_CREATE:
+            /* Do nothing */
+            break;
+        case ON_RESUME:
+            _app_lifecycle_list[index].state = ON_PAUSE;
+            break;
+        case ON_RUNNING:
+            _app_lifecycle_list[index].state = ON_PAUSE;
+            break;
+        case ON_RUNNING_BG:
+            /* Do nothing */
+            break;
+        case ON_PAUSE:
+            /* Do nothing */
+            break;
+        case ON_DESTROY:
+            /* Not gonna happen */
+            break;
+        default:
+            break;
     }
 
+    return true;
+}
 
-    void APP_Manger::destroyAllApps()
+
+void APP_Manager::update()
+{
+    /* Iterate the shit out */
+    for (auto iter = _app_lifecycle_list.begin(); iter != _app_lifecycle_list.end();)
     {
-        for (auto iter = _running_apps.begin(); iter != _running_apps.end(); iter++) {
-            iter->app->onPause();
-            iter->app->onDestroy();
+        /* If app wants to be started */
+        if (iter->app->isGoingStart())
+        {
+            /* Reset flag */
+            iter->app->resetGoingStartFlag();
+
+            /* Update state */
+            iter->state = ON_RESUME;
         }
-        /* Free list */
-        _running_apps.clear();
-        std::vector<APPManager_t>().swap(_running_apps);
-    }
 
+        /* If app wants to be closed */
+        if (iter->app->isGoingClose())
+        {
+            /* Reset flag */
+            iter->app->resetGoingCloseFlag();
 
-    bool APP_Manger::isAppRunning(APP_BASE* app)
-    {
-        for (auto iter = _running_apps.begin(); iter != _running_apps.end(); iter++) {
-            if (iter->app == app) {
-                return true;
-            }
+            /* Update state */
+            if (iter->app->isAllowBgRunning())
+                iter->state = ON_PAUSE;
+            else
+                iter->state = ON_DESTROY;
         }
-        return false;
-    }
 
+        /* If app wants to be destroyed */
+        if (iter->app->isGoingDestroy())
+        {
+            /* Reset flag */
+            iter->app->resetGoingDestroyFlag();
 
-    bool APP_Manger::isAnyAppRunningFG()
-    {
-        for (auto iter = _running_apps.begin(); iter != _running_apps.end(); iter++) {
-            if (iter->event == ON_RUNNING) {
-                return true;
-            }
+            /* Update state */
+            iter->state = ON_DESTROY;
         }
-        return false;
-    }
 
 
-    /**
-     * @brief FSM to implement lifecycle callbacks
-     * 
-     */
-    void APP_Manger::update()
-    {
-        /**
-         * Because foreground App is set to be the first element, it's life cycle callbacks will be called firstly,
-         * to avoid new App's "onCreate" or BG's "onResume" effect FG's "onPause", "onDestroy".
-         * 
-         * Moreover, "onRunning", "onPause", "onDestroy" will be called at first,
-         * and new App's "onCreate" or BG's "onRunningBG", "onResume" will be called next,
-         * to implement a clear order.
-         * 
-        */
-        for (auto iter = _running_apps.begin(); iter != _running_apps.end(); ) {
-            
-            /* On running */
-            if (iter->event == ON_RUNNING) {
-                /* If is foreground App, keep running */
-                if (iter->app == _foreground_app) {
-                    iter->app->onRunning();
-                }
-                /* If not, put back to background */
-                else {
-                    iter->event = ON_PAUSE;
-                }
-            }
-
-            /* On running backgound */
-            if (iter->event == ON_RUNNING_BG) {
+        /* Lifecycle FSM */
+        switch (iter->state)
+        {
+            case ON_CREATE:
+                /* Do nothing */
+                break;
+            case ON_RESUME:
+                iter->app->onResume();
+                iter->state = ON_RUNNING;
+                break;
+            case ON_RUNNING:
+                iter->app->onRunning();
+                break;
+            case ON_RUNNING_BG:
                 iter->app->onRunningBG();
-            }
-            
-            /* If App call "destroyApp()" internally */
-            if (iter->app->isGoingDestroy()) {
-                iter->app->resetGoingDestroyFlag();
-                /* Destroy it */
+                break;
+            case ON_PAUSE:
                 iter->app->onPause();
-                iter->event = ON_DESTROY;
-            }
-
-            /* If App call "closeApp()" internally */
-            if (iter->app->isGoingClose()) {
-                iter->app->resetGoingCloseFlag();
-                /* Close it */
-                iter->event = ON_PAUSE;
-            }
-
-            /* On create pause */
-            if (iter->event == ON_CREATE_PAUSE) {
-                iter->app->onCreate();
-                iter->app->onResume();
-                iter->event = ON_PAUSE;
-            }
-            
-            /* On pause */
-            if (iter->event == ON_PAUSE) {
+                iter->state = ON_RUNNING_BG;
+                break;
+            case ON_DESTROY:
+                /* Same as destroyApp() */
                 iter->app->onPause();
-
-                /* If allow backgroud running */
-                if (iter->app->isAllowBgRunning()) {
-                    iter->event = ON_RUNNING_BG;
-                }
-                else {
-                    iter->event = ON_DESTROY;
-                }
-            }
-
-            /* On create destroy */
-            if (iter->event == ON_CREATE_DESTROY) {
-                iter->app->onCreate();
-                iter->app->onResume();
-                iter->event = ON_PAUSE_DESTROY;
-            }
-
-            /* On pause destroy */
-            if (iter->event == ON_PAUSE_DESTROY) {
-                iter->app->onPause();
-                iter->event = ON_DESTROY;
-            }
-
-            /* On destroy */
-            if (iter->event == ON_DESTROY) {
                 iter->app->onDestroy();
-                /* Kick it out of running list */
-                iter = _running_apps.erase(iter);
+                iter->app->getAppPacker()->deleteApp(iter->app);
+                /* Remove and update iterator */
+                iter = _app_lifecycle_list.erase(iter);
                 continue;
-            }
-
-            /* On create */
-            if (iter->event == ON_CREATE) {
-                iter->app->onCreate();
-                iter->event = ON_RESUME;
-            }
-
-            /* On resume */
-            if (iter->event == ON_RESUME) {
-                iter->app->onResume();
-                iter->event = ON_RUNNING;
-            }
-
-            iter++;
-        }
-        
-        /* If need to update first element of running list */
-        if (_update_first_element) {
-            _update_first_element = false;
-            /* Find FG App */
-            for (auto iter = _running_apps.begin(); iter != _running_apps.end(); iter++) {
-                if (iter->app == _foreground_app) {
-                    /* Swap it to the first one */
-                    std::swap(*(_running_apps.begin()), *(iter));
-                    break;
-                }
-            }
+            default:
+                break;
         }
 
+        /* Next */
+        iter++;
+    }
+}
+
+
+bool APP_Manager::destroyApp(APP_BASE* app)
+{
+    if (app == nullptr)
+        return false;
+
+    /* Iterate the shit out */
+    for (auto iter = _app_lifecycle_list.begin(); iter != _app_lifecycle_list.end(); iter++)
+    {
+        if (iter->app == app)
+        {
+            /* Call app's onPause method */
+            iter->app->onPause();
+
+            /* Call app's onDestroy method */
+            iter->app->onDestroy();
+
+            /* Delete this app by it's app packer */
+            iter->app->getAppPacker()->deleteApp(iter->app);
+
+            /* Remove it from the lifecycle list */
+            _app_lifecycle_list.erase(iter);
+
+            return true;
+        }
     }
 
+    return false;
+}
 
 
-    
-    
+void APP_Manager::destroyAllApps()
+{
+    /* Iterate the shit out */
+    for (auto& i : _app_lifecycle_list)
+    {
+        /* Call app's onPause method */
+        i.app->onPause();
 
+        /* Call app's onDestroy method */
+        i.app->onDestroy();
 
-    
+        /* Delete this app by it's app packer */
+        i.app->getAppPacker()->deleteApp(i.app);
+    }
 
-
+    _app_lifecycle_list.clear();
 }

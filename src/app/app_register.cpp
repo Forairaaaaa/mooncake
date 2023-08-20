@@ -2,8 +2,8 @@
  * @file app_register.cpp
  * @author Forairaaaaa
  * @brief 
- * @version 0.1
- * @date 2023-05-07
+ * @version 0.2
+ * @date 2023-08-18
  * 
  * @copyright Copyright (c) 2023
  * 
@@ -11,94 +11,61 @@
 #include "app_register.h"
 
 
-namespace MOONCAKE {
+using namespace MOONCAKE;
 
 
-    int APP_Register::install(APP_BASE* app, SIMPLEKV::SimpleKV* database, void* userData)
-    {
-        if (app == nullptr) {
-            return -1;
-        }
-
-        /* Check multi installation */
-        for (auto i : _app_list) {
-            if (i.app == app) {
-                return -1;
-            }
-        }
-
-        /* Pass parameter */
-        app->setDatabase(database);
-        app->setUserData(userData);
-        /* Setup basic configs */
-        app->onSetup();
-
-        /* Push into App list */
-        _id++;
-        APPList_t new_app;
-        new_app.app = app;
-        new_app.id = _id;
-        _app_list.push_back(new_app);
-
-        return _id;
-    }
-
-
-    bool APP_Register::uninstall(APP_BASE* app)
-    {
-        /* Find App */
-        for (auto iter = _app_list.begin(); iter != _app_list.end(); iter++) {
-            if (iter->app == app) {
-                _app_list.erase(iter);
-                return true;
-            }
-        }
+bool APP_Register::install(APP_PACKER_BASE* appPacker, void* userData)
+{
+    if (appPacker == nullptr)
         return false;
-    }
+    
+    if (isAppInstalled(appPacker))
+        return false;
+
+    /* Copy user data */
+    appPacker->setUserData(userData);
+
+    /* Push into list */
+    _app_packer_list.push_back(appPacker);
+
+    return true;
+}
 
 
-    int APP_Register::getAppID(APP_BASE* app)
+bool APP_Register::uninstall(APP_PACKER_BASE* appPacker)
+{
+    if (appPacker == nullptr)
+        return false;
+
+    /* Iterate the shit out */
+    for (auto iter = _app_packer_list.begin(); iter != _app_packer_list.end(); iter++)
     {
-        for (auto i : _app_list) {
-            if (i.app == app) {
-                return i.id;
-            }
+        if (*iter == appPacker)
+        {
+            _app_packer_list.erase(iter);
+            return true;
         }
-        return -1;
     }
+    return false;
+}
 
 
-    int APP_Register::getAppID(const char* name)
+void APP_Register::uninstallAllApps()
+{
+    _app_packer_list.clear();
+}
+
+
+bool APP_Register::isAppInstalled(APP_PACKER_BASE* appPacker)
+{
+    if (appPacker == nullptr)
+        return false;
+
+    /* Iterate the shit out */
+    for (const auto& i : _app_packer_list)
     {
-        for (auto i : _app_list) {
-            if (i.app->getAppName() == name) {
-                return i.id;
-            }
-        }
-        return -1;
+        if (i == appPacker)
+            return true;
     }
-
-
-    APP_BASE* APP_Register::getApp(int id)
-    {
-        for (auto i : _app_list) {
-            if (i.id == id) {
-                return i.app;
-            }
-        }
-        return nullptr;
-    }
-
-
-    APP_BASE* APP_Register::getApp(const char* name)
-    {
-        for (auto i : _app_list) {
-            if (i.app->getAppName() == name) {
-                return i.app;
-            }
-        }
-        return nullptr;
-    }
-
-
+    return false;
 }

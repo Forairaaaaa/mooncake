@@ -2,80 +2,114 @@
  * @file app_manager.h
  * @author Forairaaaaa
  * @brief 
- * @version 0.1
- * @date 2023-05-07
+ * @version 0.2
+ * @date 2023-08-19
  * 
  * @copyright Copyright (c) 2023
  * 
  */
 #pragma once
-#include "app_register.h"
+#include "app.h"
+#include <cstddef>
+#include <iostream>
+#include <vector>
 
 
-namespace MOONCAKE {
+namespace MOONCAKE
+{
+    /* App manager */
+    /* This class control app's opening, running or closing */
+    class APP_Manager
+    {
+        public:
+            /* This enum describe an app's current status of lifecycle */
+            enum AppLifecycleState_t
+            {
+                ON_CREATE = 0,
+                ON_RESUME,
+                ON_RUNNING,
+                ON_RUNNING_BG,
+                ON_PAUSE,
+                ON_DESTROY
+            };
+
+            /* A app lifecycle container */
+            /* Holds an app and it's lifecycle status */
+            struct AppLifecycle_t
+            {
+                APP_BASE* app = nullptr;
+                AppLifecycleState_t state = ON_CREATE;
+            };
 
 
-    enum APPLifecycleEvent_t {
-        ON_SETUP = 0,
-        ON_CREATE,
-        ON_CREATE_PAUSE,
-        ON_CREATE_DESTROY,
-        ON_RESUME,
-        ON_RUNNING,
-        ON_RUNNING_BG,
-        ON_PAUSE,
-        ON_PAUSE_DESTROY,
-        ON_DESTROY
-    };
-
-
-    struct APPManager_t {
-        APP_BASE* app = nullptr;
-        APPLifecycleEvent_t event = ON_SETUP;
-    };
-
-
-    class APP_Manger : public APP_Register {
         private:
-            std::vector<APPManager_t> _running_apps;
-            APP_BASE* _foreground_app;
-            bool _update_first_element;
+            /* A list of apps' lifecycle */
+            std::vector<AppLifecycle_t> _app_lifecycle_list;
+            int _search_app_lifecycle_list(APP_BASE* app);
 
 
         public:
-            APP_Manger() : 
-                _foreground_app(nullptr),
-                _update_first_element(false) {}
-            ~APP_Manger() = default;
+            /* API for app running control */
 
+            /**
+             * @brief Create an app
+             * 
+             * @param appPacker app's packer
+             * @return APP_BASE* started app's pointer
+             */
+            APP_BASE* createApp(APP_PACKER_BASE* appPacker);
 
-            /* Strat App activity */
+            /**
+             * @brief Start an app, this method will only change passing app's state
+             * 
+             * @param app 
+             * @return true 
+             * @return false 
+             */
             bool startApp(APP_BASE* app);
-            inline bool startApp(int id) { return startApp(getApp(id)); }
-            inline bool startApp(const char* name) { return startApp(getApp(name)); }
 
-            /* Close App activity and put into backgroud running */
+            /**
+             * @brief Close an app, this method will only change passing app's state
+             * 
+             * @param app App's pointer which you want to close 
+             * @return true 
+             * @return false 
+             */
             bool closeApp(APP_BASE* app);
-            inline bool closeApp(int id) { return closeApp(getApp(id)); }
-            inline bool closeApp(const char* name) { return closeApp(getApp(name)); }
 
-            /* Destroy App activity at once  */
-            bool destroyApp(APP_BASE* app);
-            inline bool destroyApp(int id) { return destroyApp(getApp(id)); }
-            inline bool destroyApp(const char* name) { return destroyApp(getApp(name)); }
-            void destroyAllApps();
-
-            bool isAppRunning(APP_BASE* app);
-            inline bool isAppRunning(int id) { return isAppRunning(getApp(id)); }
-            inline bool isAppRunning(const char* name) { return isAppRunning(getApp(name)); }
-
-            bool isAnyAppRunningFG();
-
-
-            /* Call this in loop to keep App running */
+            /**
+             * @brief Update app manager's FSM, so the running apps' lifecycle methods can be called
+             * 
+             */
             void update();
 
-    };
+            /**
+             * @brief Destroy an app, app will be deleted by it's app packer
+             * 
+             * @param app App's pointer which you want to destroy 
+             * @return true 
+             * @return false 
+             */
+            bool destroyApp(APP_BASE* app);
 
+            /**
+             * @brief Destroy all apps 
+             * 
+             */
+            void destroyAllApps();
+            
+            /**
+             * @brief Get the Total App Num 
+             * 
+             * @return std::size_t 
+             */
+            inline std::size_t getTotalAppNum() { return _app_lifecycle_list.size(); }
 
+            /**
+             * @brief Get the managing app lifecycle list 
+             * 
+             * @return const std::vector<AppLifecycle_t>& 
+             */
+            inline const std::vector<AppLifecycle_t>& getAppLifecycleList() { return _app_lifecycle_list; }
+    };      
 }
