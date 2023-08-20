@@ -13,7 +13,8 @@
 #include "app/app_register.h"
 #include "app/app_manager.h"
 #include "simplekv/simplekv.h"
-#include <spdlog/spdlog.h>
+#include "spdlog/include/spdlog/spdlog.h"
+#include "mc_conf_internal.h"
 
 
 namespace MOONCAKE
@@ -47,18 +48,20 @@ namespace MOONCAKE
             void (*_database_setup_callback)(SIMPLEKV::SimpleKV*);
 
             /* Flag to free the memory, if they are created by framework */
-            bool flag_free_user_data;
-            bool flag_free_boot_anim;
-            bool flag_free_database;
+            bool _flag_free_user_data;
+            bool _flag_free_boot_anim;
+            bool _flag_free_database;
+
+            void _data_base_setup_internal();
         
         public:
             Mooncake() :
                 _user_data(nullptr),
                 _boot_anim(nullptr),
                 _database_setup_callback(nullptr),
-                flag_free_user_data(false),
-                flag_free_boot_anim(false),
-                flag_free_database(false)
+                _flag_free_user_data(false),
+                _flag_free_boot_anim(false),
+                _flag_free_database(false)
                 {}
             ~Mooncake();
 
