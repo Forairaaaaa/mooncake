@@ -51,7 +51,7 @@ namespace SIMPLEKV
             /* Free to override for different platforms */
             virtual void _free(void* ptr) { free(ptr); }
             virtual void* _malloc(size_t size) { return malloc(size); }
-            virtual void* _memcpy(void* __restrict__ dest, const void* __restrict__ src, size_t n) { return memcpy(dest, src, n); }
+            virtual void* _memcpy(void* dest, const void* src, size_t n) { return memcpy(dest, src, n); }
 
 
         public:
