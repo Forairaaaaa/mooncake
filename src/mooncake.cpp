@@ -10,6 +10,7 @@
  */
 #include "mooncake.h"
 #include "mc_conf_internal.h"
+#include "spdlog/spdlog.h"
 
 
 using namespace MOONCAKE;
@@ -17,10 +18,10 @@ using namespace MOONCAKE;
 
 Mooncake::~Mooncake()
 {
-    MC_LOG_WARNNING("Mooncake destruction");
+    spdlog::warn("Mooncake destruction");
 
     /* Destroy all apps */
-    MC_LOG_WARNNING("destroy all apps");
+    spdlog::warn("destroy all app");
     _app_manager.destroyAllApps();
 
     /* Free memory */
@@ -31,13 +32,13 @@ Mooncake::~Mooncake()
     if (flag_free_boot_anim)
         delete _boot_anim;
 
-    MC_LOG_WARNNING("bye :(");
+    spdlog::warn("bye :(");
 }
 
 
 void Mooncake::init()
 {
-    MC_LOG_INFO("Mooncake init :)");
+    spdlog::info("Mooncake init :)");
 }
 
 
