@@ -9,6 +9,7 @@ file(GLOB_RECURSE MOONCAKE_SRCS
 # Include
 set(MOONCAKE_INCS
     ${MOONCAKE_ROOT_DIR}/src/
+    ${MOONCAKE_ROOT_DIR}/src/spdlog/include/
 )
 
 
