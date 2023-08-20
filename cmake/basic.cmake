@@ -13,8 +13,22 @@ set(MOONCAKE_INCS
 )
 
 
-add_library(${PROJECT_NAME} ${MOONCAKE_SRCS})
-target_include_directories(${PROJECT_NAME} PUBLIC ${MOONCAKE_INCS})
+# Builtin apps
+option(MOONCAKE_BUILD_BUILTIN_APPS "Build builtin apps" ON)
+if(MOONCAKE_BUILD_BUILTIN_APPS)
+    file(GLOB_RECURSE MOONCAKE_BUILTIN_APPS_SRCS
+        ${MOONCAKE_ROOT_DIR}/apps/*.c
+        ${MOONCAKE_ROOT_DIR}/apps/*.cpp
+    )
+    set(MOONCAKE_BUILTIN_APPS_INCS
+        ${MOONCAKE_ROOT_DIR}/apps/
+    )
+endif()
+
+
+
+add_library(${PROJECT_NAME} ${MOONCAKE_SRCS} ${MOONCAKE_BUILTIN_APPS_SRCS})
+target_include_directories(${PROJECT_NAME} PUBLIC ${MOONCAKE_INCS} ${MOONCAKE_BUILTIN_APPS_INCS})
 
 
 option(MOONCAKE_BUILD_EXAMPLE "Build example" ON)

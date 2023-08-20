@@ -9,8 +9,7 @@
  * 
  */
 #include "mooncake.h"
-#include "mc_conf_internal.h"
-#include "spdlog/spdlog.h"
+#include "../apps/common_apps/BootAnim_ASCII/boot_anim_ascii.h"
 
 
 using namespace MOONCAKE;
@@ -39,6 +38,12 @@ Mooncake::~Mooncake()
 void Mooncake::init()
 {
     spdlog::info("Mooncake init :)");
+
+
+    _app_manager.createApp(new APPS::BootAnim_ASCII_Packer);
+    _app_manager.destroyAllApps();
+
+
 }
 
 

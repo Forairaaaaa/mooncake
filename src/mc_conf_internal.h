@@ -14,6 +14,8 @@
     #include "../../mc_conf.h"
 #else
 
+#define MC_VERSION  "v0.2.0"
+
 
 #define MC_ENABLE_BUILTIN_APPS_LVGL__BootAnim_Gif               0
 #define MC_ENABLE_BUILTIN_APPS_LVGL__Launcher_Basic             0

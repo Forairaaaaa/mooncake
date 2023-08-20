@@ -13,7 +13,8 @@
 #include "app/app_register.h"
 #include "app/app_manager.h"
 #include "simplekv/simplekv.h"
-#include <spdlog/spdlog.h>
+#include "spdlog/include/spdlog/spdlog.h"
+#include "mc_conf_internal.h"
 
 
 namespace MOONCAKE
