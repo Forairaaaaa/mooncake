@@ -16,6 +16,9 @@
 
 #define MC_VERSION  "v0.2.0"
 
+/* The user data type for app to convert to (void* -> MC_USER_DATA_T) */
+#define MC_USER_DATA_T                  APP_UserData_t*
+
 
 /* Database Key defines */
 /* Use define to unify data's key and type */

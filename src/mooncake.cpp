@@ -23,8 +23,6 @@ Mooncake::~Mooncake()
     spdlog::warn("mooncake destruction");
 
     /* Free memory */
-    if (_flag_free_database)
-        delete _user_data->database;
     if (_flag_free_user_data)
         delete _user_data;
     if (_flag_free_boot_anim)
@@ -38,7 +36,8 @@ void Mooncake::init()
 {
     spdlog::info("mooncake init :)");
 
-    /* ---------------------- Userdata ---------------------- */
+
+    /* Init user data */
     /* If user data not set */
     if (_user_data == nullptr)
     {
@@ -47,25 +46,15 @@ void Mooncake::init()
         _flag_free_user_data = true;
     }
 
-    /* Setup installed app list pointer */
-    _user_data->installedAppList = getInstalledAppList();
-    /* Setup app manager pointer */
-    _user_data->appManager = &_app_manager;
+    /* Copy framework's pointer into user data */
+    _user_data->framework = this;
 
-    /* If database not set */
-    if (_user_data->database == nullptr)
-    {
-        spdlog::info("create database");
-        _user_data->database = new SIMPLEKV::SimpleKV;
-        _flag_free_database = true;
-    }
 
-    /* Setup basic data in database */
+    /* init database */
     _data_base_setup_internal();
-    /* ---------------------- Userdata ---------------------- */
 
 
-    /* ---------------------- Boot Anim ---------------------- */
+    /* Init boot anim */
     /* If boot anim not set */
     if (_boot_anim == nullptr)
     {
@@ -82,10 +71,10 @@ void Mooncake::init()
     while (1)
     {
         _app_manager.update();
-        if (_app_manager.getTotalAppNum() == 0)
+        /* If boot anim is destroyed */
+        if (_app_manager.getCreatedAppNum() == 0)
             break;
     }
-    /* ---------------------- Boot Anim ---------------------- */
 
 
     spdlog::info("init done");
@@ -96,25 +85,31 @@ void Mooncake::_data_base_setup_internal()
 {
     spdlog::info("start db setup");
 
+
     /* Setup basic data with default value */
     /* Display */
-    _user_data->database->Add(MC_DB_DISP_HOR, 320);
-    _user_data->database->Add(MC_DB_DISP_VER, 240);
+    _database.Add(MC_DB_DISP_HOR, 320);
+    _database.Add(MC_DB_DISP_VER, 240);
 
     /* Power */
-    _user_data->database->Add(MC_DB_BATTERY_LEVEL, 100);
-    _user_data->database->Add(MC_DB_BATTERY_IS_CHARGING, false);
+    _database.Add(MC_DB_BATTERY_LEVEL, 100);
+    _database.Add(MC_DB_BATTERY_IS_CHARGING, false);
+
 
     /* Call database setup callback if it's set */
     if (_database_setup_callback != nullptr)
     {
         spdlog::info("call db setup callback");
-        _database_setup_callback(_user_data->database);
+        _database_setup_callback(_database);
     }
 }
 
 
 void Mooncake::update()
 {
+    /* Update input devices */
+    _input_device_register.update();
+
+    /* Update apps' lifecycles */
     _app_manager.update();
 }

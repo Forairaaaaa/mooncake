@@ -32,6 +32,9 @@ bool InputDevice_Register::install(INPUT_DEVICE_BASE* inputDevice, void* userDat
     /* Copy user data */
     inputDevice->setUserData(userData);
 
+    /* Call input device's init */
+    inputDevice->init();
+
     /* Push into list */
     _input_device_list.push_back(inputDevice);
 

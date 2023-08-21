@@ -18,14 +18,14 @@ using namespace MOONCAKE;
 
 
 
-void _data_base_setup_callback(SIMPLEKV::SimpleKV* db)
+void _data_base_setup_callback(SIMPLEKV::SimpleKV& db)
 {
     spdlog::warn("check database: {} {} {} {} {}",
-        db->Get(MC_DB_DISP_HOR)->value<MC_DB_DISP_HOR_T>(),
-        db->Get(MC_DB_DISP_VER)->value<MC_DB_DISP_VER_T>(),
-        db->Get(MC_DB_DISP_BRIGHTNESS)->value<MC_DB_DISP_BRIGHTNESS_T>(),
-        db->Get(MC_DB_BATTERY_LEVEL)->value<MC_DB_BATTERY_LEVEL_T>(),
-        db->Get(MC_DB_BATTERY_IS_CHARGING)->value<MC_DB_BATTERY_IS_CHARGING_T>()
+        db.Get(MC_DB_DISP_HOR)->value<MC_DB_DISP_HOR_T>(),
+        db.Get(MC_DB_DISP_VER)->value<MC_DB_DISP_VER_T>(),
+        db.Get(MC_DB_DISP_BRIGHTNESS)->value<MC_DB_DISP_BRIGHTNESS_T>(),
+        db.Get(MC_DB_BATTERY_LEVEL)->value<MC_DB_BATTERY_LEVEL_T>(),
+        db.Get(MC_DB_BATTERY_IS_CHARGING)->value<MC_DB_BATTERY_IS_CHARGING_T>()
     );
 }
 

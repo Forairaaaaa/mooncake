@@ -30,11 +30,11 @@ namespace MOONCAKE
             ~APP_Register();
 
             /**
-             * @brief Get the list which contains installed apps' packers
+             * @brief Get the reference to the installed app packer list
              * 
-             * @return const std::vector<APP_PACKER_BASE*>* 
+             * @return std::vector<APP_PACKER_BASE*>& 
              */
-            inline const std::vector<APP_PACKER_BASE*>* getInstalledAppList() { return &_app_packer_list; }
+            inline std::vector<APP_PACKER_BASE*>& getInstalledAppList() { return _app_packer_list; }
 
             /**
              * @brief Get the total number of the installed apps 
