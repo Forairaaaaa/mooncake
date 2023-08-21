@@ -100,11 +100,11 @@ namespace MOONCAKE
             void destroyAllApps();
             
             /**
-             * @brief Get the Total App Num 
+             * @brief Get total created app num in app manager
              * 
              * @return std::size_t 
              */
-            inline std::size_t getTotalAppNum() { return _app_lifecycle_list.size(); }
+            inline std::size_t getCreatedAppNum() { return _app_lifecycle_list.size(); }
 
             /**
              * @brief Get the managing app lifecycle list 

@@ -70,7 +70,7 @@ int main()
 
     
     /* Install an app */
-    mooncake.install(new App_1111_packer);
+    mooncake.installApp(new App_1111_packer);
     std::cout << "\n";
     /*
         App-1111 packer constructor
@@ -79,16 +79,16 @@ int main()
     
     /* Create an App-1111 */
     /* Since we just installed one app packer, who is first one in the list */
-    mooncake.appManager().createApp(mooncake.getInstalledAppList()[0]);
+    mooncake.createApp(mooncake.getInstalledAppList()[0]);
     std::cout << "\n";
     /*
         App-1111 constructor
         App-1111 > onCreate
-    */
+
 
 
     /* Install a input device */
-    mooncake.inputDeviceRegister().install(new InDev1111);
+    mooncake.installIndev(new InDev1111);
     std::cout << "\n";
     /*
         InDev-1111 constructor
@@ -108,20 +108,16 @@ int main()
     */
    
 
-    // /* App should always created in heap */
-    // /* Because framework will try to free them during the destruction */
-    // /* Create in stack like this will cause error when mooncake reach the end of it's lifetime */
-    // App_1111_packer app_1111_packer;
-    // mooncake.install(&app_1111_packer);
-    
-    // /* Create an App-1111 */
-    // mooncake.getAppManager()->createApp(&app_1111_packer);
+    /* *App should always created in heap* */
+    /* Because framework will try to free them during the destruction */
+    /* Create in stack like this will cause error when mooncake reach the end of it's lifetime */
+
     
     /* Mooncake's destruction will help you to free all the apps and app packers */
     return 0;
     /*
         App-1111 destructor
-        InDev-1111 destructor
         App-1111 packer destructor
+        InDev-1111 destructor
     */
 }

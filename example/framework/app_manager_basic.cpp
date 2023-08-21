@@ -189,7 +189,7 @@ int main()
     for (int i = 0; i < 66; i++)
         app_manager.update();
     /* There's no more output, because: */
-    std::cout << "\napp manager now have " << app_manager.getTotalAppNum() << " apps\n";
+    std::cout << "\napp manager now have " << app_manager.getCreatedAppNum() << " apps\n";
     /*
         app manager now have 0 apps
     */
@@ -204,7 +204,7 @@ int main()
         APP_BASE* new_app = app_manager.createApp(app_1111_packer.getAddr());
         app_manager.startApp(new_app);
     }
-    std::cout << "\napp manager now have " << app_manager.getTotalAppNum() << " apps\n";
+    std::cout << "\napp manager now have " << app_manager.getCreatedAppNum() << " apps\n";
     /*
         App-1111 > onCreate
         App-1111 > onCreate
@@ -239,7 +239,7 @@ int main()
     /* :) */
     std::cout << "\n";
     app_manager.destroyAllApps();
-    std::cout << "\napp manager now have " << app_manager.getTotalAppNum() << " apps\n";
+    std::cout << "\napp manager now have " << app_manager.getCreatedAppNum() << " apps\n";
     /*
         App-1111 > onPause
         App-1111 > onDestroy

@@ -19,3 +19,8 @@ target_link_libraries(input_device_register_test ${PROJECT_NAME})
 # Mooncake test
 add_executable(mooncake_framework_test ./mooncake_framework_test.cpp)
 target_link_libraries(mooncake_framework_test ${PROJECT_NAME})
+
+# App user data test
+add_executable(app_user_data_test ./app_user_data_test.cpp)
+target_link_libraries(app_user_data_test ${PROJECT_NAME})
+
