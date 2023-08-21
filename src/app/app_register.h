@@ -26,7 +26,7 @@ namespace MOONCAKE
             std::vector<APP_PACKER_BASE*> _app_packer_list;
 
         public:
-            /* Free all the app parkers' memory */
+            /* Free all the app packers' memory */
             ~APP_Register();
 
             /**

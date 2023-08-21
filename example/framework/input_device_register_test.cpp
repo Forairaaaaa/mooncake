@@ -29,8 +29,8 @@ class InDev1111 : public INPUT_DEVICE_BASE
     {
         std::cout << getDeviceName() << " > aaaa\n";
     }
-    public: InDev1111() { std::cout << "Hi from InDev-1111\n"; }
-    public: ~InDev1111() { std::cout << "Bye from " << getDeviceName() << "\n"; }
+    public: InDev1111() { std::cout << "InDev-1111 constructor\n"; }
+    public: ~InDev1111() { std::cout << getDeviceName() << " destructor\n"; }
 };
 /* --------------------------------------------------------------- */
 
@@ -48,8 +48,8 @@ class InDev2222 : public INPUT_DEVICE_BASE
     {
         std::cout << getDeviceName() << " > bbbb\n";
     }
-    public: InDev2222() { std::cout << "Hi from InDev-2222\n"; }
-    public: ~InDev2222() { std::cout << "Bye from " << getDeviceName() << "\n"; }
+    public: InDev2222() { std::cout << "InDev-2222 constructor\n"; }
+    public: ~InDev2222() { std::cout << getDeviceName() << " destructor\n"; }
 };
 /* --------------------------------------------------------------- */
 
@@ -78,8 +78,8 @@ int main()
     indev_register.install(new InDev2222);
     std::cout << "\n";
     /*
-        Hi from InDev-1111
-        Hi from InDev-2222
+        InDev-1111 constructor
+        InDev-2222 constructor
     */
 
     
@@ -115,7 +115,7 @@ int main()
     std::cout << "\n";
     return 0;
     /*
-        Bye from InDev-1111
-        Bye from InDev-2222
+        InDev-1111 destructor
+        InDev-2222 destructor
     */
 }

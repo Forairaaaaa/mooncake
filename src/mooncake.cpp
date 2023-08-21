@@ -22,10 +22,6 @@ Mooncake::~Mooncake()
 {
     spdlog::warn("mooncake destruction");
 
-    /* Destroy all apps */
-    spdlog::warn("destroy all apps");
-    _app_manager.destroyAllApps();
-
     /* Free memory */
     if (_flag_free_database)
         delete _user_data->database;
