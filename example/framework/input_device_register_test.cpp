@@ -111,7 +111,7 @@ int main()
     */
     
 
-    /* InputDevice_Register's destruction will help you to free the input devices */
+    /* InputDevice_Register's destruction will help you to free all devices */
     std::cout << "\n";
     return 0;
     /*
