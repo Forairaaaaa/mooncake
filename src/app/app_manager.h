@@ -49,8 +49,6 @@ namespace MOONCAKE
 
 
         public:
-            /* API for app running control */
-
             /**
              * @brief Create an app
              * 
@@ -108,8 +106,8 @@ namespace MOONCAKE
             /**
              * @brief Get the managing app lifecycle list 
              * 
-             * @return const std::vector<AppLifecycle_t>& 
+             * @return const std::vector<AppLifecycle_t>*
              */
-            inline const std::vector<AppLifecycle_t>& getAppLifecycleList() { return _app_lifecycle_list; }
+            inline const std::vector<AppLifecycle_t>* getAppLifecycleList() { return &_app_lifecycle_list; }
     };      
 }
