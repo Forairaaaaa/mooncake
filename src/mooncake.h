@@ -78,6 +78,7 @@ namespace MOONCAKE
             inline InputDevice_Register& getInputDeviceRegister() { return _input_device_register; }
             inline APP_Register& getAppRegister() { return _app_register; }
             inline APP_Manager& getAppManager() { return _app_manager; }
+            inline SIMPLEKV::SimpleKV& getDatabase() { return _database; }
 
             /**
              * @brief Set the user data, which will be passed to every apps
