@@ -43,7 +43,7 @@ namespace MOONCAKE
             inline std::size_t getInstalledDeviceNum() { return _input_device_list.size(); }
 
             /**
-             * @brief Install an input device 
+             * @brief Install an input device, it's init method will be called here 
              * 
              * @param inputDevice 
              * @param userData 

@@ -38,7 +38,8 @@ void Mooncake::init()
 {
     spdlog::info("mooncake init :)");
 
-    /* ---------------------- Userdata ---------------------- */
+
+    /* ---------------------- User data ---------------------- */
     /* If user data not set */
     if (_user_data == nullptr)
     {
@@ -46,12 +47,10 @@ void Mooncake::init()
         _user_data = new APP_UserData_t;
         _flag_free_user_data = true;
     }
+    /* ---------------------- User data ---------------------- */
 
-    /* Setup installed app list pointer */
-    _user_data->installedAppList = getInstalledAppList();
-    /* Setup app manager pointer */
-    _user_data->appManager = &_app_manager;
 
+    /* ---------------------- Database ---------------------- */
     /* If database not set */
     if (_user_data->database == nullptr)
     {
@@ -62,7 +61,7 @@ void Mooncake::init()
 
     /* Setup basic data in database */
     _data_base_setup_internal();
-    /* ---------------------- Userdata ---------------------- */
+    /* ---------------------- Database ---------------------- */
 
 
     /* ---------------------- Boot Anim ---------------------- */
@@ -116,5 +115,9 @@ void Mooncake::_data_base_setup_internal()
 
 void Mooncake::update()
 {
+    /* Update input devices */
+    _input_device_register.update();
+
+    /* Update apps' lifecycles */
     _app_manager.update();
 }

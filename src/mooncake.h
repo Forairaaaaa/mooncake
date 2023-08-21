@@ -12,6 +12,7 @@
 #include "app/app.h"
 #include "app/app_register.h"
 #include "app/app_manager.h"
+#include "input_system/input_device_register.h"
 #include "simplekv/simplekv.h"
 #include "spdlog/include/spdlog/spdlog.h"
 #include "mc_conf_internal.h"
@@ -19,6 +20,9 @@
 
 namespace MOONCAKE
 {
+    /* <To do> simplify user data (better wrap) */
+    class Mooncake;
+
     /* Structure that contains userdata */
     /* Will be passed to every running apps */
     /* You can inherit this to create your own userdata */
@@ -27,6 +31,9 @@ namespace MOONCAKE
         /* Simple Key-Value in memory database */
         /* If not set, framework will create a default one  */
         SIMPLEKV::SimpleKV* database = nullptr;
+
+        /* Pointer to the list of input devices */
+        InputDevice_Register* inputDeviceList = nullptr;
 
         /* Pointer to the list of installed apps (for launcher usage) */
         const std::vector<APP_PACKER_BASE*>* installedAppList = nullptr;
@@ -42,7 +49,12 @@ namespace MOONCAKE
     class Mooncake : public APP_Register
     {
         private:
+            /* Component Input system */
+            InputDevice_Register _input_device_register;
+
+            /* Component App manager */
             APP_Manager _app_manager;
+
             APP_UserData_t* _user_data;
             APP_PACKER_BASE* _boot_anim;
             void (*_database_setup_callback)(SIMPLEKV::SimpleKV*);
@@ -66,11 +78,18 @@ namespace MOONCAKE
             ~Mooncake();
 
             /**
-             * @brief Get the App Manager object
+             * @brief Get the reference to the internal App manager 
              * 
-             * @return APP_Manager* 
+             * @return APP_Manager& 
              */
-            inline APP_Manager* getAppManager() { return &_app_manager; }
+            inline APP_Manager& appManager() { return _app_manager; }
+
+            /**
+             * @brief Get the reference to the internal Input device register
+             * 
+             * @return InputDevice_Register& 
+             */
+            inline InputDevice_Register& inputDeviceRegister() { return _input_device_register; }
 
             /**
              * @brief Set the user data, which will be passed to every apps
