@@ -49,6 +49,9 @@ namespace MOONCAKE
 
 
         public:
+            /* Free all the app's memory */
+            ~APP_Manager();
+
             /**
              * @brief Create an app
              * 

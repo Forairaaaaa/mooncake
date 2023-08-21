@@ -18,8 +18,8 @@ using namespace MOONCAKE;
 class App_1111_packer : public APP_PACKER_BASE
 {
     std::string getAppName() override { return "App-1111"; }
-    public : App_1111_packer() { std::cout << "Hi form " << getAppName() << "\n"; }
-    public : ~App_1111_packer() { std::cout << "Bye form " << getAppName() << "\n"; }
+    public: App_1111_packer() { std::cout << "App-1111 packer constructor\n"; }
+    public: ~App_1111_packer() { std::cout << "App-1111 packer destructor\n"; }
 };
 /* ----------------------------------------------------- */
 
@@ -27,8 +27,8 @@ class App_1111_packer : public APP_PACKER_BASE
 class App_2222_packer : public APP_PACKER_BASE
 {
     std::string getAppName() override { return "App-2222"; }
-    public : App_2222_packer() { std::cout << "Hi form " << getAppName() << "\n"; }
-    public : ~App_2222_packer() { std::cout << "Bye form " << getAppName() << "\n"; }
+    public: App_2222_packer() { std::cout << "App-2222 packer constructor\n"; }
+    public: ~App_2222_packer() { std::cout << "App-2222 packer destructor\n"; }
 };
 /* ----------------------------------------------------- */
 
@@ -54,8 +54,8 @@ int main()
     app_register.install(new App_2222_packer);
     std::cout << "\n";
     /*
-        Hi form App-1111
-        Hi form App-2222
+        App-1111 packer constructor
+        App-2222 packer constructor
     */
     
 
@@ -71,7 +71,7 @@ int main()
     std::cout << "\n";
     return 0;
     /*
-        Bye form App-1111
-        Bye form App-2222
+        App-1111 packer destructor
+        App-2222 packer destructor
     */
 }

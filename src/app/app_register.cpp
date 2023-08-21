@@ -64,7 +64,7 @@ bool APP_Register::uninstall(APP_PACKER_BASE* appPacker, bool freeMemory)
 
 void APP_Register::uninstallAllApps(bool freeMemory)
 {
-    /* Free all the parkers' memory */
+    /* Free all the packers' memory */
     if (freeMemory)
     {
         for (const auto& i : _app_packer_list)

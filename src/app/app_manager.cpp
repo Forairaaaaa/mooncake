@@ -14,6 +14,13 @@
 using namespace MOONCAKE;
 
 
+APP_Manager::~APP_Manager()
+{
+    /* Free all the app's memory */
+    destroyAllApps();
+}
+
+
 APP_BASE* APP_Manager::createApp(APP_PACKER_BASE* appPacker)
 {
     if (appPacker == nullptr)
