@@ -27,8 +27,10 @@ namespace MOONCAKE
             APP_PACKER_BASE() :
                 _user_data(nullptr)
                 {}
+            /* Virtual it for subclass's memory free */
+            virtual ~APP_PACKER_BASE() {}
 
-            /* Basic wrap */
+            /* Basic data getter and setter */
             inline void setUserData(void* userData) { _user_data = userData; }
             inline void* getUserData() { return _user_data; }
             inline APP_PACKER_BASE* getAddr() { return this; }

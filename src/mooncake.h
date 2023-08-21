@@ -28,10 +28,10 @@ namespace MOONCAKE
         /* If not set, framework will create a default one  */
         SIMPLEKV::SimpleKV* database = nullptr;
 
-        /* List of installed apps (for launcher usage) */
-        std::vector<APP_PACKER_BASE*>* installedAppList = nullptr;
+        /* Pointer to the list of installed apps (for launcher usage) */
+        const std::vector<APP_PACKER_BASE*>* installedAppList = nullptr;
 
-        /* App Manager (for launcher usage) */
+        /* Pointer to the app Manager (for launcher usage) */
         APP_Manager* appManager = nullptr;
     };
 

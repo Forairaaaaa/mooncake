@@ -14,6 +14,13 @@
 using namespace MOONCAKE;
 
 
+APP_Register::~APP_Register()
+{
+    /* Free all the app packers' memory */
+    uninstallAllApps();
+}
+
+
 bool APP_Register::install(APP_PACKER_BASE* appPacker, void* userData)
 {
     if (appPacker == nullptr)
@@ -32,7 +39,7 @@ bool APP_Register::install(APP_PACKER_BASE* appPacker, void* userData)
 }
 
 
-bool APP_Register::uninstall(APP_PACKER_BASE* appPacker)
+bool APP_Register::uninstall(APP_PACKER_BASE* appPacker, bool freeMemory)
 {
     if (appPacker == nullptr)
         return false;
@@ -42,6 +49,11 @@ bool APP_Register::uninstall(APP_PACKER_BASE* appPacker)
     {
         if (*iter == appPacker)
         {
+            /* Free parker's memory */
+            if (freeMemory)
+                delete (*iter);
+
+            /* Remove it from the list */
             _app_packer_list.erase(iter);
             return true;
         }
@@ -50,8 +62,16 @@ bool APP_Register::uninstall(APP_PACKER_BASE* appPacker)
 }
 
 
-void APP_Register::uninstallAllApps()
+void APP_Register::uninstallAllApps(bool freeMemory)
 {
+    /* Free all the parkers' memory */
+    if (freeMemory)
+    {
+        for (const auto& i : _app_packer_list)
+            delete i;
+    }
+    
+    /* Clear the list */
     _app_packer_list.clear();
 }
 

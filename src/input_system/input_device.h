@@ -34,7 +34,7 @@ namespace MOONCAKE
             InputDeviceType_t _device_type;
 
             /* Device name */
-            std::string _name;
+            std::string _device_name;
 
             /* User data */
             void* _user_data;
@@ -46,37 +46,33 @@ namespace MOONCAKE
             
 
         public:
+            /* Virtual it for subclass's memory free */
+            virtual ~INPUT_DEVICE_BASE() {}
+
             INPUT_DEVICE_BASE() :
                 _device_type(Input_Custom),
                 _user_data(nullptr)
                 {}
 
-            /**
-             * @brief Get the class pointer (base type)
-             * 
-             * @return INPUT_DEVICE_BASE* 
-             */
+            /* Basic data getter and setter */
             inline INPUT_DEVICE_BASE* getAddr() { return this; }
-
-            /**
-             * @brief Set device name
-             * 
-             * @param name 
-             */
-            inline void setDeviceName(const std::string& name) { _name = name; }
-
-            /**
-             * @brief Get device name
-             * 
-             * @return const std::string& 
-             */
-            inline const std::string& getDeviceName() { return _name; }
-
-            /**
-             * @brief Get device type
-             * 
-             * @return const InputDeviceType_t& 
-             */
+            inline void setDeviceName(const std::string& deviceName) { _device_name = deviceName; }
+            inline const std::string& getDeviceName() { return _device_name; }
             inline const InputDeviceType_t& getDeviceType() { return _device_type; }
+            inline void setUserData(void* userData) { _user_data = userData; }
+            inline void* getUserData() { return _user_data; }
+            
+
+            /**
+             * @brief Override this to init your input device
+             * ,device name and type should be set here
+             */
+            virtual void init() {}
+            
+            /**
+             * @brief Override this to update your input device's data 
+             * , this will kept being called 
+             */
+            virtual void update() {}
     };
 }

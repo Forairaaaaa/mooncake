@@ -18,7 +18,7 @@ namespace MOONCAKE
 {
     /* App register */
     /* This class contains a list of "APP_PACKER" */
-    /* Which can tells the "APP_Manager" what apps do you have, to open or close them */
+    /* Which can tells what apps do you have */
     /* "install" will add a packer into the list, "uninstall" will remove it */
     class APP_Register
     {
@@ -26,13 +26,15 @@ namespace MOONCAKE
             std::vector<APP_PACKER_BASE*> _app_packer_list;
 
         public:
+            /* Free all the app parkers' memory */
+            ~APP_Register();
 
             /**
              * @brief Get the list which contains installed apps' packers
              * 
-             * @return std::vector<APP_PACKER_BASE*>* 
+             * @return const std::vector<APP_PACKER_BASE*>* 
              */
-            inline std::vector<APP_PACKER_BASE*>* getInstalledAppList() { return &_app_packer_list; }
+            inline const std::vector<APP_PACKER_BASE*>* getInstalledAppList() { return &_app_packer_list; }
 
             /**
              * @brief Get the total number of the installed apps 
@@ -56,16 +58,18 @@ namespace MOONCAKE
              * @brief Uninstall an app (Remove it from the register)
              * 
              * @param appPacker 
-             * @return true ok
-             * @return false failed
+             * @param freeMemory help you to free the memory or not 
+             * @return true 
+             * @return false 
              */
-            bool uninstall(APP_PACKER_BASE* appPacker);
+            bool uninstall(APP_PACKER_BASE* appPacker, bool freeMemory = true);
 
             /**
              * @brief Uninstall all apps 
              * 
+             * @param freeMemory help you to free the memory or not 
              */
-            void uninstallAllApps();
+            void uninstallAllApps(bool freeMemory = true);
             
             /**
              * @brief Check if app is installed

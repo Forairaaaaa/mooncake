@@ -23,7 +23,7 @@ Mooncake::~Mooncake()
     spdlog::warn("mooncake destruction");
 
     /* Destroy all apps */
-    spdlog::warn("destroy all app");
+    spdlog::warn("destroy all apps");
     _app_manager.destroyAllApps();
 
     /* Free memory */
@@ -34,7 +34,7 @@ Mooncake::~Mooncake()
     if (_flag_free_boot_anim)
         delete _boot_anim;
 
-    spdlog::warn("bye :(");
+    spdlog::info("bye :(");
 }
 
 
@@ -42,6 +42,7 @@ void Mooncake::init()
 {
     spdlog::info("mooncake init :)");
 
+    /* ---------------------- Userdata ---------------------- */
     /* If user data not set */
     if (_user_data == nullptr)
     {
@@ -49,6 +50,11 @@ void Mooncake::init()
         _user_data = new APP_UserData_t;
         _flag_free_user_data = true;
     }
+
+    /* Setup installed app list pointer */
+    _user_data->installedAppList = getInstalledAppList();
+    /* Setup app manager pointer */
+    _user_data->appManager = &_app_manager;
 
     /* If database not set */
     if (_user_data->database == nullptr)
@@ -60,7 +66,10 @@ void Mooncake::init()
 
     /* Setup basic data in database */
     _data_base_setup_internal();
+    /* ---------------------- Userdata ---------------------- */
 
+
+    /* ---------------------- Boot Anim ---------------------- */
     /* If boot anim not set */
     if (_boot_anim == nullptr)
     {
@@ -80,6 +89,8 @@ void Mooncake::init()
         if (_app_manager.getTotalAppNum() == 0)
             break;
     }
+    /* ---------------------- Boot Anim ---------------------- */
+
 
     spdlog::info("init done");
 }
