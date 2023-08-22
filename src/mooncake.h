@@ -14,8 +14,14 @@
 #include "app/app_manager.h"
 #include "input_system/input_device_register.h"
 #include "simplekv/simplekv.h"
-#include "spdlog/include/spdlog/spdlog.h"
 #include "mc_conf_internal.h"
+
+/* Disable some features */
+#ifdef ESP_PLATFORM
+#define SPDLOG_NO_EXCEPTIONS
+#define SPDLOG_NO_THREAD_ID
+#endif
+#include "spdlog/include/spdlog/spdlog.h"
 
 
 namespace MOONCAKE

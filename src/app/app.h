@@ -129,6 +129,7 @@ namespace MOONCAKE
                 _go_close(false),
                 _go_destroy(false)
                 {}
+            virtual ~APP_BASE() {}
 
 
             /* Wrap for resource getting from app packer */
