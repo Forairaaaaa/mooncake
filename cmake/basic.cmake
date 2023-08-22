@@ -1,8 +1,6 @@
 # Basic CMakeLists.txt
 
-cmake_minimum_required(VERSION 3.5)
 project(mooncake)
-
 
 # Src files
 file(GLOB_RECURSE MOONCAKE_SRCS
