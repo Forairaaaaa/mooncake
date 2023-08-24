@@ -35,6 +35,9 @@ namespace MOONCAKE
     {
         /* Pointer to the framwork */
         Mooncake* framework = nullptr;
+
+        /* Pointer to the database */
+        SIMPLEKV::SimpleKV* database = nullptr;
     };
 
 

@@ -49,6 +49,9 @@ void Mooncake::init()
     /* Copy framework's pointer into user data */
     _user_data->framework = this;
 
+    /* Copy database's pointer into user data */
+    _user_data->database = &_database;
+
 
     /* init database */
     _data_base_setup_internal();
