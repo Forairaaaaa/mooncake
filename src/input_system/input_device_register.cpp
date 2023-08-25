@@ -106,5 +106,10 @@ void InputDevice_Register::update()
 {
     /* Call every input devices' update() */
     for (const auto& i : _input_device_list)
+    {
+        /* Skip the manually guys */
+        if (i->isUpdateManually())
+            continue;
         i->update();
+    }
 }
