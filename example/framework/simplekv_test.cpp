@@ -14,9 +14,10 @@
 
 int main()
 {
+    return -1;
+
+
     SIMPLEKV::SimpleKV db;
-
-
 
     /* -------------------------------------------------------------- */
     printf("\n[Basic types]\n");
