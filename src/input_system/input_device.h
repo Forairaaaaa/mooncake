@@ -36,6 +36,9 @@ namespace MOONCAKE
             /* Device name */
             std::string _device_name;
 
+            /* If you want to call the update whenever you want, instead framework do it automatically */
+            bool _update_manually;
+
             /* User data */
             void* _user_data;
 
@@ -51,6 +54,7 @@ namespace MOONCAKE
 
             INPUT_DEVICE_BASE() :
                 _device_type(Input_Custom),
+                _update_manually(false),
                 _user_data(nullptr)
                 {}
 
@@ -61,7 +65,9 @@ namespace MOONCAKE
             inline const InputDeviceType_t& getDeviceType() { return _device_type; }
             inline void setUserData(void* userData) { _user_data = userData; }
             inline void* getUserData() { return _user_data; }
-            
+            inline void setUpdateManually(bool updateManually) { _update_manually = updateManually; }
+            inline bool isUpdateManually() { return _update_manually; }
+
 
             /**
              * @brief Override this to init your input device

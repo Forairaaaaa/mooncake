@@ -10,32 +10,51 @@
  */
 #include <simplekv/simplekv.h>
 #include <iostream>
+#include <cstring>
 
 
 int main()
 {
     SIMPLEKV::SimpleKV db;
 
-
-
     /* -------------------------------------------------------------- */
     printf("\n[Basic types]\n");
+
 
     db.Add<int>("Age", 666);
     printf("Age: %d\n", db.Get("Age")->value<int>());
     // > Age: 666
 
+    if (db.Get("Age")->value<int>() != 666)
+        return -1;
+
+
+
     db.Put<int>("Age", -777);
     printf("Age: %d\n", db.Get("Age")->value<int>());
     // > Age: -777
 
-    db.Add<float>("float", 6.666);
-    db.Add<double>("double", 2333.3333333333);
+    if (db.Get("Age")->value<int>() != -777)
+        return -1;
 
+
+
+    db.Add<float>("float", 6.666);
     printf("%f\n", db.Get("float")->value<float>());
     // > 6.666000
-    printf("%.10f\n", db.Get("double")->value<double>());
-    // > 2333.3333333333
+
+    if (std::to_string(db.Get("float")->value<float>()) != "6.666000")
+        return -1;
+    
+
+
+    db.Add<double>("double", 2333.3333333333);
+    printf("%f\n", db.Get("double")->value<double>());
+    // > 2333.333333
+
+    if (std::to_string(db.Get("double")->value<double>()) != "2333.333333")
+        return -1;
+    
     /* -------------------------------------------------------------- */
 
 
@@ -53,6 +72,12 @@ int main()
     }
     printf("\n");
     // > 0 3 6 9 12 15 18 21 24 27
+
+    for (int i = 0; i < 10; i++)
+    {
+        if (db.Get("Data")->value<uint16_t*>()[i] != data[i])
+            return -1;
+    }
     /* -------------------------------------------------------------- */
     
 
