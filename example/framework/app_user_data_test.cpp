@@ -22,9 +22,15 @@ class App_1111 : public APP_BASE
     void onCreate() override { startApp(); }
     void onRunning() override
     {
-        std::cout << getUserData() << "\n";
-
-        std::cout << ((Mooncake*)(((MC_USER_DATA_T)getUserData())->framework))->getInstalledAppList()[0]->getAppName() << "\n";
+        /* Raw getting */
+        // std::cout << getUserData() << "\n";
+        // std::cout << ((Mooncake*)(((MC_USER_DATA_T)getUserData())->framework))->getInstalledAppList()[0]->getAppName() << "\n";
+        // std::cout << ((SIMPLEKV::SimpleKV*)(((MC_USER_DATA_T)getUserData())->database))->Get(MC_DB_DISP_HOR)->value<int>() << "\n";
+        
+        /* Frame work define wrap */
+        std::cout << mcAppGetFramework()->getInstalledAppList()[0]->getAppName() << "\n";
+        std::cout << mcAppGetDatabase()->Get(MC_DB_DISP_HOR)->value<int>() << ", ";
+        std::cout << mcAppGetDatabase()->Get(MC_DB_DISP_VER)->value<int>() << "\n";
     }
 };
 /* Create a new app packer with new resource and memory manager */
