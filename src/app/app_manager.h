@@ -47,6 +47,10 @@ namespace MOONCAKE
             std::vector<AppLifecycle_t> _app_lifecycle_list;
             int _search_app_lifecycle_list(APP_BASE* app);
 
+            /* A buffer of apps that about to add in lifecycle */
+            /* To avoid push_back method while lifecycle list's iterating */
+            std::vector<AppLifecycle_t> _app_create_buffer;
+
 
         public:
             /* Free all the app's memory */

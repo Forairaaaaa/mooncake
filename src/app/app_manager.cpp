@@ -43,7 +43,7 @@ APP_BASE* APP_Manager::createApp(APP_PACKER_BASE* appPacker)
     new_lifecycle.state = ON_CREATE;
 
     /* Push into lifecycle list */
-    _app_lifecycle_list.push_back(new_lifecycle);
+    _app_create_buffer.push_back(new_lifecycle);
 
     /* Return the app pointer for further mangement */
     return new_app;
@@ -208,6 +208,16 @@ void APP_Manager::update()
         /* Next */
         iter++;
     }
+
+    /* Push created apps buffer into lifecycle list */
+    if (_app_create_buffer.size() != 0)
+    {
+        for (const auto& app : _app_create_buffer)
+        {
+            _app_lifecycle_list.push_back(app);
+        }
+        _app_create_buffer.clear();
+    }
 }
 
 
@@ -215,6 +225,16 @@ bool APP_Manager::destroyApp(APP_BASE* app)
 {
     if (app == nullptr)
         return false;
+
+    /* If not push into lifecycle list yet */
+    for (auto iter = _app_create_buffer.begin(); iter != _app_create_buffer.end(); iter++)
+    {
+        if (iter->app == app)
+        {
+            _app_create_buffer.erase(iter);
+            return true;
+        }
+    }
 
     /* Iterate the shit out */
     for (auto iter = _app_lifecycle_list.begin(); iter != _app_lifecycle_list.end(); iter++)
@@ -257,4 +277,5 @@ void APP_Manager::destroyAllApps()
     }
 
     _app_lifecycle_list.clear();
+    _app_create_buffer.clear();
 }
