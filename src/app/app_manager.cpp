@@ -64,9 +64,32 @@ int APP_Manager::_search_app_lifecycle_list(APP_BASE* app)
 }
 
 
+int APP_Manager::_search_app_create_buffer(APP_BASE* app)
+{
+    if (app == nullptr)
+        return -1;
+
+    for (int i = 0; i < _app_create_buffer.size(); i++)
+    {
+        if (_app_create_buffer[i].app == app)
+            return i;
+    }
+    return -1;
+}
+
+
 bool APP_Manager::startApp(APP_BASE* app)
 {
-    int index = _search_app_lifecycle_list(app);
+    // If not pushed into lifecycle yet 
+    // Like call createApp() and then startApp() inside an app
+    int index = _search_app_create_buffer(app);
+    if (index >= 0)
+    {
+        _app_create_buffer[index].state = ON_RESUME;
+        return true;
+    }
+
+    index = _search_app_lifecycle_list(app);
     if (index < 0)
         return false;
 
@@ -101,7 +124,16 @@ bool APP_Manager::startApp(APP_BASE* app)
 
 bool APP_Manager::closeApp(APP_BASE* app)
 {
-    int index = _search_app_lifecycle_list(app);
+    // If not pushed into lifecycle yet 
+    // Like call createApp() and then closeApp() inside an app
+    int index = _search_app_create_buffer(app);
+    if (index >= 0)
+    {
+        _app_create_buffer[index].state = ON_PAUSE;
+        return true;
+    }
+
+    index = _search_app_lifecycle_list(app);
     if (index < 0)
         return false;
     
