@@ -191,6 +191,15 @@ namespace MOONCAKE
              * @return false 
              */
             inline bool startApp(APP_BASE* app) { return _app_manager.startApp(app); }
+
+            /**
+             * @brief Wrap of create and start an app 
+             * 
+             * @param appPacker 
+             * @return true 
+             * @return false 
+             */
+            inline bool createAndStartApp(APP_PACKER_BASE* appPacker) { return startApp(createApp(appPacker)); }
             
             /**
              * @brief Close an app, this method will only change passing app's state
