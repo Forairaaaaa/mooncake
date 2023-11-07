@@ -1,7 +1,7 @@
 {
   "name": "Mooncake",
   "version": "1.0.0",
-  "description": "A light weight life cycle dispatcher of multiple Apps, simplify app launcher designing and app code reusing",
+  "description": "A light weight multiple apps' life cycle dispatcher, simplify app launcher designing and app code reusing",
   "keywords": "app, launcher, life cycle, dispatcher",
   "repository": {
     "type": "git",
