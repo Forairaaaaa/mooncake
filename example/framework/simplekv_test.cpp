@@ -62,20 +62,20 @@ int main()
     /* -------------------------------------------------------------- */
     printf("\n[Array]\n");
 
-    uint16_t data[10] = {0, 3, 6, 9, 12, 15, 18, 21, 24, 27};
+    int data[10] = {0, 3, 6, 9, 12, 15, 18, 21, 24, 27};
 
     db.Add("Data", data);
 
     for (int i = 0; i < 10; i++)
     {
-        printf("%d ", db.Get("Data")->value<uint16_t*>()[i]);
+        printf("%d ", db.Get("Data")->value<int*>()[i]);
     }
     printf("\n");
     // > 0 3 6 9 12 15 18 21 24 27
 
     for (int i = 0; i < 10; i++)
     {
-        if (db.Get("Data")->value<uint16_t*>()[i] != data[i])
+        if (db.Get("Data")->value<int*>()[i] != data[i])
             return -1;
     }
     /* -------------------------------------------------------------- */
