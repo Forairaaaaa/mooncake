@@ -24,7 +24,8 @@
     "srcDir": ".",
     "includeDir": "./src",
     "flags": [
-        "-I ./src/spdlog/include"
+        "-I ./src/spdlog/include",
+        "-I ./apps"
       ]
   }
 }
