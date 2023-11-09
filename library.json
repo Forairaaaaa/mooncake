@@ -1,6 +1,6 @@
 {
   "name": "Mooncake",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "适用于单片机的多 App 生命周期调度器. Light weight multiple apps' life cycle dispatcher.",
   "keywords": "app, launcher, life cycle, dispatcher",
   "repository": {
