@@ -14,7 +14,7 @@
     #include "../../mc_conf.h"
 #else
 
-#define MC_VERSION  "v0.2.0"
+#define MC_VERSION  "v1.0.2"
 
 
 /* The user data type for app to convert to (void* -> MC_USER_DATA_T) */
