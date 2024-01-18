@@ -128,6 +128,7 @@ namespace MOONCAKE
         inline APP_PACKER_BASE* getAppPacker() { return _app_packer; }
         inline std::string getAppName() { return getAppPacker()->getAppName(); }
         inline void* getAppIcon() { return getAppPacker()->getAppIcon(); }
+        inline void* getCustomData() { return getAppPacker()->getCustomData(); }
         inline void* getUserData() { return getAppPacker()->getUserData(); }
 
         /* API for lifecycle's state checking */
