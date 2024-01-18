@@ -1,25 +1,22 @@
 /**
  * @file app_manager.cpp
  * @author Forairaaaaa
- * @brief 
+ * @brief
  * @version 0.2
  * @date 2023-08-19
- * 
+ *
  * @copyright Copyright (c) 2023
- * 
+ *
  */
 #include "app_manager.h"
 
-
 using namespace MOONCAKE;
-
 
 APP_Manager::~APP_Manager()
 {
     /* Free all the app's memory */
     destroyAllApps();
 }
-
 
 APP_BASE* APP_Manager::createApp(APP_PACKER_BASE* appPacker)
 {
@@ -49,7 +46,6 @@ APP_BASE* APP_Manager::createApp(APP_PACKER_BASE* appPacker)
     return new_app;
 }
 
-
 int APP_Manager::_search_app_lifecycle_list(APP_BASE* app)
 {
     if (app == nullptr)
@@ -62,7 +58,6 @@ int APP_Manager::_search_app_lifecycle_list(APP_BASE* app)
     }
     return -1;
 }
-
 
 int APP_Manager::_search_app_create_buffer(APP_BASE* app)
 {
@@ -77,10 +72,9 @@ int APP_Manager::_search_app_create_buffer(APP_BASE* app)
     return -1;
 }
 
-
 bool APP_Manager::startApp(APP_BASE* app)
 {
-    // If not pushed into lifecycle yet 
+    // If not pushed into lifecycle yet
     // Like call createApp() and then startApp() inside an app
     int index = _search_app_create_buffer(app);
     if (index >= 0)
@@ -96,35 +90,34 @@ bool APP_Manager::startApp(APP_BASE* app)
     /* Update state */
     switch (_app_lifecycle_list[index].state)
     {
-        case ON_CREATE:
-            _app_lifecycle_list[index].state = ON_RESUME;
-            break;
-        case ON_RESUME:
-            /* Do nothing */
-            break;
-        case ON_RUNNING:
-            /* Do nothing */
-            break;
-        case ON_RUNNING_BG:
-            _app_lifecycle_list[index].state = ON_RESUME;
-            break;
-        case ON_PAUSE:
-            _app_lifecycle_list[index].state = ON_RESUME;
-            break;
-        case ON_DESTROY:
-            /* Not gonna happen */
-            break;
-        default:
-            break;
+    case ON_CREATE:
+        _app_lifecycle_list[index].state = ON_RESUME;
+        break;
+    case ON_RESUME:
+        /* Do nothing */
+        break;
+    case ON_RUNNING:
+        /* Do nothing */
+        break;
+    case ON_RUNNING_BG:
+        _app_lifecycle_list[index].state = ON_RESUME;
+        break;
+    case ON_PAUSE:
+        _app_lifecycle_list[index].state = ON_RESUME;
+        break;
+    case ON_DESTROY:
+        /* Not gonna happen */
+        break;
+    default:
+        break;
     }
 
     return true;
 }
 
-
 bool APP_Manager::closeApp(APP_BASE* app)
 {
-    // If not pushed into lifecycle yet 
+    // If not pushed into lifecycle yet
     // Like call createApp() and then closeApp() inside an app
     int index = _search_app_create_buffer(app);
     if (index >= 0)
@@ -136,35 +129,34 @@ bool APP_Manager::closeApp(APP_BASE* app)
     index = _search_app_lifecycle_list(app);
     if (index < 0)
         return false;
-    
+
     /* Update state */
     switch (_app_lifecycle_list[index].state)
     {
-        case ON_CREATE:
-            /* Do nothing */
-            break;
-        case ON_RESUME:
-            _app_lifecycle_list[index].state = ON_PAUSE;
-            break;
-        case ON_RUNNING:
-            _app_lifecycle_list[index].state = ON_PAUSE;
-            break;
-        case ON_RUNNING_BG:
-            /* Do nothing */
-            break;
-        case ON_PAUSE:
-            /* Do nothing */
-            break;
-        case ON_DESTROY:
-            /* Not gonna happen */
-            break;
-        default:
-            break;
+    case ON_CREATE:
+        /* Do nothing */
+        break;
+    case ON_RESUME:
+        _app_lifecycle_list[index].state = ON_PAUSE;
+        break;
+    case ON_RUNNING:
+        _app_lifecycle_list[index].state = ON_PAUSE;
+        break;
+    case ON_RUNNING_BG:
+        /* Do nothing */
+        break;
+    case ON_PAUSE:
+        /* Do nothing */
+        break;
+    case ON_DESTROY:
+        /* Not gonna happen */
+        break;
+    default:
+        break;
     }
 
     return true;
 }
-
 
 void APP_Manager::update()
 {
@@ -204,37 +196,36 @@ void APP_Manager::update()
             iter->state = ON_DESTROY;
         }
 
-
         /* Lifecycle FSM */
         switch (iter->state)
         {
-            case ON_CREATE:
-                /* Do nothing */
-                break;
-            case ON_RESUME:
-                iter->app->onResume();
-                iter->state = ON_RUNNING;
-                break;
-            case ON_RUNNING:
-                iter->app->onRunning();
-                break;
-            case ON_RUNNING_BG:
-                iter->app->onRunningBG();
-                break;
-            case ON_PAUSE:
-                iter->app->onPause();
-                iter->state = ON_RUNNING_BG;
-                break;
-            case ON_DESTROY:
-                /* Same as destroyApp() */
-                iter->app->onPause();
-                iter->app->onDestroy();
-                iter->app->getAppPacker()->deleteApp(iter->app);
-                /* Remove and update iterator */
-                iter = _app_lifecycle_list.erase(iter);
-                continue;
-            default:
-                break;
+        case ON_CREATE:
+            /* Do nothing */
+            break;
+        case ON_RESUME:
+            iter->app->onResume();
+            iter->state = ON_RUNNING;
+            break;
+        case ON_RUNNING:
+            iter->app->onRunning();
+            break;
+        case ON_RUNNING_BG:
+            iter->app->onRunningBG();
+            break;
+        case ON_PAUSE:
+            iter->app->onPause();
+            iter->state = ON_RUNNING_BG;
+            break;
+        case ON_DESTROY:
+            /* Same as destroyApp() */
+            iter->app->onPause();
+            iter->app->onDestroy();
+            iter->app->getAppPacker()->deleteApp(iter->app);
+            /* Remove and update iterator */
+            iter = _app_lifecycle_list.erase(iter);
+            continue;
+        default:
+            break;
         }
 
         /* Next */
@@ -251,7 +242,6 @@ void APP_Manager::update()
         _app_create_buffer.clear();
     }
 }
-
 
 bool APP_Manager::destroyApp(APP_BASE* app)
 {
@@ -291,7 +281,6 @@ bool APP_Manager::destroyApp(APP_BASE* app)
 
     return false;
 }
-
 
 void APP_Manager::destroyAllApps()
 {

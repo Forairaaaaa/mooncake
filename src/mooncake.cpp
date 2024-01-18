@@ -1,12 +1,12 @@
 /**
  * @file mooncake.cpp
  * @author Forairaaaaa
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2023-08-19
- * 
+ *
  * @copyright Copyright (c) 2023
- * 
+ *
  */
 #include "mooncake.h"
 #include "../apps/common_apps/boot_anim_ascii/boot_anim_ascii.h"
@@ -14,9 +14,7 @@
 #include "simplekv/simplekv.h"
 #include "spdlog/spdlog.h"
 
-
 using namespace MOONCAKE;
-
 
 Mooncake::~Mooncake()
 {
@@ -31,11 +29,9 @@ Mooncake::~Mooncake()
     spdlog::info("bye :(");
 }
 
-
 void Mooncake::init()
 {
     spdlog::info("mooncake init :)");
-
 
     /* Init user data */
     /* If user data not set */
@@ -52,10 +48,8 @@ void Mooncake::init()
     /* Copy database's pointer into user data */
     _user_data->database = &_database;
 
-
     /* init database */
     _data_base_setup_internal();
-
 
     /* Init boot anim */
     /* If boot anim not set */
@@ -79,15 +73,12 @@ void Mooncake::init()
             break;
     }
 
-
     spdlog::info("init done");
 }
-
 
 void Mooncake::_data_base_setup_internal()
 {
     spdlog::info("start db setup");
-
 
     /* Setup basic data with default value */
     /* Display */
@@ -98,7 +89,6 @@ void Mooncake::_data_base_setup_internal()
     _database.Add(MC_DB_BATTERY_LEVEL, 100);
     _database.Add(MC_DB_BATTERY_IS_CHARGING, false);
 
-
     /* Call database setup callback if it's set */
     if (_database_setup_callback != nullptr)
     {
@@ -106,7 +96,6 @@ void Mooncake::_data_base_setup_internal()
         _database_setup_callback(_database);
     }
 }
-
 
 void Mooncake::update()
 {

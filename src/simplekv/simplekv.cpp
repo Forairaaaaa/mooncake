@@ -1,15 +1,14 @@
 /**
  * @file simplekv.cpp
  * @author Forairaaaaa
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2023-05-04
- * 
+ *
  * @copyright Copyright (c) 2023
- * 
+ *
  */
 #include "simplekv.h"
-
 
 namespace SIMPLEKV
 {
@@ -22,7 +21,6 @@ namespace SIMPLEKV
         return false;
     }
 
-
     size_t SimpleKV::MemoryUsage()
     {
         size_t ret = 0;
@@ -33,14 +31,13 @@ namespace SIMPLEKV
         return ret;
     }
 
-    
     bool SimpleKV::Add(const std::string& key, void* value, size_t size)
     {
         if (Exist(key) || (size == 0))
         {
             return false;
         }
-        
+
         /* Create */
         ValueInfo_t new_item;
         new_item.size = size;
@@ -55,7 +52,6 @@ namespace SIMPLEKV
 
         return true;
     }
-
 
     bool SimpleKV::Put(const std::string& key, void* value)
     {
@@ -73,7 +69,6 @@ namespace SIMPLEKV
 
         return false;
     }
-
 
     ValueInfo_t* SimpleKV::Get(const std::string& key)
     {
@@ -95,7 +90,6 @@ namespace SIMPLEKV
         return &_ret_buffer;
     }
 
-
     bool SimpleKV::Delete(const std::string& key)
     {
         /* Get iterater */
@@ -116,7 +110,6 @@ namespace SIMPLEKV
         return false;
     }
 
-
     void SimpleKV::DeleteAll()
     {
         /* Free memory */
@@ -128,4 +121,4 @@ namespace SIMPLEKV
         /* Remove all element */
         _value_map.erase(_value_map.begin(), _value_map.end());
     }
-}
+} // namespace SIMPLEKV

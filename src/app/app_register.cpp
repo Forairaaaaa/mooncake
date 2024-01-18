@@ -1,18 +1,16 @@
 /**
  * @file app_register.cpp
  * @author Forairaaaaa
- * @brief 
+ * @brief
  * @version 0.2
  * @date 2023-08-18
- * 
+ *
  * @copyright Copyright (c) 2023
- * 
+ *
  */
 #include "app_register.h"
 
-
 using namespace MOONCAKE;
-
 
 APP_Register::~APP_Register()
 {
@@ -20,12 +18,11 @@ APP_Register::~APP_Register()
     uninstallAllApps();
 }
 
-
 bool APP_Register::install(APP_PACKER_BASE* appPacker, void* userData)
 {
     if (appPacker == nullptr)
         return false;
-    
+
     if (isAppInstalled(appPacker))
         return false;
 
@@ -37,7 +34,6 @@ bool APP_Register::install(APP_PACKER_BASE* appPacker, void* userData)
 
     return true;
 }
-
 
 bool APP_Register::uninstall(APP_PACKER_BASE* appPacker, bool freeMemory)
 {
@@ -61,7 +57,6 @@ bool APP_Register::uninstall(APP_PACKER_BASE* appPacker, bool freeMemory)
     return false;
 }
 
-
 void APP_Register::uninstallAllApps(bool freeMemory)
 {
     /* Free all the packers' memory */
@@ -70,11 +65,10 @@ void APP_Register::uninstallAllApps(bool freeMemory)
         for (const auto& i : _app_packer_list)
             delete i;
     }
-    
+
     /* Clear the list */
     _app_packer_list.clear();
 }
-
 
 bool APP_Register::isAppInstalled(APP_PACKER_BASE* appPacker)
 {
