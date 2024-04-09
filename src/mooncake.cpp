@@ -24,10 +24,10 @@ Mooncake::~Mooncake()
 
 void Mooncake::_free_data()
 {
-    if (_data.app_register != nullptr)
-        delete _data.app_register;
     if (_data.app_manager != nullptr)
         delete _data.app_manager;
+    if (_data.app_register != nullptr)
+        delete _data.app_register;
 }
 
 static const char* _mooncake_ascii_logo = R"(

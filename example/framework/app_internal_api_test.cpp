@@ -47,5 +47,7 @@ int main()
     for (int i = 0; i < 6; i++)
         mooncake.update();
 
+    std::cout << "done\n";
+
     return 0;
 }
