@@ -9,7 +9,6 @@
  *
  */
 #pragma once
-#include <string>
 
 namespace MOONCAKE
 {
@@ -55,9 +54,9 @@ namespace MOONCAKE
         /**
          * @brief Override and return app's name
          *
-         * @return const std::string
+         * @return const char*
          */
-        virtual const std::string getAppName() { return ""; };
+        virtual const char* getAppName() { return ""; };
 
         /**
          * @brief Override and return app's icon pointer
@@ -102,7 +101,7 @@ namespace MOONCAKE
     public:
         inline void setAppPacker(APP_PACKER_BASE* appPacker) { _app_packer = appPacker; }
         inline APP_PACKER_BASE* getAppPacker() { return _app_packer; }
-        inline std::string getAppName() { return getAppPacker()->getAppName(); }
+        inline const char* getAppName() { return getAppPacker()->getAppName(); }
         inline void* getAppIcon() { return getAppPacker()->getAppIcon(); }
         inline void* getCustomData() { return getAppPacker()->getCustomData(); }
         inline void* getFramwork() { return getAppPacker()->getFramwork(); }
