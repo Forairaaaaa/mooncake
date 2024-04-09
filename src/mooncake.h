@@ -12,9 +12,7 @@
 #include "app/app.h"
 #include "app/app_manager.h"
 #include "app/app_register.h"
-#include "input_system/input_device_register.h"
 #include "mc_conf_internal.h"
-#include "simplekv/simplekv.h"
 
 /* Disable some features */
 #ifdef ESP_PLATFORM
@@ -34,9 +32,6 @@ namespace MOONCAKE
     {
         /* Pointer to the framwork */
         Mooncake* framework = nullptr;
-
-        /* Pointer to the database */
-        SIMPLEKV::SimpleKV* database = nullptr;
     };
 
     /* Mooncake framework class */
@@ -45,44 +40,29 @@ namespace MOONCAKE
     class Mooncake
     {
     private:
-        /* Component Input system */
-        InputDevice_Register _input_device_register;
-
         /* Component App register */
         APP_Register _app_register;
 
         /* Component App manager */
         APP_Manager _app_manager;
 
-        /* Component Database */
-        SIMPLEKV::SimpleKV _database;
-
         /* User data pointer */
         APP_UserData_t* _user_data;
 
         /* Boot anim pointer */
         APP_PACKER_BASE* _boot_anim;
-        void (*_database_setup_callback)(SIMPLEKV::SimpleKV&);
 
         /* Flag to free the memory, if they are created by framework */
         bool _flag_free_user_data;
         bool _flag_free_boot_anim;
 
-        void _data_base_setup_internal();
-
     public:
-        Mooncake()
-            : _user_data(nullptr), _boot_anim(nullptr), _database_setup_callback(nullptr), _flag_free_user_data(false),
-              _flag_free_boot_anim(false)
-        {
-        }
+        Mooncake() : _user_data(nullptr), _boot_anim(nullptr), _flag_free_user_data(false), _flag_free_boot_anim(false) {}
         ~Mooncake();
 
         /* Framework's components getter */
-        inline InputDevice_Register& getInputDeviceRegister() { return _input_device_register; }
         inline APP_Register& getAppRegister() { return _app_register; }
         inline APP_Manager& getAppManager() { return _app_manager; }
-        inline SIMPLEKV::SimpleKV& getDatabase() { return _database; }
 
         /**
          * @brief Set the user data, which will be passed to every apps
@@ -104,17 +84,6 @@ namespace MOONCAKE
          * @param bootAnim
          */
         inline void setBootAnim(APP_PACKER_BASE* bootAnim) { _boot_anim = bootAnim; }
-
-        /**
-         * @brief Set the Database Setup Callback
-         * , the call back will be called after some basic data were set, you can add some custom data into database in the
-         * callback
-         * @param databaseSetupCallback
-         */
-        inline void setDatabaseSetupCallback(void (*databaseSetupCallback)(SIMPLEKV::SimpleKV&))
-        {
-            _database_setup_callback = databaseSetupCallback;
-        }
 
         /**
          * @brief Init framework
@@ -228,42 +197,5 @@ namespace MOONCAKE
          * @return std::size_t
          */
         inline std::size_t getCreatedAppNum() { return _app_manager.getCreatedAppNum(); }
-
-        /* Framework wrap to the Input device register */
-
-        /**
-         * @brief Install an input device, it's init method will be called here
-         *
-         * @param inputDevice
-         * @param userData
-         * @return true
-         * @return false
-         */
-        inline bool installIndev(INPUT_DEVICE_BASE* inputDevice, void* userData = nullptr)
-        {
-            return _input_device_register.install(inputDevice, userData);
-        }
-
-        /**
-         * @brief Uninstall an input device
-         *
-         * @param inputDevice
-         * @return true
-         * @return false
-         */
-        inline bool uninstallIndev(INPUT_DEVICE_BASE* inputDevice) { return _input_device_register.uninstall(inputDevice); }
-
-        /**
-         * @brief Uninstall all input devices
-         *
-         */
-        inline void uninstallAllIndev() { _input_device_register.uninstallAllDevice(); }
-
-        /**
-         * @brief Get the total number of installed input device
-         *
-         * @return std::size_t
-         */
-        inline std::size_t getInstalledIndevNum() { return _input_device_register.getInstalledDeviceNum(); }
     };
 } // namespace MOONCAKE

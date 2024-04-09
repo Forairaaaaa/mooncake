@@ -11,7 +11,6 @@
 #include "mooncake.h"
 #include "../apps/common_apps/boot_anim_ascii/boot_anim_ascii.h"
 #include "app/app.h"
-#include "simplekv/simplekv.h"
 #include "spdlog/spdlog.h"
 
 using namespace MOONCAKE;
@@ -45,12 +44,6 @@ void Mooncake::init()
     /* Copy framework's pointer into user data */
     _user_data->framework = this;
 
-    /* Copy database's pointer into user data */
-    _user_data->database = &_database;
-
-    /* init database */
-    _data_base_setup_internal();
-
     /* Init boot anim */
     /* If boot anim not set */
     if (_boot_anim == nullptr)
@@ -76,32 +69,8 @@ void Mooncake::init()
     spdlog::info("init done");
 }
 
-void Mooncake::_data_base_setup_internal()
-{
-    spdlog::info("start db setup");
-
-    /* Setup basic data with default value */
-    /* Display */
-    _database.Add(MC_DB_DISP_HOR, 320);
-    _database.Add(MC_DB_DISP_VER, 240);
-
-    /* Power */
-    _database.Add(MC_DB_BATTERY_LEVEL, 100);
-    _database.Add(MC_DB_BATTERY_IS_CHARGING, false);
-
-    /* Call database setup callback if it's set */
-    if (_database_setup_callback != nullptr)
-    {
-        spdlog::info("call db setup callback");
-        _database_setup_callback(_database);
-    }
-}
-
 void Mooncake::update()
 {
-    /* Update input devices */
-    _input_device_register.update();
-
     /* Update apps' lifecycles */
     _app_manager.update();
 }
