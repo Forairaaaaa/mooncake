@@ -35,6 +35,7 @@ namespace MOONCAKE
         {
             APP_Register* app_register = nullptr;
             APP_Manager* app_manager = nullptr;
+            void* user_data = nullptr;
         };
         Data_t _data;
         void _free_components();
@@ -47,6 +48,12 @@ namespace MOONCAKE
     public:
         inline APP_Register* getAppRegister() { return _data.app_register; }
         inline APP_Manager* getAppManager() { return _data.app_manager; }
+
+        /* -------------------------------- User data ------------------------------- */
+        // Can be your database or anything
+    public:
+        inline void setUserData(void* userData) { _data.user_data = userData; }
+        inline void* getUserData() { return _data.user_data; }
 
         /* ----------------------------- Framework apis ----------------------------- */
     public:

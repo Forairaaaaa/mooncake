@@ -10,6 +10,7 @@
  */
 #include <iostream>
 #include <mooncake.h>
+#include <string>
 
 using namespace MOONCAKE;
 
@@ -22,6 +23,7 @@ class App_1111 : public APP_BASE
     {
         /* Frame work define wrap */
         std::cout << mcAppGetFramework()->getInstalledAppList()[0]->getAppName() << "\n";
+        std::cout << (const char*)mcAppGetFramework()->getUserData() << "\n";
     }
 };
 /* Create a new app packer with new resource and memory manager */
@@ -40,6 +42,9 @@ int main()
 
     Mooncake mooncake;
     mooncake.init();
+
+    std::string hi = "hi im fine, thank you";
+    mooncake.setUserData((void*)hi.c_str());
 
     mooncake.installApp(new App_1111_packer);
     mooncake.createApp(mooncake.getInstalledAppList()[0]);
