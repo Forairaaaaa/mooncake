@@ -18,7 +18,7 @@ APP_Register::~APP_Register()
     uninstallAllApps();
 }
 
-bool APP_Register::install(APP_PACKER_BASE* appPacker, void* userData)
+bool APP_Register::install(APP_PACKER_BASE* appPacker, void* framwork)
 {
     if (appPacker == nullptr)
         return false;
@@ -26,8 +26,7 @@ bool APP_Register::install(APP_PACKER_BASE* appPacker, void* userData)
     if (isAppInstalled(appPacker))
         return false;
 
-    /* Copy user data */
-    appPacker->setUserData(userData);
+    appPacker->setFramwork(framwork);
 
     /* Push into list */
     _app_packer_list.push_back(appPacker);

@@ -12,7 +12,7 @@
 #include "app/app.h"
 #include "app/app_manager.h"
 #include "app/app_register.h"
-#include "mc_conf_internal.h"
+#include "types.h"
 
 /* Disable some features */
 #ifdef ESP_PLATFORM

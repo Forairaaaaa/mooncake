@@ -46,12 +46,11 @@ namespace MOONCAKE
          * @brief Install an app (Register an app packer)
          *
          * @param appPacker
-         * @param database
-         * @param userData
+         * @param framwork
          * @return true
          * @return false
          */
-        bool install(APP_PACKER_BASE* appPacker, void* userData = nullptr);
+        bool install(APP_PACKER_BASE* appPacker, void* framwork = nullptr);
 
         /**
          * @brief Uninstall an app (Remove it from the register)

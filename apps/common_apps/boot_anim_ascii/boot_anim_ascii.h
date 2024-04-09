@@ -47,7 +47,7 @@ namespace MOONCAKE
 
         class BootAnim_ASCII_Packer : public APP_PACKER_BASE
         {
-            std::string getAppName() override { return "BootAnim_ASCII"; }
+            const std::string getAppName() override { return "BootAnim_ASCII"; }
             void* newApp() override { return new BootAnim_ASCII; }
             void deleteApp(void *app) override { delete (BootAnim_ASCII*)app; }
         };

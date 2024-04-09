@@ -13,32 +13,51 @@
 
 namespace MOONCAKE
 {
-    /* App packer base */
-    /* Contains the static elements of an app, like name, icon... */
-    /* Also an app's memory allocation, freeing... */
-    /* This class is designed for a better resource and memory manager, like launcher's usage */
+    /* -------------------------------------------------------------------------- */
+    /*                               App packer base                              */
+    /* -------------------------------------------------------------------------- */
+    // A base class to handle an app's create and destroy (factory)
+    // Also contains commom static asset like name, icon pointer ..
     class APP_PACKER_BASE
     {
     private:
-        void* _user_data;
+        void* _framework;
 
     public:
-        APP_PACKER_BASE() : _user_data(nullptr) {}
-        /* Virtual it for subclass's memory free */
+        APP_PACKER_BASE() : _framework(nullptr) {}
         virtual ~APP_PACKER_BASE() {}
 
-        /* Basic data getter and setter */
-        inline void setUserData(void* userData) { _user_data = userData; }
-        inline void* getUserData() { return _user_data; }
+        // Framework pointer
+        inline void setFramwork(void* userData) { _framework = userData; }
+        inline void* getFramwork() { return _framework; }
+
+        // Self pointer
         inline APP_PACKER_BASE* getAddr() { return this; }
 
-        /* ---------------------------------------------------------------------------------- */
+        /* ------------------------------- App factory ------------------------------ */
+    public:
+        /**
+         * @brief Override and return a new app's pointer
+         *
+         * @return void* new app's pointer
+         */
+        virtual void* newApp() { return nullptr; }
+
+        /**
+         * @brief Override and delete the passing app
+         *
+         * @param app app's pointer
+         */
+        virtual void deleteApp(void* app) {}
+
+        /* -------------------------- Basic app static data ------------------------- */
+    public:
         /**
          * @brief Override and return app's name
          *
-         * @return std::string
+         * @return const std::string
          */
-        virtual std::string getAppName() { return ""; };
+        virtual const std::string getAppName() { return ""; };
 
         /**
          * @brief Override and return app's icon pointer
@@ -53,105 +72,83 @@ namespace MOONCAKE
          * @return void*
          */
         virtual void* getCustomData() { return nullptr; }
-
-        /* ---------------------------------------------------------------------------------- */
-        /* App's create and delete */
-        /* For app manager's usage */
-        /* To make app comes and go memory dynamically */
-        /* ---------------------------------------------------------------------------------- */
-        /**
-         * @brief Override and return a new app's pointer
-         *
-         * @return void* new app's pointer
-         */
-        virtual void* newApp() { return nullptr; }
-
-        /**
-         * @brief Override and delete the passing app
-         *
-         * @param app app's pointer
-         */
-        virtual void deleteApp(void* app) {}
-        /* ---------------------------------------------------------------------------------- */
     };
 
-    /* App base class */
-    /* Contains states for life cycle control (FSM) */
-    /* Polymorphism of the life cycle makes different apps */
+    /* -------------------------------------------------------------------------- */
+    /*                                  App base                                  */
+    /* -------------------------------------------------------------------------- */
+    // A base class that contains an app's life cycle hooks
+    // Also internal states for app manager's life cycle handling
     class APP_BASE
     {
     private:
-        /* App packer's pointer */
-        /* Where you can get the app's resource */
-        /* Like name, icon, database... */
         APP_PACKER_BASE* _app_packer;
 
-        /* Internal state */
-        bool _allow_bg_running;
-        bool _go_start;
-        bool _go_close;
-        bool _go_destroy;
+        // Internal state
+        struct State_t
+        {
+            bool allow_bg_running = false;
+            bool go_start = false;
+            bool go_close = false;
+            bool go_destroy = false;
+        };
+        State_t _state;
 
+    public:
+        APP_BASE() : _app_packer(nullptr) {}
+        virtual ~APP_BASE() {}
+
+        /* -------------------- static asset getting and setting -------------------- */
+    public:
+        inline void setAppPacker(APP_PACKER_BASE* appPacker) { _app_packer = appPacker; }
+        inline APP_PACKER_BASE* getAppPacker() { return _app_packer; }
+        inline std::string getAppName() { return getAppPacker()->getAppName(); }
+        inline void* getAppIcon() { return getAppPacker()->getAppIcon(); }
+        inline void* getCustomData() { return getAppPacker()->getCustomData(); }
+        inline void* getFramwork() { return getAppPacker()->getFramwork(); }
+
+        /* --------------------------- State getting apis --------------------------- */
+    public:
+        inline bool isAllowBgRunning() { return _state.allow_bg_running; }
+        inline bool isGoingStart() { return _state.go_start; }
+        inline bool isGoingClose() { return _state.go_close; }
+        inline bool isGoingDestroy() { return _state.go_destroy; }
+        inline void resetGoingStartFlag() { _state.go_start = false; }
+        inline void resetGoingCloseFlag() { _state.go_close = false; }
+        inline void resetGoingDestroyFlag() { _state.go_destroy = false; }
+
+        /* --------------- Apis to controls lifecycle inside your app --------------- */
     protected:
-        /* API to control app's lifecycle state (internal) */
-
         /**
          * @brief Set if is App running background after closed
          *
          * @param allow
          */
-        inline void setAllowBgRunning(bool allow) { _allow_bg_running = allow; }
+        inline void setAllowBgRunning(bool allow) { _state.allow_bg_running = allow; }
 
         /**
          * @brief Notice the app manager, that this app want to be started
          *
          */
-        inline void startApp() { _go_start = true; }
+        inline void startApp() { _state.go_start = true; }
 
         /**
          * @brief Notice the app manager, that this app want to be cloesd
          * , better call this in onRunning() only, to avoid repeat method callback
          */
-        inline void closeApp() { _go_close = true; }
+        inline void closeApp() { _state.go_close = true; }
 
         /**
          * @brief Notice the app manager, that this app want to be destroyed
          * , better call this in onRunning() or onRunningBG() only, to avoid repeat method callback
          */
-        inline void destroyApp() { _go_destroy = true; }
+        inline void destroyApp() { _state.go_destroy = true; }
 
+        /* ----------------------------- Lifecycle hooks ---------------------------- */
     public:
-        APP_BASE() : _app_packer(nullptr), _allow_bg_running(false), _go_start(false), _go_close(false), _go_destroy(false) {}
-        virtual ~APP_BASE() {}
-
-        /* Wrap for resource getting from app packer */
-        inline APP_PACKER_BASE* getAppPacker() { return _app_packer; }
-        inline std::string getAppName() { return getAppPacker()->getAppName(); }
-        inline void* getAppIcon() { return getAppPacker()->getAppIcon(); }
-        inline void* getCustomData() { return getAppPacker()->getCustomData(); }
-        inline void* getUserData() { return getAppPacker()->getUserData(); }
-
-        /* API for lifecycle's state checking */
-        inline bool isAllowBgRunning() { return _allow_bg_running; }
-        inline bool isGoingStart() { return _go_start; }
-        inline bool isGoingClose() { return _go_close; }
-        inline bool isGoingDestroy() { return _go_destroy; }
-        inline void resetGoingStartFlag() { _go_start = false; }
-        inline void resetGoingCloseFlag() { _go_close = false; }
-        inline void resetGoingDestroyFlag() { _go_destroy = false; }
-
-        /**
-         * @brief Set the App Packer
-         *
-         * @param appPacker
-         */
-        inline void setAppPacker(APP_PACKER_BASE* appPacker) { _app_packer = appPacker; }
-
-        /* Lifecycle methonds */
-        /* basically the only thing you need to care about */
-        /* Override and do what you want */
-        /* It's very lite version of andriod's lifecycle :( */
-        /* https://developer.android.com/guide/components/activities/activity-lifecycle */
+        // Override hook functions to fit your need
+        // It's like very lite version of andriod's lifecycle
+        // https://developer.android.com/guide/components/activities/activity-lifecycle
         virtual void onCreate() {}
         virtual void onResume() {}
         virtual void onRunning() {}
