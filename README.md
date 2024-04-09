@@ -1,17 +1,17 @@
 # Mooncake
 
-适用于单片机的多 App 生命周期调度器，简化启动器设计，提高复用
+适用于单片机的多 App 生命周期调度框架，使用工厂模式以结构化 App 设计、简化 App 启动器设计、提高复用
 
-A light weight multiple apps' life cycle dispatcher, simplify app launcher designing and app code reusing
+A light weight multiple apps' life cycle dispatcher framework, structure app design, simplify app launcher designing and code reusing
 
 ------
 
 ### 目的：
 
-- 将应用抽象成多个有序的[生命周期](https://github.com/Forairaaaaa/mooncake/blob/main/src/app/app.h#L81) （`AppBase`）
-- 将应用的静态资源、创建销毁抽象成[工厂](https://github.com/Forairaaaaa/mooncake/blob/main/src/app/app.h#L20) （`AppPacker`）
-- 提供内外 API 控制应用生命周期
-- 提供[调度器](https://github.com/Forairaaaaa/mooncake/blob/main/src/app/app_manager.cpp#L161)，根据应用状态，调度生命周期钩子函数 （`Mooncake`）
+- 将应用抽象成多个有序的[生命周期](https://github.com/Forairaaaaa/mooncake/blob/main/src/app/app.h#L146) （`AppBase`）
+- 将应用的静态资源、创建销毁抽象成[工厂](https://github.com/Forairaaaaa/mooncake/blob/main/src/app/app.h#L15) （`AppPacker`）
+- 提供内外 [API](https://github.com/Forairaaaaa/mooncake/blob/main/src/app/app.h#L119) 控制应用生命周期
+- 提供[调度器](https://github.com/Forairaaaaa/mooncake/blob/main/src/app/app_manager.h#L19)，根据应用状态，调度生命周期钩子函数 （`Mooncake`）
 
 ### 示例
 
