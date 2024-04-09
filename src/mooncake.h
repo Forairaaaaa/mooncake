@@ -23,68 +23,33 @@
 
 namespace MOONCAKE
 {
-    class Mooncake;
-
-    /* Structure that contains userdata */
-    /* Will be passed to every running apps */
-    /* You can inherit this to create your own userdata */
-    struct APP_UserData_t
-    {
-        /* Pointer to the framwork */
-        Mooncake* framework = nullptr;
-    };
-
-    /* Mooncake framework class */
-    /* Inherit App Register to manager apps' install and uninstall */
-    /* Contains a App Manager to control apps' lifecycles */
+    /* -------------------------------------------------------------------------- */
+    /*                                  Mooncake                                  */
+    /* -------------------------------------------------------------------------- */
+    // A class to provide app frmework apis
     class Mooncake
     {
     private:
-        /* Component App register */
-        APP_Register _app_register;
-
-        /* Component App manager */
-        APP_Manager _app_manager;
-
-        /* User data pointer */
-        APP_UserData_t* _user_data;
-
-        /* Boot anim pointer */
-        APP_PACKER_BASE* _boot_anim;
-
-        /* Flag to free the memory, if they are created by framework */
-        bool _flag_free_user_data;
-        bool _flag_free_boot_anim;
+        // Components
+        struct Data_t
+        {
+            APP_Register* app_register = nullptr;
+            APP_Manager* app_manager = nullptr;
+        };
+        Data_t _data;
+        void _free_data();
+        void _init_log();
 
     public:
-        Mooncake() : _user_data(nullptr), _boot_anim(nullptr), _flag_free_user_data(false), _flag_free_boot_anim(false) {}
         ~Mooncake();
 
-        /* Framework's components getter */
-        inline APP_Register& getAppRegister() { return _app_register; }
-        inline APP_Manager& getAppManager() { return _app_manager; }
+        /* ---------------------------- Components getter --------------------------- */
+    public:
+        inline APP_Register* getAppRegister() { return _data.app_register; }
+        inline APP_Manager* getAppManager() { return _data.app_manager; }
 
-        /**
-         * @brief Set the user data, which will be passed to every apps
-         * , if not set, framework will create a default one
-         * @param userData
-         */
-        inline void setUserData(APP_UserData_t* userData) { _user_data = userData; }
-
-        /**
-         * @brief Get the User Data object
-         *
-         * @return APP_UserData_t*
-         */
-        inline APP_UserData_t* getUserData() { return _user_data; }
-
-        /**
-         * @brief Set the boot anim, which will be created and run in framework's init()
-         * , if not set, framework will create a default one
-         * @param bootAnim
-         */
-        inline void setBootAnim(APP_PACKER_BASE* bootAnim) { _boot_anim = bootAnim; }
-
+        /* ----------------------------- Framework apis ----------------------------- */
+    public:
         /**
          * @brief Init framework
          *
@@ -92,14 +57,10 @@ namespace MOONCAKE
         void init();
 
         /**
-         * @brief Calling this to keep framework running
+         * @brief Calling this in loop to keep framework running
          *
          */
         void update();
-
-        /* Framework wrap to the App register */
-
-        /* *Important*: this wrap will pass user data pointer to the app packer */
 
         /**
          * @brief Install an app (Register an app packer)
@@ -108,7 +69,7 @@ namespace MOONCAKE
          * @return true
          * @return false
          */
-        inline bool installApp(APP_PACKER_BASE* appPacker) { return _app_register.install(appPacker, _user_data); }
+        inline bool installApp(APP_PACKER_BASE* appPacker) { return _data.app_register->install(appPacker, this); }
 
         /**
          * @brief Uninstall an app (Remove it from the register)
@@ -117,27 +78,27 @@ namespace MOONCAKE
          * @return true
          * @return false
          */
-        inline bool uninstallApp(APP_PACKER_BASE* appPacker) { return _app_register.uninstall(appPacker); }
+        inline bool uninstallApp(APP_PACKER_BASE* appPacker) { return _data.app_register->uninstall(appPacker); }
 
         /**
          * @brief Uninstall all apps
          *
          */
-        inline void uninstallAllApps() { _app_register.uninstallAllApps(); }
+        inline void uninstallAllApps() { _data.app_register->uninstallAllApps(); }
 
         /**
          * @brief Get the total installed app num in app register
          *
          * @return std::size_t
          */
-        inline std::size_t getInstalledAppNum() { return _app_register.getInstalledAppNum(); }
+        inline std::size_t getInstalledAppNum() { return _data.app_register->getInstalledAppNum(); }
 
         /**
          * @brief Get the reference to the installed app packer list
          *
          * @return std::vector<APP_PACKER_BASE*>&
          */
-        inline std::vector<APP_PACKER_BASE*>& getInstalledAppList() { return _app_register.getInstalledAppList(); }
+        inline std::vector<APP_PACKER_BASE*>& getInstalledAppList() { return _data.app_register->getInstalledAppList(); }
 
         /* Framework wrap to the App manager */
 
@@ -147,7 +108,7 @@ namespace MOONCAKE
          * @param appPacker app's packer
          * @return APP_BASE* started app's pointer
          */
-        inline APP_BASE* createApp(APP_PACKER_BASE* appPacker) { return _app_manager.createApp(appPacker); }
+        inline APP_BASE* createApp(APP_PACKER_BASE* appPacker) { return _data.app_manager->createApp(appPacker); }
 
         /**
          * @brief Start an app, this method will only change passing app's state
@@ -156,7 +117,7 @@ namespace MOONCAKE
          * @return true
          * @return false
          */
-        inline bool startApp(APP_BASE* app) { return _app_manager.startApp(app); }
+        inline bool startApp(APP_BASE* app) { return _data.app_manager->startApp(app); }
 
         /**
          * @brief Wrap of create and start an app
@@ -174,7 +135,7 @@ namespace MOONCAKE
          * @return true
          * @return false
          */
-        inline bool closeApp(APP_BASE* app) { return _app_manager.closeApp(app); }
+        inline bool closeApp(APP_BASE* app) { return _data.app_manager->closeApp(app); }
 
         /**
          * @brief Destroy an app, app will be deleted by it's app packer
@@ -183,19 +144,19 @@ namespace MOONCAKE
          * @return true
          * @return false
          */
-        inline bool destroyApp(APP_BASE* app) { return _app_manager.destroyApp(app); }
+        inline bool destroyApp(APP_BASE* app) { return _data.app_manager->destroyApp(app); }
 
         /**
          * @brief Destroy all apps
          *
          */
-        inline void destroyAllApps() { _app_manager.destroyAllApps(); }
+        inline void destroyAllApps() { _data.app_manager->destroyAllApps(); }
 
         /**
          * @brief Get total created app num in app manager
          *
          * @return std::size_t
          */
-        inline std::size_t getCreatedAppNum() { return _app_manager.getCreatedAppNum(); }
+        inline std::size_t getCreatedAppNum() { return _data.app_manager->getCreatedAppNum(); }
     };
 } // namespace MOONCAKE

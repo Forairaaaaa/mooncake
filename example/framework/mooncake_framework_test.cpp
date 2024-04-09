@@ -35,7 +35,7 @@ public:
 class App_1111_packer : public APP_PACKER_BASE
 {
 public:
-    std::string getAppName() override { return "App-1111"; }
+    const char* getAppName() override { return "App-1111"; }
     void* newApp() override { return new App_1111; }
     void deleteApp(void* app) override { delete (App_1111*)app; }
 

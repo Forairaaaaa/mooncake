@@ -13,6 +13,6 @@ add_executable(mooncake_framework_test ./mooncake_framework_test.cpp)
 target_link_libraries(mooncake_framework_test ${PROJECT_NAME})
 
 # App user data test
-add_executable(app_user_data_test ./app_user_data_test.cpp)
-target_link_libraries(app_user_data_test ${PROJECT_NAME})
+add_executable(app_internal_api_test ./app_internal_api_test.cpp)
+target_link_libraries(app_internal_api_test ${PROJECT_NAME})
 

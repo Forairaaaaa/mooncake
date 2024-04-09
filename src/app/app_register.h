@@ -15,17 +15,18 @@
 
 namespace MOONCAKE
 {
-    /* App register */
-    /* This class contains a list of "APP_PACKER" */
-    /* Which can tells what apps do you have */
-    /* "install" will add a packer into the list, "uninstall" will remove it */
+    /* -------------------------------------------------------------------------- */
+    /*                                App register                                */
+    /* -------------------------------------------------------------------------- */
+    // A class to contain app packers
+    // "install" to add packer into the register
+    // "uninstall" to remove it
     class APP_Register
     {
     private:
         std::vector<APP_PACKER_BASE*> _app_packer_list;
 
     public:
-        /* Free all the app packers' memory */
         ~APP_Register();
 
         /**

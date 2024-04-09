@@ -1,11 +1,11 @@
 /**
- * @file app_user_data_test.cpp
+ * @file app_internal_api_test.cpp
  * @author Forairaaaaa
  * @brief
  * @version 0.1
- * @date 2023-08-21
+ * @date 2024-04-09
  *
- * @copyright Copyright (c) 2023
+ * @copyright Copyright (c) 2024
  *
  */
 #include <iostream>
@@ -20,12 +20,6 @@ class App_1111 : public APP_BASE
     void onCreate() override { startApp(); }
     void onRunning() override
     {
-        /* Raw getting */
-        // std::cout << getUserData() << "\n";
-        // std::cout << ((Mooncake*)(((MC_USER_DATA_T)getUserData())->framework))->getInstalledAppList()[0]->getAppName() <<
-        // "\n"; std::cout <<
-        // ((SIMPLEKV::SimpleKV*)(((MC_USER_DATA_T)getUserData())->database))->Get(MC_DB_DISP_HOR)->value<int>() << "\n";
-
         /* Frame work define wrap */
         std::cout << mcAppGetFramework()->getInstalledAppList()[0]->getAppName() << "\n";
     }
@@ -34,7 +28,7 @@ class App_1111 : public APP_BASE
 class App_1111_packer : public APP_PACKER_BASE
 {
 public:
-    std::string getAppName() override { return "App-1111"; }
+    const char* getAppName() override { return "App-1111"; }
     void* newApp() override { return new App_1111; }
     void deleteApp(void* app) override { delete (App_1111*)app; }
 };
@@ -42,7 +36,7 @@ public:
 
 int main()
 {
-    std::cout << "[App user data test]\n";
+    std::cout << "[App internal api test]\n";
 
     Mooncake mooncake;
     mooncake.init();

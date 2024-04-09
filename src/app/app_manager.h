@@ -16,12 +16,14 @@
 
 namespace MOONCAKE
 {
-    /* App manager */
-    /* This class control app's opening, running or closing */
+    /* -------------------------------------------------------------------------- */
+    /*                                 App manager                                */
+    /* -------------------------------------------------------------------------- */
+    // A class to handle app's lifecycle controlling
     class APP_Manager
     {
     public:
-        /* This enum describe an app's current status of lifecycle */
+        // App's current state
         enum AppLifecycleState_t
         {
             ON_CREATE = 0,
@@ -32,8 +34,7 @@ namespace MOONCAKE
             ON_DESTROY
         };
 
-        /* A app lifecycle container */
-        /* Holds an app and it's lifecycle status */
+        // A container of an app and it's state
         struct AppLifecycle_t
         {
             APP_BASE* app = nullptr;
@@ -41,17 +42,18 @@ namespace MOONCAKE
         };
 
     private:
-        /* A list of apps' lifecycle */
+        // A list to contains app lifcycles
         std::vector<AppLifecycle_t> _app_lifecycle_list;
         int _search_app_lifecycle_list(APP_BASE* app);
 
-        /* A buffer of apps that about to add in lifecycle */
-        /* To avoid push_back method while lifecycle list's iterating */
+        // A list to contain apps that about to be create
+        // To achive create app inside of app
+        // Because lifecycle hooks are called inside lifcycles list's interating
+        // You don't wont to pushback at that time :(
         std::vector<AppLifecycle_t> _app_create_buffer;
         int _search_app_create_buffer(APP_BASE* app);
 
     public:
-        /* Free all the app's memory */
         ~APP_Manager();
 
         /**

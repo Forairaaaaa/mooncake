@@ -9,68 +9,61 @@
  *
  */
 #include "mooncake.h"
-#include "../apps/common_apps/boot_anim_ascii/boot_anim_ascii.h"
 #include "app/app.h"
 #include "spdlog/spdlog.h"
+#include <cstdio>
 
 using namespace MOONCAKE;
 
 Mooncake::~Mooncake()
 {
-    spdlog::warn("mooncake destruction");
+    _free_data();
+    spdlog::info("mooncake destroyed");
+    spdlog::info("bye :)");
+}
 
-    /* Free memory */
-    if (_flag_free_user_data)
-        delete _user_data;
-    if (_flag_free_boot_anim)
-        delete _boot_anim;
+void Mooncake::_free_data()
+{
+    if (_data.app_register != nullptr)
+        delete _data.app_register;
+    if (_data.app_manager != nullptr)
+        delete _data.app_manager;
+}
 
-    spdlog::info("bye :(");
+static const char* _mooncake_ascii_logo = R"(
+ _____ _____ _____ _____ _____ _____ _____ _____
+|     |     |     |   | |     |  _  |  |  |   __|
+| | | |  |  |  |  | | | |   --|     |    -|   __|
+|_|_|_|_____|_____|_|___|_____|__|__|__|__|_____|
+)";
+
+void Mooncake::_init_log()
+{
+    printf("%s", _mooncake_ascii_logo);
+    printf("\n- @author Forairaaaaa\n");
+    printf("- @version " MC_VERSION "\n");
+    printf("- @build at " __TIME__ " " __DATE__ "\n\n");
 }
 
 void Mooncake::init()
 {
     spdlog::info("mooncake init :)");
 
-    /* Init user data */
-    /* If user data not set */
-    if (_user_data == nullptr)
+    if (_data.app_register != nullptr)
     {
-        spdlog::info("create userdata");
-        _user_data = new APP_UserData_t;
-        _flag_free_user_data = true;
+        spdlog::warn("mooncake reinit :(");
+        _free_data();
     }
 
-    /* Copy framework's pointer into user data */
-    _user_data->framework = this;
+    _data.app_register = new APP_Register;
+    _data.app_manager = new APP_Manager;
 
-    /* Init boot anim */
-    /* If boot anim not set */
-    if (_boot_anim == nullptr)
-    {
-        spdlog::info("create boot anim");
-        /* Create a default one */
-        _boot_anim = new APPS::BootAnim_ASCII_Packer;
-        _flag_free_boot_anim = true;
-    }
-
-    /* Start boot anim and wait till it finish */
-    spdlog::info("start boot anim");
-    _app_manager.destroyAllApps();
-    _app_manager.startApp(_app_manager.createApp(_boot_anim));
-    while (1)
-    {
-        _app_manager.update();
-        /* If boot anim is destroyed */
-        if (_app_manager.getCreatedAppNum() == 0)
-            break;
-    }
-
-    spdlog::info("init done");
+    _init_log();
+    spdlog::info("done");
 }
 
 void Mooncake::update()
 {
-    /* Update apps' lifecycles */
-    _app_manager.update();
+    // Update manager
+    _data.app_manager->update();
 }

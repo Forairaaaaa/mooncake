@@ -1,20 +1,17 @@
 /**
  * @file app_manager_basic.cpp
  * @author Forairaaaaa
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2023-08-19
- * 
+ *
  * @copyright Copyright (c) 2023
- * 
+ *
  */
-#include <iostream>
 #include <app/app_manager.h>
-
+#include <iostream>
 
 using namespace MOONCAKE;
-
-
 
 /* ---------------------- App_1111 ---------------------- */
 /* Create a new app with new lifecycle methods */
@@ -25,93 +22,60 @@ class App_1111 : public APP_BASE
         std::cout << getAppName() << " > onCreate\n";
         // startApp();
     }
-    void onResume() override
-    {
-        std::cout << getAppName() << " > onResume\n";
-    }
-    void onRunning() override
-    {
-        std::cout << getAppName() << " > onRunning\n";
-    }
-    void onPause() override
-    {
-        std::cout << getAppName() << " > onPause\n";
-    }
-    void onDestroy() override
-    {
-        std::cout << getAppName() << " > onDestroy\n";
-    }
-    public: ~App_1111()
-    {
-        std::cout << getAppName() << " > I'm deleted :(\n";
-    }
+    void onResume() override { std::cout << getAppName() << " > onResume\n"; }
+    void onRunning() override { std::cout << getAppName() << " > onRunning\n"; }
+    void onPause() override { std::cout << getAppName() << " > onPause\n"; }
+    void onDestroy() override { std::cout << getAppName() << " > onDestroy\n"; }
+
+public:
+    ~App_1111() { std::cout << getAppName() << " > I'm deleted :(\n"; }
 };
 /* Create a new app packer with new resource and memory manager */
 class App_1111_packer : public APP_PACKER_BASE
 {
-    std::string getAppName() override { return "App-1111"; }
-    void * newApp() override { return new App_1111; }
-    void deleteApp(void *app) override { delete (App_1111*)app; }
+    const char* getAppName() override { return "App-1111"; }
+    void* newApp() override { return new App_1111; }
+    void deleteApp(void* app) override { delete (App_1111*)app; }
 };
 /* --------------------------------------------------- */
-
 
 /* ---------------------- App_2222 ---------------------- */
 /* Create a new app with new lifecycle methods */
 class App_2222 : public APP_BASE
 {
-    void onCreate() override
-    {
-        std::cout << getAppName() << " > onCreate, hi!\n";
-    }
-    void onResume() override
-    {
-        std::cout << getAppName() << " > onResume\n";
-    }
+    void onCreate() override { std::cout << getAppName() << " > onCreate, hi!\n"; }
+    void onResume() override { std::cout << getAppName() << " > onResume\n"; }
     void onRunning() override
     {
         std::cout << getAppName() << " > onRunning, I want to be destroyed!\n";
         destroyApp();
     }
-    void onPause() override
-    {
-        std::cout << getAppName() << " > onPause\n";
-    }
-    void onDestroy() override
-    {
-        std::cout << getAppName() << " > onDestroy, bye!\n";
-    }
-    public: ~App_2222()
-    {
-        std::cout << getAppName() << " > I'm deleted :(\n";
-    }
+    void onPause() override { std::cout << getAppName() << " > onPause\n"; }
+    void onDestroy() override { std::cout << getAppName() << " > onDestroy, bye!\n"; }
+
+public:
+    ~App_2222() { std::cout << getAppName() << " > I'm deleted :(\n"; }
 };
 /* Create a new app packer with new resource and memory manager */
 class App_2222_packer : public APP_PACKER_BASE
 {
-    std::string getAppName() override { return "App-2222"; }
-    void * newApp() override { return new App_2222; }
-    void deleteApp(void *app) override { delete (App_2222*)app; }
+    const char* getAppName() override { return "App-2222"; }
+    void* newApp() override { return new App_2222; }
+    void deleteApp(void* app) override { delete (App_2222*)app; }
 };
 /* --------------------------------------------------- */
-
-
-
 
 int main()
 {
     std::cout << "[App manager basic example]\n\n";
 
-
     /* Create a app manager */
     APP_Manager app_manager;
-
 
     /* "App_1111_packer" contains "App_1111"'s basic resouces, and the method to instantiate an "App_1111" */
     App_1111_packer app_1111_packer;
     /* So do "App_2222_packer" to the "App_2222" */
     App_2222_packer app_2222_packer;
-    
 
     /* We can call createApp() with app packer to create an app */
     /* Manager will instantiates an app and return it's pointer to us */
@@ -123,7 +87,6 @@ int main()
         App-2222 > onCreate, hi!
     */
 
-
     /* Now we can call update() to keep our apps running */
     for (int i = 0; i < 66; i++)
         app_manager.update();
@@ -131,7 +94,6 @@ int main()
     /* We can start them manually, with the pointers that manager just return */
     /* Or we can call "startApp()" inside the app, like line-26 */
     /* Which tells the manager to start it */
-
 
     /* Let's start them manually and try again */
     std::cout << "\n";
@@ -173,7 +135,6 @@ int main()
         6)  App-1111 > onRunning
     */
 
-    
     /* Now we can try to destroy App-1111 manually */
     std::cout << "\n";
     app_manager.destroyApp(app_1111_ptr);
@@ -184,7 +145,6 @@ int main()
         App-1111 > I'm deleted :(
     */
 
-
     /* Try calling update again */
     for (int i = 0; i < 66; i++)
         app_manager.update();
@@ -193,7 +153,6 @@ int main()
     /*
         app manager now have 0 apps
     */
-
 
     /* Because the app packer only contains an app's basic resources */
     /* And the app's memory alloction, freeing */
@@ -212,16 +171,17 @@ int main()
         App-1111 > onCreate
         App-1111 > onCreate
 
-        app manager now have 5 apps
+        app manager now have 0 apps
     */
+    // 0 apps is because createApp will store apps in a buffer, and push into real list in next update
 
-    
     /* We can just treat them as 5 different apps, whoes sharing the resources the packer provides, like app name */
     std::cout << "\n";
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 3; i++)
     {
         app_manager.update();
     }
+    std::cout << "\napp manager now have " << app_manager.getCreatedAppNum() << " apps\n";
     /*
         1)  App-1111 > onResume
             App-1111 > onResume
@@ -233,8 +193,9 @@ int main()
             App-1111 > onRunning
             App-1111 > onRunning
             App-1111 > onRunning
-    */
 
+        app manager now have 5 apps
+    */
 
     /* :) */
     std::cout << "\n";
