@@ -17,12 +17,12 @@ using namespace MOONCAKE;
 
 Mooncake::~Mooncake()
 {
-    _free_data();
+    _free_components();
     spdlog::info("mooncake destroyed");
     spdlog::info("bye :)");
 }
 
-void Mooncake::_free_data()
+void Mooncake::_free_components()
 {
     if (_data.app_manager != nullptr)
         delete _data.app_manager;
@@ -37,7 +37,7 @@ static const char* _mooncake_ascii_logo = R"(
 |_|_|_|_____|_____|_|___|_____|__|__|__|__|_____|
 )";
 
-void Mooncake::_init_log()
+void Mooncake::_welcome_log()
 {
     printf("%s", _mooncake_ascii_logo);
     printf("\n- @author Forairaaaaa\n");
@@ -52,13 +52,13 @@ void Mooncake::init()
     if (_data.app_register != nullptr)
     {
         spdlog::warn("mooncake reinit :(");
-        _free_data();
+        _free_components();
     }
 
     _data.app_register = new APP_Register;
     _data.app_manager = new APP_Manager;
 
-    _init_log();
+    _welcome_log();
     spdlog::info("done");
 }
 

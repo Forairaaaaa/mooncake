@@ -37,8 +37,8 @@ namespace MOONCAKE
             APP_Manager* app_manager = nullptr;
         };
         Data_t _data;
-        void _free_data();
-        void _init_log();
+        void _free_components();
+        void _welcome_log();
 
     public:
         ~Mooncake();
