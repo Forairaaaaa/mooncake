@@ -10,7 +10,7 @@
  */
 #pragma once
 
-#define MC_VERSION "v1.1"
+#define MC_VERSION "v1.2"
 
 /* Get framework (App internal usage only) */
 #define mcAppGetFramework() ((Mooncake*)getFramwork())
