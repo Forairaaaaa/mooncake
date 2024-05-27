@@ -14,6 +14,8 @@ A light weight multiple apps' life cycle dispatcher framework, structure app des
 - 提供[调度器](https://github.com/Forairaaaaa/mooncake/blob/main/src/app/app_manager.h#L19)，根据应用状态，调度生命周期钩子函数 （`Mooncake`）
 
 ### 示例
+- [项目样板](https://github.com/Forairaaaaa/app_boilerplate)
+- 基础：
 
 ```cpp
 #include <mooncake.h>
