@@ -1,6 +1,6 @@
 # Mooncake
 
-适用于单片机的多 App 生命周期调度框架，使用工厂模式以结构化 App 设计、简化 App 启动器设计、提高复用
+适用于单片机的多 App 生命周期调度框架，用工厂模式结构化 App 设计、简化 App 启动器设计、提高复用
 
 A light weight multiple apps' life cycle dispatcher framework, structure app design, simplify app launcher designing and code reusing
 
