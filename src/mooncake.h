@@ -107,6 +107,17 @@ namespace MOONCAKE
          */
         inline std::vector<APP_PACKER_BASE*>& getInstalledAppList() { return _data.app_register->getInstalledAppList(); }
 
+        /**
+         * @brief Get installed app packer by app name
+         *
+         * @param appName
+         * @return APP_PACKER_BASE*
+         */
+        inline APP_PACKER_BASE* getInstalledAppByName(const std::string& appName)
+        {
+            return _data.app_register->getInstalledAppByName(appName);
+        }
+
         /* Framework wrap to the App manager */
 
         /**

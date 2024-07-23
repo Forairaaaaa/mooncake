@@ -78,5 +78,13 @@ namespace MOONCAKE
          * @return false
          */
         bool isAppInstalled(APP_PACKER_BASE* appPacker);
+
+        /**
+         * @brief Get installed app packer by app name
+         *
+         * @param appName
+         * @return APP_PACKER_BASE*
+         */
+        APP_PACKER_BASE* getInstalledAppByName(const std::string& appName);
     };
 } // namespace MOONCAKE

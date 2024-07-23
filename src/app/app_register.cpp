@@ -82,3 +82,14 @@ bool APP_Register::isAppInstalled(APP_PACKER_BASE* appPacker)
     }
     return false;
 }
+
+APP_PACKER_BASE* APP_Register::getInstalledAppByName(const std::string& appName)
+{
+    /* Iterate the shit out */
+    for (const auto& i : _app_packer_list)
+    {
+        if (i->getAppName() == appName)
+            return i;
+    }
+    return nullptr;
+}
