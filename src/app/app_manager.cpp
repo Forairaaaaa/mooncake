@@ -300,3 +300,17 @@ void APP_Manager::destroyAllApps()
     _app_lifecycle_list.clear();
     _app_create_buffer.clear();
 }
+
+std::size_t APP_Manager::getCreatedAppNumByLayer(const std::uint8_t& appLayer)
+{
+    std::size_t ret = 0;
+
+    /* Iterate the shit out */
+    for (auto& i : _app_lifecycle_list)
+    {
+        if (i.app->getAppLayer() == appLayer)
+            ret++;
+    }
+
+    return ret;
+}

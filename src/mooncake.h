@@ -69,6 +69,10 @@ namespace MOONCAKE
          */
         void update();
 
+        /* -------------------------------------------------------------------------- */
+        /*                              App register wrap                             */
+        /* -------------------------------------------------------------------------- */
+    public:
         /**
          * @brief Install an app (Register an app packer)
          *
@@ -118,8 +122,10 @@ namespace MOONCAKE
             return _data.app_register->getInstalledAppByName(appName);
         }
 
-        /* Framework wrap to the App manager */
-
+        /* -------------------------------------------------------------------------- */
+        /*                              App manager warp                              */
+        /* -------------------------------------------------------------------------- */
+    public:
         /**
          * @brief Create an app
          *
@@ -176,5 +182,16 @@ namespace MOONCAKE
          * @return std::size_t
          */
         inline std::size_t getCreatedAppNum() { return _data.app_manager->getCreatedAppNum(); }
+
+        /**
+         * @brief Get created app num in app manager in specific app layer
+         *
+         * @param appLayer
+         * @return std::size_t
+         */
+        inline std::size_t getCreatedAppNumByLayer(const std::uint8_t& appLayer)
+        {
+            return _data.app_manager->getCreatedAppNumByLayer(appLayer);
+        }
     };
 } // namespace MOONCAKE

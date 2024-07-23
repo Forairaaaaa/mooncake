@@ -116,5 +116,13 @@ namespace MOONCAKE
          * @return const std::vector<AppLifecycle_t>*
          */
         inline const std::vector<AppLifecycle_t>* getAppLifecycleList() { return &_app_lifecycle_list; }
+
+        /**
+         * @brief Get created app num in app manager in specific app layer
+         *
+         * @param appLayer
+         * @return std::size_t
+         */
+        std::size_t getCreatedAppNumByLayer(const std::uint8_t& appLayer);
     };
 } // namespace MOONCAKE

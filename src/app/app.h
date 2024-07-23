@@ -9,6 +9,7 @@
  *
  */
 #pragma once
+#include <cstdint>
 
 namespace MOONCAKE
 {
@@ -83,6 +84,9 @@ namespace MOONCAKE
     private:
         APP_PACKER_BASE* _app_packer;
 
+        // A layer for distinguish, like normal apps and daemon apps
+        std::uint8_t _app_layer;
+
         // Internal state
         struct State_t
         {
@@ -94,7 +98,7 @@ namespace MOONCAKE
         State_t _state;
 
     public:
-        APP_BASE() : _app_packer(nullptr) {}
+        APP_BASE() : _app_packer(nullptr), _app_layer(0) {}
         virtual ~APP_BASE() {}
 
         /* -------------------- static asset getting and setting -------------------- */
@@ -115,6 +119,11 @@ namespace MOONCAKE
         inline void resetGoingStartFlag() { _state.go_start = false; }
         inline void resetGoingCloseFlag() { _state.go_close = false; }
         inline void resetGoingDestroyFlag() { _state.go_destroy = false; }
+
+        /* -------------------------------- App layer ------------------------------- */
+    public:
+        inline void setAppLayer(const std::uint8_t& appLayer) { _app_layer = appLayer; }
+        inline const std::uint8_t& getAppLayer() { return _app_layer; }
 
         /* --------------- Apis to controls lifecycle inside your app --------------- */
     protected:
