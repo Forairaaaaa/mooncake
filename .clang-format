@@ -127,7 +127,7 @@ PenaltyExcessCharacter: 1000000
 # 将函数的返回类型放到它自己的行的penalty
 PenaltyReturnTypeOnItsOwnLine: 6000
 # 指针和引用的对齐: Left, Right, Middle
-PointerAlignment: Right
+PointerAlignment: Left
 # 允许重新排版注释
 ReflowComments: true
 # 允许排序#include
