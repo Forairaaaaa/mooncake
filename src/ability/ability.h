@@ -11,22 +11,123 @@
 #pragma once
 
 namespace Mooncake {
-enum AbilityType_t {
-    BasicAbility = 0,
-    UIAbility,
-    WorkerAbility,
+
+namespace AbilityType {
+enum Type_t {
+    None = 0,
+    Basic,
+    UI,
+    Worker,
+    Custom,
+};
+}
+
+/**
+ * @brief Ability 基类，提供原始生命周期回调，以便管理器统一调用
+ *
+ */
+class AbilityBase {
+public:
+    virtual ~AbilityBase() = default;
+
+public:
+    virtual AbilityType::Type_t getAbilityType()
+    {
+        return AbilityType::None;
+    }
+
+    virtual void baseCreate() {}
+    virtual void baseUpdate() {}
+    virtual void baseDestroy() {}
 };
 
-class BasicAbility {
+/**
+ * @brief Basic Ability，提供最基础的三段式生命周期。可以把 onCreate() 理解成 Arduino 的 setup()，onRunning() 为 loop()
+ *
+ */
+class BasicAbility : public AbilityBase {
 public:
     virtual ~BasicAbility() = default;
 
-    /* -------------------------------------------------------------------------- */
-    /*                         Basic life cycle callbacks                         */
-    /* -------------------------------------------------------------------------- */
+    AbilityType::Type_t getAbilityType() override
+    {
+        return AbilityType::Basic;
+    }
+
+    void baseCreate() override
+    {
+        onCreate();
+    }
+
+    void baseUpdate() override
+    {
+        onRunning();
+    }
+
+    void baseDestroy() override
+    {
+        onDestroy();
+    }
+
+    // Life cycle callbacks
 public:
     virtual void onCreate() {}
-    virtual void onUpdate() {}
+    virtual void onRunning() {}
+    virtual void onDestroy() {}
+};
+
+/**
+ * @brief UI Ability，在三段式生命周期的基础上扩展出前后台切换。适合前后台具有不同行为的 UI
+ * 应用，比如桌面启动器（选择一个 App 打开后，将自己藏进后台）
+ *
+ */
+class UIAbility : public AbilityBase {
+public:
+    virtual ~UIAbility() = default;
+
+    AbilityType::Type_t getAbilityType() override
+    {
+        return AbilityType::UI;
+    }
+
+    void baseCreate() override;
+    void baseUpdate() override;
+    void baseDestroy() override;
+
+    // Life cycle callbacks
+public:
+    virtual void onCreate() {}
+    virtual void onShow() {}
+    virtual void onForeground() {}
+    virtual void onBackground() {}
+    virtual void onHide() {}
+    virtual void onDestroy() {}
+};
+
+/**
+ * @brief Worker
+ * Ability，在三段式基础上扩展出运行、暂停状态切换。适合后台应用，比如数据监听、事件转发。或者简单二元状态的 UI 行为
+ *
+ */
+class WorkerAbility : public AbilityBase {
+public:
+    virtual ~WorkerAbility() = default;
+
+    AbilityType::Type_t getAbilityType() override
+    {
+        return AbilityType::Worker;
+    }
+
+    void baseCreate() override;
+    void baseUpdate() override;
+    void baseDestroy() override;
+
+    // Life cycle callbacks
+public:
+    virtual void onCreate() {}
+    virtual void onResume() {}
+    virtual void onRunning() {}
+    virtual void onPause() {}
     virtual void onDestroy() {}
 };
 
