@@ -54,6 +54,11 @@ public:
         return AbilityType::Basic;
     }
 
+    virtual void onCreate() {}
+    virtual void onRunning() {}
+    virtual void onDestroy() {}
+
+private:
     void baseCreate() override
     {
         onCreate();
@@ -68,12 +73,6 @@ public:
     {
         onDestroy();
     }
-
-    // Life cycle callbacks
-public:
-    virtual void onCreate() {}
-    virtual void onRunning() {}
-    virtual void onDestroy() {}
 };
 
 /**
@@ -90,18 +89,40 @@ public:
         return AbilityType::UI;
     }
 
-    void baseCreate() override;
-    void baseUpdate() override;
-    void baseDestroy() override;
+    /**
+     * @brief Show ability from background to foreground
+     *
+     */
+    void show();
 
-    // Life cycle callbacks
-public:
+    /**
+     * @brief Hide ability from foreground to background
+     *
+     */
+    void hide();
+
+    /* -------------------------------------------------------------------------- */
+    /*                             Lifecycle callbacks                            */
+    /* -------------------------------------------------------------------------- */
     virtual void onCreate() {}
     virtual void onShow() {}
     virtual void onForeground() {}
     virtual void onBackground() {}
     virtual void onHide() {}
     virtual void onDestroy() {}
+
+private:
+    enum AbilityState_t {
+        StateOnShow = 0,
+        StateOnForeground,
+        StateOnHide,
+        StateOnBackground,
+    };
+    AbilityState_t current_state = StateOnForeground;
+
+    void baseCreate() override;
+    void baseUpdate() override;
+    void baseDestroy() override;
 };
 
 /**
@@ -118,17 +139,19 @@ public:
         return AbilityType::Worker;
     }
 
-    void baseCreate() override;
-    void baseUpdate() override;
-    void baseDestroy() override;
-
-    // Life cycle callbacks
-public:
+    /* -------------------------------------------------------------------------- */
+    /*                             Lifecycle callbacks                            */
+    /* -------------------------------------------------------------------------- */
     virtual void onCreate() {}
     virtual void onResume() {}
     virtual void onRunning() {}
     virtual void onPause() {}
     virtual void onDestroy() {}
+
+private:
+    void baseCreate() override;
+    void baseUpdate() override;
+    void baseDestroy() override;
 };
 
 } // namespace Mooncake
