@@ -31,5 +31,5 @@ endif()
 # CTest
 enable_testing()
 
-# Basic
 add_test(basic example/basic)
+add_test(ability_manager example/ability_manager)
