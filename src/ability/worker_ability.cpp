@@ -20,10 +20,10 @@ void WorkerAbility::baseCreate()
 void WorkerAbility::baseUpdate()
 {
     /* ----------------------------------- 状态机 ---------------------------------- */
-    switch (current_state) {
+    switch (_current_state) {
         case StateGoResume: {
             onResume();
-            current_state = StateRunning;
+            _current_state = StateRunning;
             break;
         }
         case StateRunning: {
@@ -32,7 +32,7 @@ void WorkerAbility::baseUpdate()
         }
         case StateGoPause: {
             onPause();
-            current_state = StatePausing;
+            _current_state = StatePausing;
             break;
         }
         case StatePausing: {
@@ -51,10 +51,10 @@ void WorkerAbility::baseDestroy()
 
 void WorkerAbility::pause()
 {
-    current_state = StateGoPause;
+    _current_state = StateGoPause;
 }
 
 void WorkerAbility::resume()
 {
-    current_state = StateGoResume;
+    _current_state = StateGoResume;
 }

@@ -40,7 +40,6 @@ bool AbilityManager::destroyAbility(int abilityID)
             return true;
         }
     }
-
     return false;
 }
 
@@ -79,6 +78,17 @@ void AbilityManager::updateAbilities()
             }
         }
     }
+}
+
+AbilityBase* AbilityManager::getAbilityInstance(int abilityID)
+{
+    // 遍历查找对应 ID 的 Ability
+    for (auto& ability_info : _ability_list) {
+        if (ability_info.id == abilityID) {
+            return ability_info.ability.get();
+        }
+    }
+    return nullptr;
 }
 
 int AbilityManager::get_next_ability_id()

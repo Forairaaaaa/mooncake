@@ -20,10 +20,10 @@ void UIAbility::baseCreate()
 void UIAbility::baseUpdate()
 {
     /* ----------------------------------- 状态机 ---------------------------------- */
-    switch (current_state) {
+    switch (_current_state) {
         case StateGoShow: {
             onShow();
-            current_state = StateForeground;
+            _current_state = StateForeground;
             break;
         }
         case StateForeground: {
@@ -32,7 +32,7 @@ void UIAbility::baseUpdate()
         }
         case StateGoHide: {
             onHide();
-            current_state = StateBackground;
+            _current_state = StateBackground;
             break;
         }
         case StateBackground: {
@@ -51,10 +51,10 @@ void UIAbility::baseDestroy()
 
 void UIAbility::show()
 {
-    current_state = StateGoShow;
+    _current_state = StateGoShow;
 }
 
 void UIAbility::hide()
 {
-    current_state = StateGoHide;
+    _current_state = StateGoHide;
 }

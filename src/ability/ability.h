@@ -12,16 +12,6 @@
 
 namespace Mooncake {
 
-namespace AbilityType {
-enum Type_t {
-    None = 0,
-    Basic,
-    UI,
-    Worker,
-    Custom,
-};
-}
-
 /**
  * @brief Ability 基类，提供原始生命周期回调，以便管理器统一调用
  *
@@ -31,11 +21,6 @@ public:
     virtual ~AbilityBase() = default;
 
 public:
-    virtual AbilityType::Type_t getAbilityType()
-    {
-        return AbilityType::None;
-    }
-
     virtual void baseCreate() {}
     virtual void baseUpdate() {}
     virtual void baseDestroy() {}
@@ -49,14 +34,7 @@ class BasicAbility : public AbilityBase {
 public:
     virtual ~BasicAbility() = default;
 
-    AbilityType::Type_t getAbilityType() override
-    {
-        return AbilityType::Basic;
-    }
-
-    /* -------------------------------------------------------------------------- */
-    /*                             Lifecycle callbacks                            */
-    /* -------------------------------------------------------------------------- */
+    // 生命周期回调
     virtual void onCreate() {}
     virtual void onRunning() {}
     virtual void onDestroy() {}
@@ -87,26 +65,36 @@ class UIAbility : public AbilityBase {
 public:
     virtual ~UIAbility() = default;
 
-    AbilityType::Type_t getAbilityType() override
-    {
-        return AbilityType::UI;
-    }
+    enum UIAbilityState_t {
+        StateGoShow = 0,
+        StateForeground,
+        StateGoHide,
+        StateBackground,
+    };
 
     /**
-     * @brief Show ability from background to foreground
+     * @brief 将 Ability 从后台切回前台
      *
      */
     void show();
 
     /**
-     * @brief Hide ability from foreground to background
+     * @brief 将 Ability 从前台切到后台
      *
      */
     void hide();
 
-    /* -------------------------------------------------------------------------- */
-    /*                             Lifecycle callbacks                            */
-    /* -------------------------------------------------------------------------- */
+    /**
+     * @brief 获取当前生命周期状态
+     *
+     * @return UIAbilityState_t
+     */
+    UIAbilityState_t currentState()
+    {
+        return _current_state;
+    }
+
+    // 生命周期回调
     virtual void onCreate() {}
     virtual void onShow() {}
     virtual void onForeground() {}
@@ -115,13 +103,7 @@ public:
     virtual void onDestroy() {}
 
 private:
-    enum AbilityState_t {
-        StateGoShow = 0,
-        StateForeground,
-        StateGoHide,
-        StateBackground,
-    };
-    AbilityState_t current_state = StateForeground;
+    UIAbilityState_t _current_state = StateForeground;
 
     void baseCreate() override;
     void baseUpdate() override;
@@ -137,10 +119,12 @@ class WorkerAbility : public AbilityBase {
 public:
     virtual ~WorkerAbility() = default;
 
-    AbilityType::Type_t getAbilityType() override
-    {
-        return AbilityType::Worker;
-    }
+    enum WorkerAbilityState_t {
+        StateGoResume = 0,
+        StateRunning,
+        StateGoPause,
+        StatePausing,
+    };
 
     /**
      * @brief Pause ability from running
@@ -154,9 +138,17 @@ public:
      */
     void resume();
 
-    /* -------------------------------------------------------------------------- */
-    /*                             Lifecycle callbacks                            */
-    /* -------------------------------------------------------------------------- */
+    /**
+     * @brief 获取当前生命周期状态
+     *
+     * @return UIAbilityState_t
+     */
+    WorkerAbilityState_t currentState()
+    {
+        return _current_state;
+    }
+
+    // 生命周期回调
     virtual void onCreate() {}
     virtual void onResume() {}
     virtual void onRunning() {}
@@ -164,13 +156,7 @@ public:
     virtual void onDestroy() {}
 
 private:
-    enum AbilityState_t {
-        StateGoResume = 0,
-        StateRunning,
-        StateGoPause,
-        StatePausing,
-    };
-    AbilityState_t current_state = StateRunning;
+    WorkerAbilityState_t _current_state = StateRunning;
 
     void baseCreate() override;
     void baseUpdate() override;

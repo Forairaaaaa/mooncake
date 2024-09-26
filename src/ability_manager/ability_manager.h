@@ -40,7 +40,15 @@ public:
      */
     void updateAbilities();
 
-private:
+    /**
+     * @brief 获取 Ability 实例原始指针，以便从外部触发生命周期变化，或者自定义 API 调用，最不安全的一集
+     *
+     * @param abilityID
+     * @return AbilityBase*
+     */
+    AbilityBase* getAbilityInstance(int abilityID);
+
+protected:
     enum AbilityState_t {
         StateGoCreate = 0,
         StateUpdating,
