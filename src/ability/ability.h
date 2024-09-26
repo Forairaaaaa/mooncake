@@ -54,6 +54,9 @@ public:
         return AbilityType::Basic;
     }
 
+    /* -------------------------------------------------------------------------- */
+    /*                             Lifecycle callbacks                            */
+    /* -------------------------------------------------------------------------- */
     virtual void onCreate() {}
     virtual void onRunning() {}
     virtual void onDestroy() {}
@@ -113,12 +116,12 @@ public:
 
 private:
     enum AbilityState_t {
-        StateOnShow = 0,
-        StateOnForeground,
-        StateOnHide,
-        StateOnBackground,
+        StateGoShow = 0,
+        StateForeground,
+        StateGoHide,
+        StateBackground,
     };
-    AbilityState_t current_state = StateOnForeground;
+    AbilityState_t current_state = StateForeground;
 
     void baseCreate() override;
     void baseUpdate() override;
@@ -139,6 +142,18 @@ public:
         return AbilityType::Worker;
     }
 
+    /**
+     * @brief Pause ability from running
+     *
+     */
+    void pause();
+
+    /**
+     * @brief Resume ability from stopping
+     *
+     */
+    void resume();
+
     /* -------------------------------------------------------------------------- */
     /*                             Lifecycle callbacks                            */
     /* -------------------------------------------------------------------------- */
@@ -149,6 +164,14 @@ public:
     virtual void onDestroy() {}
 
 private:
+    enum AbilityState_t {
+        StateGoResume = 0,
+        StateRunning,
+        StateGoPause,
+        StatePausing,
+    };
+    AbilityState_t current_state = StateRunning;
+
     void baseCreate() override;
     void baseUpdate() override;
     void baseDestroy() override;
