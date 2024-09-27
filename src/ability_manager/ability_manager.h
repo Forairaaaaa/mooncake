@@ -65,40 +65,21 @@ public:
      */
     bool isAbilityExist(int abilityID);
 
-    /* -------------------------------------------------------------------------- */
-    /*                             UI Ability API Wrap                            */
-    /* -------------------------------------------------------------------------- */
-    // 对外的、安全的 UI Ability 状态切换接口
+    // 对外的 UI Ability 操作接口
+    bool showUIAbility(int abilityID);
+    bool hideUIAbility(int abilityID);
+    UIAbility::UIAbilityState_t getUIAbilityCurrentState(int abilityID);
 
-    /**
-     * @brief 将指定 UI Ability 从后台切回前台
-     *
-     * @param abilityID
-     * @return true
-     * @return false
-     */
-    bool UIAbilityShow(int abilityID);
+    // 对外的 Worker Ability 操作接口
+    bool pauseWorkerAbility(int abilityID);
+    bool resumeWorkerAbility(int abilityID);
+    WorkerAbility::WorkerAbilityState_t getWorkerAbilityCurrentState(int abilityID);
 
-    /**
-     * @brief 将指定 UI Ability 从前台切到后台
-     *
-     * @param abilityID
-     * @return true
-     * @return false
-     */
-    bool UIAbilityHide(int abilityID);
-
-    /**
-     * @brief 获取指定 UI Ability 的当前生命周期状态
-     *
-     * @return UIAbility::UIAbilityState_t
-     */
-    UIAbility::UIAbilityState_t UIAbilityCurrentState(int abilityID);
-
-    /* -------------------------------------------------------------------------- */
-    /*                           Worker Ability API Wrap                          */
-    /* -------------------------------------------------------------------------- */
-    // 对外的、安全的 Worker Ability 状态切换接口
+    // 对外的 App Ability 操作接口
+    bool openAppAbility(int abilityID);
+    bool closeAppAbility(int abilityID);
+    AppAbility::AppInfo_t getAppAbilityAppInfo(int abilityID);
+    AppAbility::AppAbilityState_t getAppAbilityCurrentState(int abilityID);
 
 protected:
     enum AbilityState_t {

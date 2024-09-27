@@ -9,6 +9,7 @@
  *
  */
 #include "ability_manager.h"
+#include "ability/ability.h"
 
 using namespace Mooncake;
 
@@ -109,44 +110,6 @@ bool AbilityManager::isAbilityExist(int abilityID)
     return false;
 }
 
-bool AbilityManager::UIAbilityShow(int abilityID)
-{
-    auto ability_instance = getAbilityInstance(abilityID);
-    if (ability_instance) {
-        // 类型校验
-        if (ability_instance->abilityType() == AbilityType::UI) {
-            static_cast<UIAbility*>(ability_instance)->show();
-            return true;
-        }
-    }
-    return false;
-}
-
-bool AbilityManager::UIAbilityHide(int abilityID)
-{
-    auto ability_instance = getAbilityInstance(abilityID);
-    if (ability_instance) {
-        // 类型校验
-        if (ability_instance->abilityType() == AbilityType::UI) {
-            static_cast<UIAbility*>(ability_instance)->hide();
-            return true;
-        }
-    }
-    return false;
-}
-
-UIAbility::UIAbilityState_t AbilityManager::UIAbilityCurrentState(int abilityID)
-{
-    auto ability_instance = getAbilityInstance(abilityID);
-    if (ability_instance) {
-        // 类型校验
-        if (ability_instance->abilityType() == AbilityType::UI) {
-            return static_cast<UIAbility*>(ability_instance)->currentState();
-        }
-    }
-    return UIAbility::StateForeground;
-}
-
 int AbilityManager::get_next_ability_id()
 {
     int next_ability_id = -1;
@@ -163,4 +126,141 @@ int AbilityManager::get_next_ability_id()
     _next_ability_id++;
 
     return next_ability_id;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                             UI Ability API Wrap                            */
+/* -------------------------------------------------------------------------- */
+
+bool AbilityManager::showUIAbility(int abilityID)
+{
+    auto ability_instance = getAbilityInstance(abilityID);
+    if (ability_instance) {
+        // 类型校验
+        if (ability_instance->abilityType() == AbilityType::UI) {
+            static_cast<UIAbility*>(ability_instance)->show();
+            return true;
+        }
+    }
+    return false;
+}
+
+bool AbilityManager::hideUIAbility(int abilityID)
+{
+    auto ability_instance = getAbilityInstance(abilityID);
+    if (ability_instance) {
+        // 类型校验
+        if (ability_instance->abilityType() == AbilityType::UI) {
+            static_cast<UIAbility*>(ability_instance)->hide();
+            return true;
+        }
+    }
+    return false;
+}
+
+UIAbility::UIAbilityState_t AbilityManager::getUIAbilityCurrentState(int abilityID)
+{
+    auto ability_instance = getAbilityInstance(abilityID);
+    if (ability_instance) {
+        // 类型校验
+        if (ability_instance->abilityType() == AbilityType::UI) {
+            return static_cast<UIAbility*>(ability_instance)->currentState();
+        }
+    }
+    return UIAbility::StateNull;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                           Worker Ability API Wrap                          */
+/* -------------------------------------------------------------------------- */
+
+bool AbilityManager::pauseWorkerAbility(int abilityID)
+{
+    auto ability_instance = getAbilityInstance(abilityID);
+    if (ability_instance) {
+        // 类型校验
+        if (ability_instance->abilityType() == AbilityType::Worker) {
+            static_cast<WorkerAbility*>(ability_instance)->pause();
+            return true;
+        }
+    }
+    return false;
+}
+
+bool AbilityManager::resumeWorkerAbility(int abilityID)
+{
+    auto ability_instance = getAbilityInstance(abilityID);
+    if (ability_instance) {
+        // 类型校验
+        if (ability_instance->abilityType() == AbilityType::Worker) {
+            static_cast<WorkerAbility*>(ability_instance)->resume();
+            return true;
+        }
+    }
+    return false;
+}
+
+WorkerAbility::WorkerAbilityState_t AbilityManager::getWorkerAbilityCurrentState(int abilityID)
+{
+    auto ability_instance = getAbilityInstance(abilityID);
+    if (ability_instance) {
+        // 类型校验
+        if (ability_instance->abilityType() == AbilityType::Worker) {
+            return static_cast<WorkerAbility*>(ability_instance)->currentState();
+        }
+    }
+    return WorkerAbility::StateNull;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                            App Ability API Wrap                            */
+/* -------------------------------------------------------------------------- */
+bool AbilityManager::openAppAbility(int abilityID)
+{
+    auto ability_instance = getAbilityInstance(abilityID);
+    if (ability_instance) {
+        // 类型校验
+        if (ability_instance->abilityType() == AbilityType::App) {
+            static_cast<AppAbility*>(ability_instance)->open();
+            return true;
+        }
+    }
+    return false;
+}
+
+bool AbilityManager::closeAppAbility(int abilityID)
+{
+    auto ability_instance = getAbilityInstance(abilityID);
+    if (ability_instance) {
+        // 类型校验
+        if (ability_instance->abilityType() == AbilityType::App) {
+            static_cast<AppAbility*>(ability_instance)->close();
+            return true;
+        }
+    }
+    return false;
+}
+
+AppAbility::AppInfo_t AbilityManager::getAppAbilityAppInfo(int abilityID)
+{
+    auto ability_instance = getAbilityInstance(abilityID);
+    if (ability_instance) {
+        // 类型校验
+        if (ability_instance->abilityType() == AbilityType::App) {
+            return static_cast<AppAbility*>(ability_instance)->getAppInfo();
+        }
+    }
+    return AppAbility::AppInfo_t();
+}
+
+AppAbility::AppAbilityState_t AbilityManager::getAppAbilityCurrentState(int abilityID)
+{
+    auto ability_instance = getAbilityInstance(abilityID);
+    if (ability_instance) {
+        // 类型校验
+        if (ability_instance->abilityType() == AbilityType::App) {
+            return static_cast<AppAbility*>(ability_instance)->currentState();
+        }
+    }
+    return AppAbility::StateNull;
 }

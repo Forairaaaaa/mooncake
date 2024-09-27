@@ -101,7 +101,8 @@ public:
     virtual ~UIAbility() = default;
 
     enum UIAbilityState_t {
-        StateGoShow = 0,
+        StateNull = 0,
+        StateGoShow,
         StateForeground,
         StateGoHide,
         StateBackground,
@@ -164,7 +165,8 @@ public:
     virtual ~WorkerAbility() = default;
 
     enum WorkerAbilityState_t {
-        StateGoResume = 0,
+        StateNull = 0,
+        StateGoResume,
         StateRunning,
         StateGoPause,
         StatePausing,
@@ -185,7 +187,7 @@ public:
     /**
      * @brief 获取当前生命周期状态
      *
-     * @return UIAbilityState_t
+     * @return WorkerAbilityState_t
      */
     WorkerAbilityState_t currentState()
     {
@@ -232,7 +234,8 @@ public:
     };
 
     enum AppAbilityState_t {
-        StateGoOpen = 0,
+        StateNull = 0,
+        StateGoOpen,
         StateRunning,
         StateGoClose,
         StateSleeping,
@@ -252,6 +255,16 @@ public:
 
     const AppInfo_t& getAppInfo();
     AppInfo_t& setAppInfo();
+
+    /**
+     * @brief 获取当前生命周期状态
+     *
+     * @return AppAbilityState_t
+     */
+    AppAbilityState_t currentState()
+    {
+        return _current_state;
+    }
 
     // 生命周期回调
     virtual void onCreate() {}
