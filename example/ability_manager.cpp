@@ -13,7 +13,7 @@
 #include <cstdio>
 #include <memory>
 
-using namespace Mooncake;
+using namespace mooncake;
 
 /**
  * @brief 简单派生一个 Basic Ability

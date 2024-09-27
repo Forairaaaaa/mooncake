@@ -10,7 +10,7 @@
  */
 #include "ability.h"
 
-using namespace Mooncake;
+using namespace mooncake;
 
 void WorkerAbility::baseCreate()
 {

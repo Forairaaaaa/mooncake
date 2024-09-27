@@ -11,7 +11,7 @@
 #pragma once
 #include <string>
 
-namespace Mooncake {
+namespace mooncake {
 
 namespace AbilityType {
 enum Type_t {
@@ -288,4 +288,4 @@ private:
     void baseDestroy() override;
 };
 
-} // namespace Mooncake
+} // namespace mooncake

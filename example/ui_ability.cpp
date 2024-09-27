@@ -17,7 +17,7 @@
 #include <string>
 #include <thread>
 
-using namespace Mooncake;
+using namespace mooncake;
 
 std::atomic<bool> _enter_was_pressed = false;
 

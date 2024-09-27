@@ -13,7 +13,7 @@
 #include <vector>
 #include <memory>
 
-namespace Mooncake {
+namespace mooncake {
 
 class AbilityManager {
 public:
@@ -100,4 +100,4 @@ protected:
     int get_next_ability_id();
 };
 
-} // namespace Mooncake
+} // namespace mooncake

@@ -11,7 +11,7 @@
 #include "ability_manager.h"
 #include "ability/ability.h"
 
-using namespace Mooncake;
+using namespace mooncake;
 
 int AbilityManager::createAbility(std::unique_ptr<AbilityBase> ability)
 {
