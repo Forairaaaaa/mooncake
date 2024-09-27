@@ -8,8 +8,15 @@
  * @copyright Copyright (c) 2024
  *
  */
+#include <mooncake.h>
+
+using namespace mooncake;
 
 int main()
 {
+    Mooncake mc;
+
+    mc.init();
+
     return 0;
 }

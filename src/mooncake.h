@@ -13,6 +13,8 @@
 #include "ability_manager/ability_manager.h"
 #include <memory>
 
+#define MOONCAKE_VERSION "2.0.0"
+
 namespace mooncake {
 
 class Mooncake {

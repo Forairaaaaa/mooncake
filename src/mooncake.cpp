@@ -10,10 +10,24 @@
  */
 #include "mooncake.h"
 #include <memory>
+#include <stdio.h>
 
 using namespace mooncake;
 
-void Mooncake::init() {}
+static const char* _mooncake_ascii_logo = R"(
+ _____ _____ _____ _____ _____ _____ _____ _____
+|     |     |     |   | |     |  _  |  |  |   __|
+| | | |  |  |  |  | | | |   --|     |    -|   __|
+|_|_|_|_____|_____|_|___|_____|__|__|__|__|_____|
+)";
+
+void Mooncake::init()
+{
+    printf("%s", _mooncake_ascii_logo);
+    printf("\n- @author Forairaaaaa\n");
+    printf("- @version " MOONCAKE_VERSION "\n");
+    printf("- @build at " __TIME__ " " __DATE__ "\n\n");
+}
 
 AbilityManager* Mooncake::get_app_ability_manager()
 {
