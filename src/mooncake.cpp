@@ -23,8 +23,8 @@ static const char* _mooncake_ascii_logo = R"(
 
 void Mooncake::init()
 {
-    printf("%s", _mooncake_ascii_logo);
-    printf("\n- @author Forairaaaaa\n");
+    printf("%s\n", _mooncake_ascii_logo);
+    printf("- @author Forairaaaaa\n");
     printf("- @version " MOONCAKE_VERSION "\n");
     printf("- @build at " __TIME__ " " __DATE__ "\n\n");
 }

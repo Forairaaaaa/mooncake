@@ -12,6 +12,7 @@
 #include "ability/ability.h"
 #include "ability_manager/ability_manager.h"
 #include <memory>
+#include <vector>
 
 #define MOONCAKE_VERSION "2.0.0"
 
@@ -20,6 +21,18 @@ namespace mooncake {
 class Mooncake {
 public:
     void init();
+
+    /* -------------------------------------------------------------------------- */
+    /*                                  App APIs                                  */
+    /* -------------------------------------------------------------------------- */
+
+    int installApp(std::unique_ptr<AppAbility> appAbility);
+    bool unInstallApp(int appID);
+    bool startApp(int appID);
+    bool stopApp(int appID);
+    AppAbility::AppInfo_t getAppInfo(int abilityID);
+    std::vector<AppAbility::AppInfo_t> getAllAppInfo();
+    AppAbility::AppAbilityState_t getAppCurrentState(int abilityID);
 
 private:
     // App Ability 管理器：提供集中的 App Ability 管理和信息获取
