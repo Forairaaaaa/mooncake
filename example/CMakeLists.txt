@@ -8,4 +8,4 @@ target_link_libraries(ability_manager ${PROJECT_NAME})
 
 # UI Ability
 add_executable(ui_ability ./ui_ability.cpp)
-target_link_libraries(ui_ability ${PROJECT_NAME})
+target_link_libraries(ui_ability ${PROJECT_NAME} pthread)

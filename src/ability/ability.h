@@ -9,6 +9,7 @@
  *
  */
 #pragma once
+#include <string>
 
 namespace Mooncake {
 
@@ -157,6 +158,46 @@ public:
 
 private:
     WorkerAbilityState_t _current_state = StateRunning;
+
+    void baseCreate() override;
+    void baseUpdate() override;
+    void baseDestroy() override;
+};
+
+/**
+ * @brief App Ability，在三段式的基础上扩展出打开、关闭状态，还有基础 App 信息（名称、图标等），适合有 App
+ * 信息需求的简单应用抽象
+ *
+ */
+class AppAbility : public AbilityBase {
+public:
+    virtual ~AppAbility() = default;
+
+    struct AppInfo_t {
+        std::string name;
+        void* icon = nullptr;
+        void* userData = nullptr;
+    };
+
+    enum AppAbilityState_t {
+        StateGoOpen = 0,
+        StateRunning,
+        StateGoClose,
+    };
+
+    // 生命周期回调
+    virtual void onCreate() {}
+    virtual void onOpen() {}
+    virtual void onRunning() {}
+    virtual void onClose() {}
+    virtual void onDestroy() {}
+
+    const AppInfo_t& getAppInfo();
+
+    AppInfo_t& setAppInfo();
+
+private:
+    AppInfo_t _app_info;
 
     void baseCreate() override;
     void baseUpdate() override;
