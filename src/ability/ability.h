@@ -13,6 +13,17 @@
 
 namespace Mooncake {
 
+namespace AbilityType {
+enum Type_t {
+    Base = 0,
+    Basic,
+    UI,
+    Worker,
+    App,
+    Custom,
+};
+}
+
 /**
  * @brief Ability 基类，提供原始生命周期回调，以便管理器统一调用
  *
@@ -21,7 +32,13 @@ class AbilityBase {
 public:
     virtual ~AbilityBase() = default;
 
-public:
+    // Ability 类型
+    virtual AbilityType::Type_t getAbilityType()
+    {
+        return AbilityType::Base;
+    }
+
+    // 原始生命周期
     virtual void baseCreate() {}
     virtual void baseUpdate() {}
     virtual void baseDestroy() {}
@@ -39,6 +56,11 @@ public:
     virtual void onCreate() {}
     virtual void onRunning() {}
     virtual void onDestroy() {}
+
+    AbilityType::Type_t getAbilityType() override
+    {
+        return AbilityType::Basic;
+    }
 
 private:
     void baseCreate() override
@@ -59,7 +81,7 @@ private:
 
 /**
  * @brief UI Ability，在三段式生命周期的基础上扩展出前后台切换。适合前后台具有不同行为的 UI
- * 应用，比如桌面启动器（选择一个 App 打开后，将自己藏进后台）
+ * 应用，比如有多个选项的 Tab 栏，点击一个 Tab 后将该 Tab 切到前台，当前的 Tab 切到后台
  *
  */
 class UIAbility : public AbilityBase {
@@ -102,6 +124,11 @@ public:
     virtual void onBackground() {}
     virtual void onHide() {}
     virtual void onDestroy() {}
+
+    AbilityType::Type_t getAbilityType() override
+    {
+        return AbilityType::UI;
+    }
 
 private:
     UIAbilityState_t _current_state = StateForeground;
@@ -156,6 +183,11 @@ public:
     virtual void onPause() {}
     virtual void onDestroy() {}
 
+    AbilityType::Type_t getAbilityType() override
+    {
+        return AbilityType::Worker;
+    }
+
 private:
     WorkerAbilityState_t _current_state = StateRunning;
 
@@ -165,8 +197,8 @@ private:
 };
 
 /**
- * @brief App Ability，在三段式的基础上扩展出打开、关闭状态，还有基础 App 信息（名称、图标等），适合有 App
- * 信息需求的简单应用抽象
+ * @brief App Ability，在三段式的基础上扩展出打开、关闭状态，以及 App 信息（名称、图标等），适合有 App
+ * 信息需求的多应用行为
  *
  */
 class AppAbility : public AbilityBase {
@@ -208,6 +240,11 @@ public:
     virtual void onSleeping() {}
     virtual void onClose() {}
     virtual void onDestroy() {}
+
+    AbilityType::Type_t getAbilityType() override
+    {
+        return AbilityType::App;
+    }
 
 private:
     AppAbilityState_t _current_state = StateSleeping;
