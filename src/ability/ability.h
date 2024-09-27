@@ -205,11 +205,13 @@ public:
     virtual void onCreate() {}
     virtual void onOpen() {}
     virtual void onRunning() {}
+    virtual void onSleeping() {}
     virtual void onClose() {}
     virtual void onDestroy() {}
 
 private:
     AppAbilityState_t _current_state = StateSleeping;
+    AppInfo_t _app_info;
 
     void baseCreate() override;
     void baseUpdate() override;

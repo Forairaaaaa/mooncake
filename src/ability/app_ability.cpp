@@ -36,7 +36,7 @@ void AppAbility::baseUpdate()
             break;
         }
         case StateSleeping: {
-            // Do nothing
+            onSleeping();
             break;
         }
         default:
@@ -57,4 +57,14 @@ void AppAbility::open()
 void AppAbility::close()
 {
     _current_state = StateGoClose;
+}
+
+const AppAbility::AppInfo_t& AppAbility::getAppInfo()
+{
+    return _app_info;
+}
+
+AppAbility::AppInfo_t& AppAbility::setAppInfo()
+{
+    return _app_info;
 }

@@ -1,9 +1,9 @@
 /**
- * @file ability_manager.cpp
+ * @file app_ability.cpp
  * @author Forairaaaaa
  * @brief
  * @version 0.1
- * @date 2024-09-26
+ * @date 2024-09-27
  *
  * @copyright Copyright (c) 2024
  *
@@ -21,51 +21,54 @@ using namespace Mooncake;
 
 std::atomic<bool> _enter_was_pressed = false;
 
-class MyAppAbility : public UIAbility {
+class MyAppAbility : public AppAbility {
 public:
     MyAppAbility()
     {
-        printf("[ui] on construct\n");
+        printf("[app] on construct\n");
+
+        // 配置 App 信息
+        setAppInfo().name = "帅的不谈";
     }
     ~MyAppAbility()
     {
-        printf("[ui] on deconstruct\n");
+        printf("[app] on deconstruct\n");
     }
     void onCreate() override
     {
-        printf("[ui] on create\n");
+        printf("[app] on create\n");
     }
-    void onShow() override
+    void onOpen() override
     {
-        printf("[ui] on show\n");
+        printf("[app] on open\n");
     }
-    void onForeground() override
+    void onRunning() override
     {
-        printf("[ui] on foreground\n");
+        printf("[app] on running\n");
 
-        // 切到后台
+        // 关掉 App
         if (_enter_was_pressed) {
             _enter_was_pressed = false;
-            hide();
+            close();
         }
     }
-    void onHide() override
+    void onSleeping() override
     {
-        printf("[ui] on hide\n");
-    }
-    void onBackground() override
-    {
-        printf("[ui] on backgournd\n");
+        printf("[app] on sleeping\n");
 
-        // 切到前台
+        // 打开 App
         if (_enter_was_pressed) {
             _enter_was_pressed = false;
-            show();
+            open();
         }
+    }
+    void onClose() override
+    {
+        printf("[app] on close\n");
     }
     void onDestroy() override
     {
-        printf("[ui] on ondestory\n");
+        printf("[app] on ondestory\n");
     }
 };
 
@@ -84,29 +87,22 @@ int main()
 
     // 创建 Ability
     printf(">> create ability\n");
-    auto ui_ability_id = am.createAbility(std::make_unique<MyAppAbility>());
+    auto app_ability_id = am.createAbility(std::make_unique<MyAppAbility>());
+
+    // 从外部获取 App 信息
+    auto app_ability_instance = (AppAbility*)am.getAbilityInstance(app_ability_id);
+    printf(">> app name is: %s\n", app_ability_instance->getAppInfo().name.c_str());
 
     // 刷新 Ability
     while (1) {
         am.updateAbilities();
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }
 
     // 销毁 Ability
     printf(">> destroy ability\n");
-    am.destroyAbility(ui_ability_id);
+    am.destroyAbility(app_ability_id);
     am.updateAbilities();
 
     return 0;
 }
-
-// // 除了在 Ability 内部切换状态，还可以在外部切换，适合切换条件相同的多个 Ability 统一管理
-
-//     // 获取 Ability 实例原始指针
-//     auto ui_ability_instance = (UIAbility*)am.getAbilityInstance(ui_ability_id);
-//     // 验空、调用方法
-//     if (ui_ability_instance) {
-//         ui_ability_instance->show();
-//         ...
-//     }
-// }
