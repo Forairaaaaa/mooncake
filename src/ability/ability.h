@@ -24,6 +24,10 @@ enum Type_t {
 };
 }
 
+/* -------------------------------------------------------------------------- */
+/*                                Ability Base                                */
+/* -------------------------------------------------------------------------- */
+
 /**
  * @brief Ability 基类，提供原始生命周期回调，以便管理器统一调用
  *
@@ -32,8 +36,8 @@ class AbilityBase {
 public:
     virtual ~AbilityBase() = default;
 
-    // Ability 类型
-    virtual AbilityType::Type_t getAbilityType()
+    // 获取 Ability 类型
+    virtual AbilityType::Type_t abilityType()
     {
         return AbilityType::Base;
     }
@@ -43,6 +47,10 @@ public:
     virtual void baseUpdate() {}
     virtual void baseDestroy() {}
 };
+
+/* -------------------------------------------------------------------------- */
+/*                                Basic Ability                               */
+/* -------------------------------------------------------------------------- */
 
 /**
  * @brief Basic Ability，提供最基础的三段式生命周期。可以把 onCreate() 理解成 Arduino 的 setup()，onRunning() 为 loop()
@@ -57,7 +65,7 @@ public:
     virtual void onRunning() {}
     virtual void onDestroy() {}
 
-    AbilityType::Type_t getAbilityType() override
+    AbilityType::Type_t abilityType() override
     {
         return AbilityType::Basic;
     }
@@ -78,6 +86,10 @@ private:
         onDestroy();
     }
 };
+
+/* -------------------------------------------------------------------------- */
+/*                                 UI Ability                                 */
+/* -------------------------------------------------------------------------- */
 
 /**
  * @brief UI Ability，在三段式生命周期的基础上扩展出前后台切换。适合前后台具有不同行为的 UI
@@ -125,7 +137,7 @@ public:
     virtual void onHide() {}
     virtual void onDestroy() {}
 
-    AbilityType::Type_t getAbilityType() override
+    AbilityType::Type_t abilityType() override
     {
         return AbilityType::UI;
     }
@@ -137,6 +149,10 @@ private:
     void baseUpdate() override;
     void baseDestroy() override;
 };
+
+/* -------------------------------------------------------------------------- */
+/*                               Worker Ability                               */
+/* -------------------------------------------------------------------------- */
 
 /**
  * @brief Worker
@@ -183,7 +199,7 @@ public:
     virtual void onPause() {}
     virtual void onDestroy() {}
 
-    AbilityType::Type_t getAbilityType() override
+    AbilityType::Type_t abilityType() override
     {
         return AbilityType::Worker;
     }
@@ -195,6 +211,10 @@ private:
     void baseUpdate() override;
     void baseDestroy() override;
 };
+
+/* -------------------------------------------------------------------------- */
+/*                                 App Ability                                */
+/* -------------------------------------------------------------------------- */
 
 /**
  * @brief App Ability，在三段式的基础上扩展出打开、关闭状态，以及 App 信息（名称、图标等），适合有 App
@@ -241,7 +261,7 @@ public:
     virtual void onClose() {}
     virtual void onDestroy() {}
 
-    AbilityType::Type_t getAbilityType() override
+    AbilityType::Type_t abilityType() override
     {
         return AbilityType::App;
     }

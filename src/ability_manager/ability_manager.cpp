@@ -95,9 +95,18 @@ AbilityType::Type_t AbilityManager::getAbilityType(int abilityID)
 {
     auto ability_instance = getAbilityInstance(abilityID);
     if (ability_instance) {
-        return ability_instance->getAbilityType();
+        return ability_instance->abilityType();
     }
     return AbilityType::Base;
+}
+
+bool AbilityManager::isAbilityExist(int abilityID)
+{
+    auto ability_instance = getAbilityInstance(abilityID);
+    if (ability_instance) {
+        return true;
+    }
+    return false;
 }
 
 bool AbilityManager::UIAbilityShow(int abilityID)
@@ -105,7 +114,7 @@ bool AbilityManager::UIAbilityShow(int abilityID)
     auto ability_instance = getAbilityInstance(abilityID);
     if (ability_instance) {
         // 类型校验
-        if (ability_instance->getAbilityType() == AbilityType::UI) {
+        if (ability_instance->abilityType() == AbilityType::UI) {
             static_cast<UIAbility*>(ability_instance)->show();
             return true;
         }
@@ -118,12 +127,24 @@ bool AbilityManager::UIAbilityHide(int abilityID)
     auto ability_instance = getAbilityInstance(abilityID);
     if (ability_instance) {
         // 类型校验
-        if (ability_instance->getAbilityType() == AbilityType::UI) {
+        if (ability_instance->abilityType() == AbilityType::UI) {
             static_cast<UIAbility*>(ability_instance)->hide();
             return true;
         }
     }
     return false;
+}
+
+UIAbility::UIAbilityState_t AbilityManager::UIAbilityCurrentState(int abilityID)
+{
+    auto ability_instance = getAbilityInstance(abilityID);
+    if (ability_instance) {
+        // 类型校验
+        if (ability_instance->abilityType() == AbilityType::UI) {
+            return static_cast<UIAbility*>(ability_instance)->currentState();
+        }
+    }
+    return UIAbility::StateForeground;
 }
 
 int AbilityManager::get_next_ability_id()

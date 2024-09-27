@@ -56,13 +56,22 @@ public:
      */
     AbilityType::Type_t getAbilityType(int abilityID);
 
+    /**
+     * @brief 检测 Ability 是否存在
+     *
+     * @param abilityID
+     * @return true
+     * @return false
+     */
+    bool isAbilityExist(int abilityID);
+
     /* -------------------------------------------------------------------------- */
     /*                             UI Ability API Wrap                            */
     /* -------------------------------------------------------------------------- */
     // 对外的、安全的 UI Ability 状态切换接口
 
     /**
-     * @brief 将 UI Ability 从后台切回前台
+     * @brief 将指定 UI Ability 从后台切回前台
      *
      * @param abilityID
      * @return true
@@ -71,13 +80,25 @@ public:
     bool UIAbilityShow(int abilityID);
 
     /**
-     * @brief 将 UI Ability 从前台切到后台
+     * @brief 将指定 UI Ability 从前台切到后台
      *
      * @param abilityID
      * @return true
      * @return false
      */
     bool UIAbilityHide(int abilityID);
+
+    /**
+     * @brief 获取指定 UI Ability 的当前生命周期状态
+     *
+     * @return UIAbility::UIAbilityState_t
+     */
+    UIAbility::UIAbilityState_t UIAbilityCurrentState(int abilityID);
+
+    /* -------------------------------------------------------------------------- */
+    /*                           Worker Ability API Wrap                          */
+    /* -------------------------------------------------------------------------- */
+    // 对外的、安全的 Worker Ability 状态切换接口
 
 protected:
     enum AbilityState_t {
