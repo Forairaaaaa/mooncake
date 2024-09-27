@@ -100,6 +100,32 @@ AbilityType::Type_t AbilityManager::getAbilityType(int abilityID)
     return AbilityType::Base;
 }
 
+bool AbilityManager::UIAbilityShow(int abilityID)
+{
+    auto ability_instance = getAbilityInstance(abilityID);
+    if (ability_instance) {
+        // 类型校验
+        if (ability_instance->getAbilityType() == AbilityType::UI) {
+            static_cast<UIAbility*>(ability_instance)->show();
+            return true;
+        }
+    }
+    return false;
+}
+
+bool AbilityManager::UIAbilityHide(int abilityID)
+{
+    auto ability_instance = getAbilityInstance(abilityID);
+    if (ability_instance) {
+        // 类型校验
+        if (ability_instance->getAbilityType() == AbilityType::UI) {
+            static_cast<UIAbility*>(ability_instance)->hide();
+            return true;
+        }
+    }
+    return false;
+}
+
 int AbilityManager::get_next_ability_id()
 {
     int next_ability_id = -1;
