@@ -74,13 +74,13 @@ public:
     };
 
     /**
-     * @brief 将 Ability 从后台切回前台
+     * @brief 将 UI 从后台切回前台
      *
      */
     void show();
 
     /**
-     * @brief 将 Ability 从前台切到后台
+     * @brief 将 UI 从前台切到后台
      *
      */
     void hide();
@@ -128,13 +128,13 @@ public:
     };
 
     /**
-     * @brief Pause ability from running
+     * @brief 暂停 Worker 运行
      *
      */
     void pause();
 
     /**
-     * @brief Resume ability from stopping
+     * @brief 恢复 Worker 运行
      *
      */
     void resume();
@@ -183,7 +183,23 @@ public:
         StateGoOpen = 0,
         StateRunning,
         StateGoClose,
+        StateSleeping,
     };
+
+    /**
+     * @brief 打开 App，干活
+     *
+     */
+    void open();
+
+    /**
+     * @brief 关闭 App，开摆
+     *
+     */
+    void close();
+
+    const AppInfo_t& getAppInfo();
+    AppInfo_t& setAppInfo();
 
     // 生命周期回调
     virtual void onCreate() {}
@@ -192,12 +208,8 @@ public:
     virtual void onClose() {}
     virtual void onDestroy() {}
 
-    const AppInfo_t& getAppInfo();
-
-    AppInfo_t& setAppInfo();
-
 private:
-    AppInfo_t _app_info;
+    AppAbilityState_t _current_state = StateSleeping;
 
     void baseCreate() override;
     void baseUpdate() override;
