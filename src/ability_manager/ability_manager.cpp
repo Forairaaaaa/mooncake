@@ -91,6 +91,15 @@ AbilityBase* AbilityManager::getAbilityInstance(int abilityID)
     return nullptr;
 }
 
+AbilityType::Type_t AbilityManager::getAbilityType(int abilityID)
+{
+    auto ability_instance = getAbilityInstance(abilityID);
+    if (ability_instance) {
+        return ability_instance->getAbilityType();
+    }
+    return AbilityType::Base;
+}
+
 int AbilityManager::get_next_ability_id()
 {
     int next_ability_id = -1;

@@ -48,6 +48,37 @@ public:
      */
     AbilityBase* getAbilityInstance(int abilityID);
 
+    /**
+     * @brief 获取 Ability 类型
+     *
+     * @param abilityID
+     * @return AbilityType::Type_t
+     */
+    AbilityType::Type_t getAbilityType(int abilityID);
+
+    /* -------------------------------------------------------------------------- */
+    /*                             UI Ability API Wrap                            */
+    /* -------------------------------------------------------------------------- */
+    // 对外的、安全的 UI Ability 状态切换接口
+
+    /**
+     * @brief 将 UI Ability 从后台切回前台
+     *
+     * @param abilityID
+     * @return true
+     * @return false
+     */
+    bool UIAbilityShow(int abilityID);
+
+    /**
+     * @brief 将 UI Ability 从前台切到后台
+     *
+     * @param abilityID
+     * @return true
+     * @return false
+     */
+    bool UIAbilityHide(int abilityID);
+
 protected:
     enum AbilityState_t {
         StateGoCreate = 0,
