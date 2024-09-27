@@ -42,12 +42,6 @@ public:
     void onForeground() override
     {
         printf("[ui] on foreground\n");
-
-        // 切到后台
-        if (_enter_was_pressed) {
-            _enter_was_pressed = false;
-            hide();
-        }
     }
     void onHide() override
     {
@@ -56,12 +50,6 @@ public:
     void onBackground() override
     {
         printf("[ui] on backgournd\n");
-
-        // 切到前台
-        if (_enter_was_pressed) {
-            _enter_was_pressed = false;
-            show();
-        }
     }
     void onDestroy() override
     {
@@ -84,29 +72,34 @@ int main()
 
     // 创建 Ability
     printf(">> create ability\n");
-    auto ui_ability_id = am.createAbility(std::make_unique<MyAppAbility>());
+    auto ability_id = am.createAbility(std::make_unique<MyAppAbility>());
 
-    // 刷新 Ability
     while (1) {
+        // 刷新 Ability
         am.updateAbilities();
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+
+        // 如果按了回车键
+        if (_enter_was_pressed) {
+            _enter_was_pressed = false;
+
+            // 获取当前状态
+            auto ability_current_state = am.getUIAbilityCurrentState(ability_id);
+
+            // 前后台反转
+            if (ability_current_state == UIAbility::StateForeground) {
+                am.hideUIAbility(ability_id);
+            } else if (ability_current_state == UIAbility::StateBackground) {
+                am.showUIAbility(ability_id);
+            }
+        }
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(300));
     }
 
     // 销毁 Ability
     printf(">> destroy ability\n");
-    am.destroyAbility(ui_ability_id);
+    am.destroyAbility(ability_id);
     am.updateAbilities();
 
     return 0;
 }
-
-// // 除了在 Ability 内部切换状态，还可以在外部切换，适合切换条件相同的多个 Ability 统一管理
-
-//     // 获取 Ability 实例原始指针
-//     auto ui_ability_instance = (UIAbility*)am.getAbilityInstance(ui_ability_id);
-//     // 验空、调用方法
-//     if (ui_ability_instance) {
-//         ui_ability_instance->show();
-//         ...
-//     }
-// }

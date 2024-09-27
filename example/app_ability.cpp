@@ -45,22 +45,10 @@ public:
     void onRunning() override
     {
         printf("[app] on running\n");
-
-        // 关掉 App
-        if (_enter_was_pressed) {
-            _enter_was_pressed = false;
-            close();
-        }
     }
     void onSleeping() override
     {
         printf("[app] on sleeping\n");
-
-        // 打开 App
-        if (_enter_was_pressed) {
-            _enter_was_pressed = false;
-            open();
-        }
     }
     void onClose() override
     {
@@ -87,21 +75,36 @@ int main()
 
     // 创建 Ability
     printf(">> create ability\n");
-    auto app_ability_id = am.createAbility(std::make_unique<MyAppAbility>());
+    auto ability_id = am.createAbility(std::make_unique<MyAppAbility>());
 
-    // 从外部获取 App 信息
-    auto app_ability_instance = (AppAbility*)am.getAbilityInstance(app_ability_id);
-    printf(">> app name is: %s\n", app_ability_instance->getAppInfo().name.c_str());
+    // 获取 App 信息
+    printf(">> app name is: %s\n", am.getAppAbilityAppInfo(ability_id).name.c_str());
 
-    // 刷新 Ability
     while (1) {
+        // 刷新 Ability
         am.updateAbilities();
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+        // 如果按了回车键
+        if (_enter_was_pressed) {
+            _enter_was_pressed = false;
+
+            // 获取当前状态
+            auto ability_current_state = am.getAppAbilityCurrentState(ability_id);
+
+            // 打开关闭反转
+            if (ability_current_state == AppAbility::StateRunning) {
+                am.closeAppAbility(ability_id);
+            } else if (ability_current_state == AppAbility::StateSleeping) {
+                am.openAppAbility(ability_id);
+            }
+        }
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(300));
     }
 
     // 销毁 Ability
     printf(">> destroy ability\n");
-    am.destroyAbility(app_ability_id);
+    am.destroyAbility(ability_id);
     am.updateAbilities();
 
     return 0;
