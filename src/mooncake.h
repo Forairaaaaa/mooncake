@@ -38,15 +38,84 @@ public:
     /* -------------------------------------------------------------------------- */
     // App Ability 管理器 API 封装
 
+    /**
+     * @brief 安装 App，返回 App ID
+     *
+     * @param appAbility
+     * @return int
+     */
     int installApp(std::unique_ptr<AppAbility> appAbility);
+
+    /**
+     * @brief 卸载指定 ID 的 App
+     *
+     * @param appID
+     * @return true
+     * @return false
+     */
     bool uninstallApp(int appID);
+
+    /**
+     * @brief 卸载所有 App
+     *
+     */
     void uninstallAllApps();
+
+    /**
+     * @brief 打开指定 ID 的 App
+     *
+     * @param appID
+     * @return true
+     * @return false
+     */
     bool openApp(int appID);
+
+    /**
+     * @brief 关闭指定 ID 的 App
+     *
+     * @param appID
+     * @return true
+     * @return false
+     */
     bool closeApp(int appID);
+
+    /**
+     * @brief 检查 App 是否存在
+     *
+     * @param appID
+     * @return true
+     * @return false
+     */
     bool isAppExist(int appID);
+
+    /**
+     * @brief 获取当前 App 数量
+     *
+     * @return std::size_t
+     */
     std::size_t getAppNum();
+
+    /**
+     * @brief 获取指定 ID 的 App 信息
+     *
+     * @param appID
+     * @return AppAbility::AppInfo_t
+     */
     AppAbility::AppInfo_t getAppInfo(int appID);
+
+    /**
+     * @brief 获取所有 App 的 App 信息
+     *
+     * @return std::vector<AppAbility::AppInfo_t>
+     */
     std::vector<AppAbility::AppInfo_t> getAllAppInfo();
+
+    /**
+     * @brief 获取指定 ID 的 App 当前生命周期状态
+     *
+     * @param appID
+     * @return AppAbility::State_t
+     */
     AppAbility::State_t getAppCurrentState(int appID);
 
     /* -------------------------------------------------------------------------- */
@@ -55,7 +124,17 @@ public:
     // Extension Ability 管理器 API 封装。
     // 因为 Extension 可以是任意 Ability 类型，所以直接懒加载，暴露管理器实例就算 9 数了
 
+    /**
+     * @brief 获取 Extension Ability 管理器实例
+     *
+     * @return AbilityManager*
+     */
     AbilityManager* ExtensionManager();
+
+    /**
+     * @brief 重置 Extension Ability 管理器，销毁其中所有 Ability
+     *
+     */
     void resetExtensionManager();
 
 private:

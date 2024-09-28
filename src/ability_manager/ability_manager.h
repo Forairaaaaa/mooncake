@@ -49,7 +49,7 @@ public:
     std::size_t getAbilityNum();
 
     /**
-     * @brief 检测 Ability 是否存在
+     * @brief 检测查 Ability 是否存在
      *
      * @param abilityID
      * @return true
