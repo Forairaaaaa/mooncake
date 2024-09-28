@@ -211,7 +211,6 @@ classDiagram
 ```mermaid
 graph TD;
     onCreate-->onRunning;
-    onRunning-- 循环调用 -->onRunning;
     onRunning-- destroy -->onDestroy;
     
 ```
@@ -296,8 +295,93 @@ std::unique_ptr<AbilityManager> _app_ability_manager;
 std::unique_ptr<AbilityManager> _extension_ability_manager;
 ```
 
-- **App Ability 管理器** 只用于管理  `AppAbility` 类型，`AppAbility`  对于 Mooncake 框架来说就是 **App** ，Mooncake 提供了 App 安装、打开、关闭，获取信息、数量、状态等针对性的接口封装
+- **App Ability 管理器** 只用于管理  `AppAbility` 类型，一个 `AppAbility`  对于 Mooncake 框架来说就是一个 **App** ，Mooncake 提供了针对性的接口封装
 
 - **Extension Ability 管理器** 可以用于管理任意 Ability 类型，比如需要一些 `WorkerAbility` 来监听数据、`UIAbility` 渲染图像、自己派生的 `CustomAbility` 等都可以丢到这里统一由 Mooncake 管理
 
+比如：
+
+```cpp
+// 创建 Mooncake
+Mooncake mc;
+
+// 安装 App
+printf(">> install app\n");
+mc.installApp(std::make_unique<MyApp>());
+// 输出：
+// >> install app
+// [app] on construct
+
+// 安装扩展
+printf(">> install extensions\n");
+mc.ExtensionManager()->createAbility(std::make_unique<MyWorker>());
+mc.ExtensionManager()->createAbility(std::make_unique<MyUI>());
+// 输出：
+// >> install extensions
+// [worker] on construct
+// [ui] on construct
+
+// 更新 Mooncake
+printf(">> update mooncake\n");
+for (int i = 0; i < 3; i++) {
+    mc.update();
+}
+// 输出：
+// >> update mooncake
+// [worker] on running
+// [ui] on foreground
+// [app] on running
+// [worker] on running
+// [ui] on foreground
+// [app] on running
+// [worker] on running
+// [ui] on foreground
+```
+
+### AbilityManager
+
+**Ability 管理器** 负责 Ability 实例的创建、储存和销毁，以及原始生命周期回调的调度触发
+
+每个 Ability 实例会对应一个 `Ability ID`，方便查找索引：
+
+```cpp
+/**
+ * @brief 创建 Ability，返回 Ability ID
+ *
+ * @param ability
+ * @return int
+ */
+int createAbility(std::unique_ptr<AbilityBase> ability);
+
+/**
+ * @brief 销毁指定 ID 的 Ability
+ *
+ * @param abilityID
+ * @return true
+ * @return false
+ */
+bool destroyAbility(int abilityID);
+```
+
+AbilityManager 还提供针对性的 Ability 操作接口，简化 Ability 状态切换，避免直接的实例操作：
+
+```cpp
+/* -------------------------------------------------------------------------- */
+/*                            Ability API Wrapping                            */
+/* -------------------------------------------------------------------------- */
+// 对外暴露针对性的 Ability 操作接口
+
+bool showUIAbility(int abilityID);
+bool hideUIAbility(int abilityID);
+UIAbility::State_t getUIAbilityCurrentState(int abilityID);
+
+bool pauseWorkerAbility(int abilityID);
+bool resumeWorkerAbility(int abilityID);
+WorkerAbility::State_t getWorkerAbilityCurrentState(int abilityID);
+
+bool openAppAbility(int abilityID);
+bool closeAppAbility(int abilityID);
+AppAbility::AppInfo_t getAppAbilityAppInfo(int abilityID);
+AppAbility::State_t getAppAbilityCurrentState(int abilityID);
+```
 
