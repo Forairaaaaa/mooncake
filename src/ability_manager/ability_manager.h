@@ -87,16 +87,16 @@ public:
 
     bool showUIAbility(int abilityID);
     bool hideUIAbility(int abilityID);
-    UIAbility::UIAbilityState_t getUIAbilityCurrentState(int abilityID);
+    UIAbility::State_t getUIAbilityCurrentState(int abilityID);
 
     bool pauseWorkerAbility(int abilityID);
     bool resumeWorkerAbility(int abilityID);
-    WorkerAbility::WorkerAbilityState_t getWorkerAbilityCurrentState(int abilityID);
+    WorkerAbility::State_t getWorkerAbilityCurrentState(int abilityID);
 
     bool openAppAbility(int abilityID);
     bool closeAppAbility(int abilityID);
     AppAbility::AppInfo_t getAppAbilityAppInfo(int abilityID);
-    AppAbility::AppAbilityState_t getAppAbilityCurrentState(int abilityID);
+    AppAbility::State_t getAppAbilityCurrentState(int abilityID);
 
 protected:
     enum AbilityState_t {

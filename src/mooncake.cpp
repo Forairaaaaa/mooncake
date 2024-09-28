@@ -144,7 +144,7 @@ std::vector<AppAbility::AppInfo_t> Mooncake::getAllAppInfo()
     return ret;
 }
 
-AppAbility::AppAbilityState_t Mooncake::getAppCurrentState(int appID)
+AppAbility::State_t Mooncake::getAppCurrentState(int appID)
 {
     if (!_app_ability_manager) {
         return AppAbility::StateNull;

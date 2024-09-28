@@ -36,6 +36,7 @@ public:
     /* -------------------------------------------------------------------------- */
     /*                             App Ability Manager                            */
     /* -------------------------------------------------------------------------- */
+    // App Ability 管理器 API 封装
 
     int installApp(std::unique_ptr<AppAbility> appAbility);
     bool uninstallApp(int appID);
@@ -46,11 +47,13 @@ public:
     std::size_t getAppNum();
     AppAbility::AppInfo_t getAppInfo(int appID);
     std::vector<AppAbility::AppInfo_t> getAllAppInfo();
-    AppAbility::AppAbilityState_t getAppCurrentState(int appID);
+    AppAbility::State_t getAppCurrentState(int appID);
 
     /* -------------------------------------------------------------------------- */
     /*                          Extension Ability Manager                         */
     /* -------------------------------------------------------------------------- */
+    // Extension Ability 管理器 API 封装。
+    // 因为 Extension 可以是任意 Ability 类型，所以直接懒加载，暴露管理器实例就算 9 数了
 
     AbilityManager* ExtensionManager();
     void resetExtensionManager();

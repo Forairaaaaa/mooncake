@@ -99,7 +99,7 @@ class UIAbility : public AbilityBase {
 public:
     virtual ~UIAbility() = default;
 
-    enum UIAbilityState_t {
+    enum State_t {
         StateNull = 0,
         StateGoShow,
         StateForeground,
@@ -124,7 +124,7 @@ public:
      *
      * @return UIAbilityState_t
      */
-    UIAbilityState_t currentState()
+    State_t currentState()
     {
         return _current_state;
     }
@@ -143,7 +143,7 @@ public:
     }
 
 private:
-    UIAbilityState_t _current_state = StateForeground;
+    State_t _current_state = StateForeground;
 
     void baseCreate() override;
     void baseUpdate() override;
@@ -163,7 +163,7 @@ class WorkerAbility : public AbilityBase {
 public:
     virtual ~WorkerAbility() = default;
 
-    enum WorkerAbilityState_t {
+    enum State_t {
         StateNull = 0,
         StateGoResume,
         StateRunning,
@@ -188,7 +188,7 @@ public:
      *
      * @return WorkerAbilityState_t
      */
-    WorkerAbilityState_t currentState()
+    State_t currentState()
     {
         return _current_state;
     }
@@ -206,7 +206,7 @@ public:
     }
 
 private:
-    WorkerAbilityState_t _current_state = StateRunning;
+    State_t _current_state = StateRunning;
 
     void baseCreate() override;
     void baseUpdate() override;
@@ -232,7 +232,7 @@ public:
         void* userData = nullptr;
     };
 
-    enum AppAbilityState_t {
+    enum State_t {
         StateNull = 0,
         StateGoOpen,
         StateRunning,
@@ -260,7 +260,7 @@ public:
      *
      * @return AppAbilityState_t
      */
-    AppAbilityState_t currentState()
+    State_t currentState()
     {
         return _current_state;
     }
@@ -279,7 +279,7 @@ public:
     }
 
 private:
-    AppAbilityState_t _current_state = StateSleeping;
+    State_t _current_state = StateSleeping;
     AppInfo_t _app_info;
 
     void baseCreate() override;

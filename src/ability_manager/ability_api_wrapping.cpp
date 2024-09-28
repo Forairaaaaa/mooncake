@@ -42,7 +42,7 @@ bool AbilityManager::hideUIAbility(int abilityID)
     return false;
 }
 
-UIAbility::UIAbilityState_t AbilityManager::getUIAbilityCurrentState(int abilityID)
+UIAbility::State_t AbilityManager::getUIAbilityCurrentState(int abilityID)
 {
     auto ability_instance = getAbilityInstance(abilityID);
     if (ability_instance) {
@@ -84,7 +84,7 @@ bool AbilityManager::resumeWorkerAbility(int abilityID)
     return false;
 }
 
-WorkerAbility::WorkerAbilityState_t AbilityManager::getWorkerAbilityCurrentState(int abilityID)
+WorkerAbility::State_t AbilityManager::getWorkerAbilityCurrentState(int abilityID)
 {
     auto ability_instance = getAbilityInstance(abilityID);
     if (ability_instance) {
@@ -138,7 +138,7 @@ AppAbility::AppInfo_t AbilityManager::getAppAbilityAppInfo(int abilityID)
     return AppAbility::AppInfo_t();
 }
 
-AppAbility::AppAbilityState_t AbilityManager::getAppAbilityCurrentState(int abilityID)
+AppAbility::State_t AbilityManager::getAppAbilityCurrentState(int abilityID)
 {
     auto ability_instance = getAbilityInstance(abilityID);
     if (ability_instance) {
