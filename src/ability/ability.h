@@ -13,16 +13,15 @@
 
 namespace mooncake {
 
-namespace AbilityType {
-enum Type_t {
-    Base = 0,
-    Basic,
-    UI,
-    Worker,
-    App,
-    Custom,
+enum AbilityType_t {
+    AbilityType_Null = 0,
+    AbilityType_Base,
+    AbilityType_Basic,
+    AbilityType_UI,
+    AbilityType_Worker,
+    AbilityType_App,
+    AbilityType_Custom,
 };
-}
 
 /* -------------------------------------------------------------------------- */
 /*                                Ability Base                                */
@@ -37,9 +36,9 @@ public:
     virtual ~AbilityBase() = default;
 
     // 获取 Ability 类型
-    virtual AbilityType::Type_t abilityType()
+    virtual AbilityType_t abilityType()
     {
-        return AbilityType::Base;
+        return AbilityType_Base;
     }
 
     // 原始生命周期
@@ -65,9 +64,9 @@ public:
     virtual void onRunning() {}
     virtual void onDestroy() {}
 
-    AbilityType::Type_t abilityType() override
+    AbilityType_t abilityType() override
     {
-        return AbilityType::Basic;
+        return AbilityType_Basic;
     }
 
 private:
@@ -138,9 +137,9 @@ public:
     virtual void onHide() {}
     virtual void onDestroy() {}
 
-    AbilityType::Type_t abilityType() override
+    AbilityType_t abilityType() override
     {
-        return AbilityType::UI;
+        return AbilityType_UI;
     }
 
 private:
@@ -201,9 +200,9 @@ public:
     virtual void onPause() {}
     virtual void onDestroy() {}
 
-    AbilityType::Type_t abilityType() override
+    AbilityType_t abilityType() override
     {
-        return AbilityType::Worker;
+        return AbilityType_Worker;
     }
 
 private:
@@ -274,9 +273,9 @@ public:
     virtual void onClose() {}
     virtual void onDestroy() {}
 
-    AbilityType::Type_t abilityType() override
+    AbilityType_t abilityType() override
     {
-        return AbilityType::App;
+        return AbilityType_App;
     }
 
 private:

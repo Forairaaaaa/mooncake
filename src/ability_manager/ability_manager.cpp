@@ -117,13 +117,13 @@ std::vector<AbilityBase*> AbilityManager::getAllAbilityInstance()
     return ret;
 }
 
-AbilityType::Type_t AbilityManager::getAbilityType(int abilityID)
+AbilityType_t AbilityManager::getAbilityType(int abilityID)
 {
     auto ability_instance = getAbilityInstance(abilityID);
     if (ability_instance) {
         return ability_instance->abilityType();
     }
-    return AbilityType::Base;
+    return AbilityType_Null;
 }
 
 int AbilityManager::get_next_ability_id()

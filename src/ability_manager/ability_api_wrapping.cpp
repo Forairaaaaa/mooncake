@@ -21,7 +21,7 @@ bool AbilityManager::showUIAbility(int abilityID)
     auto ability_instance = getAbilityInstance(abilityID);
     if (ability_instance) {
         // 类型校验
-        if (ability_instance->abilityType() == AbilityType::UI) {
+        if (ability_instance->abilityType() == AbilityType_UI) {
             static_cast<UIAbility*>(ability_instance)->show();
             return true;
         }
@@ -34,7 +34,7 @@ bool AbilityManager::hideUIAbility(int abilityID)
     auto ability_instance = getAbilityInstance(abilityID);
     if (ability_instance) {
         // 类型校验
-        if (ability_instance->abilityType() == AbilityType::UI) {
+        if (ability_instance->abilityType() == AbilityType_UI) {
             static_cast<UIAbility*>(ability_instance)->hide();
             return true;
         }
@@ -47,7 +47,7 @@ UIAbility::UIAbilityState_t AbilityManager::getUIAbilityCurrentState(int ability
     auto ability_instance = getAbilityInstance(abilityID);
     if (ability_instance) {
         // 类型校验
-        if (ability_instance->abilityType() == AbilityType::UI) {
+        if (ability_instance->abilityType() == AbilityType_UI) {
             return static_cast<UIAbility*>(ability_instance)->currentState();
         }
     }
@@ -63,7 +63,7 @@ bool AbilityManager::pauseWorkerAbility(int abilityID)
     auto ability_instance = getAbilityInstance(abilityID);
     if (ability_instance) {
         // 类型校验
-        if (ability_instance->abilityType() == AbilityType::Worker) {
+        if (ability_instance->abilityType() == AbilityType_Worker) {
             static_cast<WorkerAbility*>(ability_instance)->pause();
             return true;
         }
@@ -76,7 +76,7 @@ bool AbilityManager::resumeWorkerAbility(int abilityID)
     auto ability_instance = getAbilityInstance(abilityID);
     if (ability_instance) {
         // 类型校验
-        if (ability_instance->abilityType() == AbilityType::Worker) {
+        if (ability_instance->abilityType() == AbilityType_Worker) {
             static_cast<WorkerAbility*>(ability_instance)->resume();
             return true;
         }
@@ -89,7 +89,7 @@ WorkerAbility::WorkerAbilityState_t AbilityManager::getWorkerAbilityCurrentState
     auto ability_instance = getAbilityInstance(abilityID);
     if (ability_instance) {
         // 类型校验
-        if (ability_instance->abilityType() == AbilityType::Worker) {
+        if (ability_instance->abilityType() == AbilityType_Worker) {
             return static_cast<WorkerAbility*>(ability_instance)->currentState();
         }
     }
@@ -105,7 +105,7 @@ bool AbilityManager::openAppAbility(int abilityID)
     auto ability_instance = getAbilityInstance(abilityID);
     if (ability_instance) {
         // 类型校验
-        if (ability_instance->abilityType() == AbilityType::App) {
+        if (ability_instance->abilityType() == AbilityType_App) {
             static_cast<AppAbility*>(ability_instance)->open();
             return true;
         }
@@ -118,7 +118,7 @@ bool AbilityManager::closeAppAbility(int abilityID)
     auto ability_instance = getAbilityInstance(abilityID);
     if (ability_instance) {
         // 类型校验
-        if (ability_instance->abilityType() == AbilityType::App) {
+        if (ability_instance->abilityType() == AbilityType_App) {
             static_cast<AppAbility*>(ability_instance)->close();
             return true;
         }
@@ -131,7 +131,7 @@ AppAbility::AppInfo_t AbilityManager::getAppAbilityAppInfo(int abilityID)
     auto ability_instance = getAbilityInstance(abilityID);
     if (ability_instance) {
         // 类型校验
-        if (ability_instance->abilityType() == AbilityType::App) {
+        if (ability_instance->abilityType() == AbilityType_App) {
             return static_cast<AppAbility*>(ability_instance)->getAppInfo();
         }
     }
@@ -143,7 +143,7 @@ AppAbility::AppAbilityState_t AbilityManager::getAppAbilityCurrentState(int abil
     auto ability_instance = getAbilityInstance(abilityID);
     if (ability_instance) {
         // 类型校验
-        if (ability_instance->abilityType() == AbilityType::App) {
+        if (ability_instance->abilityType() == AbilityType_App) {
             return static_cast<AppAbility*>(ability_instance)->currentState();
         }
     }

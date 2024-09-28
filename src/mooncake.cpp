@@ -38,7 +38,7 @@ int Mooncake::installApp(std::unique_ptr<AppAbility> appAbility)
     }
 
     // 类型校验
-    if (appAbility->abilityType() != AbilityType::UI) {
+    if (appAbility->abilityType() != AbilityType_UI) {
         return -1;
     }
 

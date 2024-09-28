@@ -76,9 +76,9 @@ public:
      * @brief 获取 Ability 类型
      *
      * @param abilityID
-     * @return AbilityType::Type_t
+     * @return AbilityType_t
      */
-    AbilityType::Type_t getAbilityType(int abilityID);
+    AbilityType_t getAbilityType(int abilityID);
 
     /* -------------------------------------------------------------------------- */
     /*                            Ability API Wrapping                            */
