@@ -1,6 +1,6 @@
 # Mooncake
 
-使用生命周期来结构化 App 设计，提供 App 安装、打开、关闭等统一管理接口
+用生命周期结构化 App 设计，提供 App 安装、打开、关闭等统一管理接口
 
 ------
 
@@ -59,7 +59,9 @@ for (int i = 0; i < 3; i++) {
 // [凤爪] on running
 ```
 
-App 的所有生命周期回调都会集中在 `update()` 方法中触发：
+App 的生命周期参考图表
+
+App 的所有生命周期回调都会集中在 Mooncake 的  `update()` 方法中触发：
 
 ```cpp
 /**
@@ -154,4 +156,148 @@ AppAbility::State_t getAppCurrentState(int appID);
 ```
 
 ## Ability 模型
+
+这概念抄[鸿蒙](https://docs.openharmony.cn/pages/v4.1/zh-cn/application-dev/application-models/abilitykit-overview.md)的，有点像超级青春版
+
+**Ability** 为一个应用的行为抽象，每个 Ability 都会有最基础的 **创建、运行、销毁** 三个状态
+
+基于这三个状态，可以派生出不同生命周期的 Ability 类型
+
+```mermaid
+classDiagram
+    AbilityBase <|-- BasicAbility
+    AbilityBase <|-- UIAbility
+    AbilityBase <|-- WorkerAbility
+    AbilityBase <|-- AppAbility
+    class AbilityBase{
+        baseCreate()
+        baseUpdate()
+        baseDestroy()
+    }
+    class BasicAbility{
+        onCreate()
+        onRunning()
+        onDestroy()
+    }
+    class UIAbility{
+        onCreate()
+        onShow()
+        onForeground()
+        onBackground()
+        onHide()
+        onDestroy()
+    }
+    class WorkerAbility{
+        onCreate()
+        onResume()
+        onRunning()
+       	onPause()
+        onDestroy()
+    }
+    class AppAbility{
+        onCreate()
+        onOpen()
+        onRunning()
+        onSleeping()
+        onClose()
+        onDestroy()
+    }
+```
+
+### BasicAbility
+
+ `BasicAbility` 类型生命周期：
+
+```mermaid
+graph TD;
+    onCreate-->onRunning;
+    onRunning-- 循环调用 -->onRunning;
+    onRunning-- destroy -->onDestroy;
+    
+```
+
+提供了最简单的三段式生命周期，可以把 `onCreate` 比作 Arduino 的 `setup`，`onRunning` 比作 `loop` 
+
+在这三段式的基础上，可以派生出更针对性的 **Ability** 类型
+
+### UIAbility
+
+ `UIAbility` 类型生命周期：
+
+```mermaid
+graph TD;
+    onCreate-->onForeground;
+    onForeground-- hide -->onHide;
+    onHide-->onBackground;
+    onBackground-- show -->onShow;
+    onShow-->onForeground;
+    onForeground-- destroy -->onDestroy;
+    onBackground-- destroy -->onDestroy;
+    
+```
+
+扩展出前后台概念，由 `hide` 和 `show` 接口切换状态，适合需要前后台概念的 UI 行为
+
+### WorkerAbility
+
+ `WorkerAbility` 类型生命周期：
+
+```mermaid
+graph TD;
+    onCreate-->onRunning;
+    onRunning-- pause -->暂停;
+    暂停-- resume -->onRunning;
+    onRunning-- destroy -->onDestroy;
+    暂停-- destroy -->onDestroy;
+    
+```
+
+扩展出运行和暂停行为，由 `pause` 和 `resume` 接口切换状态，适合后台运行的行为，比如数据监听和事件转发
+
+### AppAbility
+
+ `AppAbility` 类型生命周期：
+
+```mermaid
+graph TD;
+    onCreate-->onSleeping;
+    onOpen-->onRunning;
+    onRunning-- close -->onClose;
+    onClose-->onSleeping;
+    onSleeping-- open -->onOpen;
+    onRunning-- destroy -->onDestroy;
+    onSleeping-- destroy -->onDestroy;
+    
+```
+
+扩展出打开和关闭行为，由 `open` 和 `close` 接口切换状态
+
+提供 App 信息和接口：
+
+```cpp
+struct AppInfo_t {
+    std::string name;
+    void* icon = nullptr;
+    void* userData = nullptr;
+};
+
+const AppInfo_t& getAppInfo();
+AppInfo_t& setAppInfo();
+```
+
+适合有 App 信息需求的多应用行为
+
+## Mooncake
+
+**Mooncake** 内部提供两个 **Ability** 管理器：
+
+```cpp
+std::unique_ptr<AbilityManager> _app_ability_manager;
+std::unique_ptr<AbilityManager> _extension_ability_manager;
+```
+
+- **App Ability 管理器** 只用于管理  `AppAbility` 类型，`AppAbility`  对于 Mooncake 框架来说就是 **App** ，Mooncake 提供了 App 安装、打开、关闭，获取信息、数量、状态等针对性的接口封装
+
+- **Extension Ability 管理器** 可以用于管理任意 Ability 类型，比如需要一些 `WorkerAbility` 来监听数据、`UIAbility` 渲染图像、自己派生的 `CustomAbility` 等都可以丢到这里统一由 Mooncake 管理
+
 
