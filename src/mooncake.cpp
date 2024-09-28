@@ -23,7 +23,7 @@ static const char* _mooncake_ascii_logo = R"(
 |_|_|_|_____|_____|_|___|_____|__|__|__|__|_____|
 )";
 
-void Mooncake::init()
+void Mooncake::logAboutMsg()
 {
     printf("%s\n", _mooncake_ascii_logo);
     printf("- @author Forairaaaaa\n");
@@ -57,6 +57,10 @@ AbilityManager* Mooncake::get_extension_ability_manager()
     return _extension_ability_manager.get();
 }
 
+/* -------------------------------------------------------------------------- */
+/*                             App Ability Manager                            */
+/* -------------------------------------------------------------------------- */
+
 int Mooncake::installApp(std::unique_ptr<AppAbility> appAbility)
 {
     if (!appAbility) {
@@ -71,12 +75,17 @@ int Mooncake::installApp(std::unique_ptr<AppAbility> appAbility)
     return get_app_ability_manager()->createAbility(std::move(appAbility));
 }
 
-bool Mooncake::unInstallApp(int appID)
+bool Mooncake::uninstallApp(int appID)
 {
     if (!_app_ability_manager) {
         return false;
     }
     return get_app_ability_manager()->destroyAbility(appID);
+}
+
+void Mooncake::uninstallAllApps()
+{
+    _app_ability_manager.reset();
 }
 
 bool Mooncake::openApp(int appID)
@@ -141,4 +150,18 @@ AppAbility::AppAbilityState_t Mooncake::getAppCurrentState(int appID)
         return AppAbility::StateNull;
     }
     return get_app_ability_manager()->getAppAbilityCurrentState(appID);
+}
+
+/* -------------------------------------------------------------------------- */
+/*                          Extension Ability Manager                         */
+/* -------------------------------------------------------------------------- */
+
+AbilityManager* Mooncake::ExtensionManager()
+{
+    return get_extension_ability_manager();
+}
+
+void Mooncake::resetExtensionManager()
+{
+    _extension_ability_manager.reset();
 }

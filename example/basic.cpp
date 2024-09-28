@@ -87,7 +87,7 @@ int main()
 
     // 创建 Mooncake
     Mooncake mc;
-    mc.init();
+    mc.logAboutMsg();
 
     // 安装 App
     auto app_1_id = mc.installApp(std::make_unique<App_1>());

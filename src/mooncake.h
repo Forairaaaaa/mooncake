@@ -21,16 +21,25 @@ namespace mooncake {
 
 class Mooncake {
 public:
-    void init();
+    /**
+     * @brief 打印关于信息
+     *
+     */
+    void logAboutMsg();
 
+    /**
+     * @brief 更新 Mooncake，刷新 App 及 Extension 状态，触发生命周期回调
+     *
+     */
     void update();
 
     /* -------------------------------------------------------------------------- */
-    /*                                  App APIs                                  */
+    /*                             App Ability Manager                            */
     /* -------------------------------------------------------------------------- */
 
     int installApp(std::unique_ptr<AppAbility> appAbility);
-    bool unInstallApp(int appID);
+    bool uninstallApp(int appID);
+    void uninstallAllApps();
     bool openApp(int appID);
     bool closeApp(int appID);
     bool isAppExist(int appID);
@@ -38,6 +47,13 @@ public:
     AppAbility::AppInfo_t getAppInfo(int appID);
     std::vector<AppAbility::AppInfo_t> getAllAppInfo();
     AppAbility::AppAbilityState_t getAppCurrentState(int appID);
+
+    /* -------------------------------------------------------------------------- */
+    /*                          Extension Ability Manager                         */
+    /* -------------------------------------------------------------------------- */
+
+    AbilityManager* ExtensionManager();
+    void resetExtensionManager();
 
 private:
     // App Ability 管理器：提供集中的 App Ability 管理和信息获取
