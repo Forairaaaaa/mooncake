@@ -49,6 +49,15 @@ public:
     std::size_t getAbilityNum();
 
     /**
+     * @brief 检测 Ability 是否存在
+     *
+     * @param abilityID
+     * @return true
+     * @return false
+     */
+    bool isAbilityExist(int abilityID);
+
+    /**
      * @brief 获取指定 ID Ability 的实例原始指针，以便外部调用 API，最不安全的一集
      *
      * @param abilityID
@@ -70,15 +79,6 @@ public:
      * @return AbilityType::Type_t
      */
     AbilityType::Type_t getAbilityType(int abilityID);
-
-    /**
-     * @brief 检测 Ability 是否存在
-     *
-     * @param abilityID
-     * @return true
-     * @return false
-     */
-    bool isAbilityExist(int abilityID);
 
     /* -------------------------------------------------------------------------- */
     /*                            Ability API Wrapping                            */

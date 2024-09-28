@@ -86,6 +86,15 @@ std::size_t AbilityManager::getAbilityNum()
     return _ability_list.size();
 }
 
+bool AbilityManager::isAbilityExist(int abilityID)
+{
+    auto ability_instance = getAbilityInstance(abilityID);
+    if (ability_instance) {
+        return true;
+    }
+    return false;
+}
+
 AbilityBase* AbilityManager::getAbilityInstance(int abilityID)
 {
     // 遍历查找对应 ID 的 Ability
@@ -115,15 +124,6 @@ AbilityType::Type_t AbilityManager::getAbilityType(int abilityID)
         return ability_instance->abilityType();
     }
     return AbilityType::Base;
-}
-
-bool AbilityManager::isAbilityExist(int abilityID)
-{
-    auto ability_instance = getAbilityInstance(abilityID);
-    if (ability_instance) {
-        return true;
-    }
-    return false;
 }
 
 int AbilityManager::get_next_ability_id()
