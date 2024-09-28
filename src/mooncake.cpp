@@ -31,6 +31,32 @@ void Mooncake::init()
     printf("- @build at " __TIME__ " " __DATE__ "\n\n");
 }
 
+void Mooncake::update()
+{
+    if (_app_ability_manager) {
+        _app_ability_manager->updateAbilities();
+    }
+    if (_extension_ability_manager) {
+        _extension_ability_manager->updateAbilities();
+    }
+}
+
+AbilityManager* Mooncake::get_app_ability_manager()
+{
+    if (_app_ability_manager == nullptr) {
+        _app_ability_manager = std::make_unique<AbilityManager>();
+    }
+    return _app_ability_manager.get();
+}
+
+AbilityManager* Mooncake::get_extension_ability_manager()
+{
+    if (_extension_ability_manager == nullptr) {
+        _extension_ability_manager = std::make_unique<AbilityManager>();
+    }
+    return _extension_ability_manager.get();
+}
+
 int Mooncake::installApp(std::unique_ptr<AppAbility> appAbility)
 {
     if (!appAbility) {
@@ -38,7 +64,7 @@ int Mooncake::installApp(std::unique_ptr<AppAbility> appAbility)
     }
 
     // 类型校验
-    if (appAbility->abilityType() != AbilityType_UI) {
+    if (appAbility->abilityType() != AbilityType_App) {
         return -1;
     }
 
@@ -77,6 +103,14 @@ bool Mooncake::isAppExist(int appID)
     return get_app_ability_manager()->isAbilityExist(appID);
 }
 
+std::size_t Mooncake::getAppNum()
+{
+    if (!_app_ability_manager) {
+        return 0;
+    }
+    return get_app_ability_manager()->getAbilityNum();
+}
+
 AppAbility::AppInfo_t Mooncake::getAppInfo(int appID)
 {
     if (!_app_ability_manager) {
@@ -107,20 +141,4 @@ AppAbility::AppAbilityState_t Mooncake::getAppCurrentState(int appID)
         return AppAbility::StateNull;
     }
     return get_app_ability_manager()->getAppAbilityCurrentState(appID);
-}
-
-AbilityManager* Mooncake::get_app_ability_manager()
-{
-    if (_app_ability_manager == nullptr) {
-        _app_ability_manager = std::make_unique<AbilityManager>();
-    }
-    return _app_ability_manager.get();
-}
-
-AbilityManager* Mooncake::get_extension_ability_manager()
-{
-    if (_extension_ability_manager == nullptr) {
-        _extension_ability_manager = std::make_unique<AbilityManager>();
-    }
-    return _extension_ability_manager.get();
 }

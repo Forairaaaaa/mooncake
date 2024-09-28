@@ -11,6 +11,7 @@
 #pragma once
 #include "ability/ability.h"
 #include "ability_manager/ability_manager.h"
+#include <cstddef>
 #include <memory>
 #include <vector>
 
@@ -22,6 +23,8 @@ class Mooncake {
 public:
     void init();
 
+    void update();
+
     /* -------------------------------------------------------------------------- */
     /*                                  App APIs                                  */
     /* -------------------------------------------------------------------------- */
@@ -31,6 +34,7 @@ public:
     bool openApp(int appID);
     bool closeApp(int appID);
     bool isAppExist(int appID);
+    std::size_t getAppNum();
     AppAbility::AppInfo_t getAppInfo(int appID);
     std::vector<AppAbility::AppInfo_t> getAllAppInfo();
     AppAbility::AppAbilityState_t getAppCurrentState(int appID);
