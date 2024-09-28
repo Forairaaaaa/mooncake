@@ -28,11 +28,12 @@ public:
 
     int installApp(std::unique_ptr<AppAbility> appAbility);
     bool unInstallApp(int appID);
-    bool startApp(int appID);
-    bool stopApp(int appID);
-    AppAbility::AppInfo_t getAppInfo(int abilityID);
+    bool openApp(int appID);
+    bool closeApp(int appID);
+    bool isAppExist(int appID);
+    AppAbility::AppInfo_t getAppInfo(int appID);
     std::vector<AppAbility::AppInfo_t> getAllAppInfo();
-    AppAbility::AppAbilityState_t getAppCurrentState(int abilityID);
+    AppAbility::AppAbilityState_t getAppCurrentState(int appID);
 
 private:
     // App Ability 管理器：提供集中的 App Ability 管理和信息获取

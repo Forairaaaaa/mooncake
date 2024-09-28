@@ -9,8 +9,10 @@
  *
  */
 #include "mooncake.h"
+#include "ability/ability.h"
 #include <memory>
 #include <stdio.h>
+#include <utility>
 
 using namespace mooncake;
 
@@ -27,6 +29,70 @@ void Mooncake::init()
     printf("- @author Forairaaaaa\n");
     printf("- @version " MOONCAKE_VERSION "\n");
     printf("- @build at " __TIME__ " " __DATE__ "\n\n");
+}
+
+int Mooncake::installApp(std::unique_ptr<AppAbility> appAbility)
+{
+    if (!appAbility) {
+        return -1;
+    }
+
+    // 类型校验
+    if (appAbility->abilityType() != AbilityType::UI) {
+        return -1;
+    }
+
+    return get_app_ability_manager()->createAbility(std::move(appAbility));
+}
+
+bool Mooncake::unInstallApp(int appID)
+{
+    if (!_app_ability_manager) {
+        return false;
+    }
+    return get_app_ability_manager()->destroyAbility(appID);
+}
+
+bool Mooncake::openApp(int appID)
+{
+    if (!_app_ability_manager) {
+        return false;
+    }
+    return get_app_ability_manager()->openAppAbility(appID);
+}
+
+bool Mooncake::closeApp(int appID)
+{
+    if (!_app_ability_manager) {
+        return false;
+    }
+    return get_app_ability_manager()->closeAppAbility(appID);
+}
+
+bool Mooncake::isAppExist(int appID)
+{
+    if (!_app_ability_manager) {
+        return false;
+    }
+    return get_app_ability_manager()->isAbilityExist(appID);
+}
+
+AppAbility::AppInfo_t Mooncake::getAppInfo(int appID)
+{
+    if (!_app_ability_manager) {
+        return AppAbility::AppInfo_t();
+    }
+    return get_app_ability_manager()->getAppAbilityAppInfo(appID);
+}
+
+std::vector<AppAbility::AppInfo_t> Mooncake::getAllAppInfo()
+{
+    std::vector<AppAbility::AppInfo_t> ret;
+    if (!_app_ability_manager) {
+        return ret;
+    }
+
+    return ret;
 }
 
 AbilityManager* Mooncake::get_app_ability_manager()

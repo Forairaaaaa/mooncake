@@ -10,6 +10,7 @@
  */
 #pragma once
 #include "../ability/ability.h"
+#include <cstddef>
 #include <vector>
 #include <memory>
 
@@ -41,12 +42,26 @@ public:
     void updateAbilities();
 
     /**
-     * @brief 获取 Ability 实例原始指针，以便从外部触发生命周期变化，或者自定义 API 调用，最不安全的一集
+     * @brief 获取当前的 Ability 数量
+     *
+     * @return std::size_t
+     */
+    std::size_t getAbilityNum();
+
+    /**
+     * @brief 获取指定 ID Ability 的实例原始指针，以便外部调用 API，最不安全的一集
      *
      * @param abilityID
      * @return AbilityBase*
      */
     AbilityBase* getAbilityInstance(int abilityID);
+
+    /**
+     * @brief 获取所有 Ability 的实例原始指针，以便外部调用 API，最不安全的一集的续集
+     *
+     * @return std::vector<AbilityBase*>
+     */
+    std::vector<AbilityBase*> getAllAbilityInstance();
 
     /**
      * @brief 获取 Ability 类型
@@ -65,17 +80,19 @@ public:
      */
     bool isAbilityExist(int abilityID);
 
-    // 对外的 UI Ability 操作接口
+    /* -------------------------------------------------------------------------- */
+    /*                            Ability API Wrapping                            */
+    /* -------------------------------------------------------------------------- */
+    // 对外暴露针对性的 Ability 操作接口
+
     bool showUIAbility(int abilityID);
     bool hideUIAbility(int abilityID);
     UIAbility::UIAbilityState_t getUIAbilityCurrentState(int abilityID);
 
-    // 对外的 Worker Ability 操作接口
     bool pauseWorkerAbility(int abilityID);
     bool resumeWorkerAbility(int abilityID);
     WorkerAbility::WorkerAbilityState_t getWorkerAbilityCurrentState(int abilityID);
 
-    // 对外的 App Ability 操作接口
     bool openAppAbility(int abilityID);
     bool closeAppAbility(int abilityID);
     AppAbility::AppInfo_t getAppAbilityAppInfo(int abilityID);
@@ -93,6 +110,7 @@ protected:
         AbilityState_t state = StateGoCreate;
         std::unique_ptr<AbilityBase> ability;
     };
+
     std::vector<AbilityInfo_t> _ability_list;
     int _next_ability_id = 0;
     std::vector<int> _available_ability_id_list;
