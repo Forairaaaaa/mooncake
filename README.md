@@ -385,7 +385,7 @@ int createAbility(std::unique_ptr<AbilityBase> ability);
 bool destroyAbility(int abilityID);
 ```
 
-**Ability ID** 并不是绝对唯一的，当一个 Ability 销毁时，对应的 ID 会被 **回收**，等待并分配到下一个新的 Ability
+**Ability ID** 并不是绝对唯一的，当一个 Ability 被销毁时，对应的 ID 会被 **回收**，等待分配到新的 Ability
 
 AbilityManager 还提供针对性的 Ability 操作接口，简化 Ability 状态切换，避免直接的实例操作：
 
