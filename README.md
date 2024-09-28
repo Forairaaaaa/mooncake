@@ -59,17 +59,9 @@ for (int i = 0; i < 3; i++) {
 // [凤爪] on running
 ```
 
-App 的生命周期参考图表
+App 的生命周期可参考[图表](https://github.com/Forairaaaaa/mooncake?tab=readme-ov-file#appability)
 
-App 的所有生命周期回调都会集中在 Mooncake 的  `update()` 方法中触发：
-
-```cpp
-/**
- * @brief 更新 Mooncake，刷新 App 及 Extension 状态，触发生命周期回调
- *
- */
-void update();
-```
+## API
 
 App 管理接口：
 
@@ -155,6 +147,38 @@ std::vector<AppAbility::AppInfo_t> getAllAppInfo();
 AppAbility::State_t getAppCurrentState(int appID);
 ```
 
+App 的所有生命周期回调都会集中在 Mooncake 的  `update()` 方法中触发：
+
+```cpp
+/**
+ * @brief 更新 Mooncake，刷新 App 及 Extension 状态，触发生命周期回调
+ *
+ */
+void update();
+```
+
+一般可以丢进 `while` 里
+
+### 线程安全
+
+所有 API 都为线程 **不安全**，Mooncake 只提供管理器和一个集中的 `update()` 调度接口
+
+如果需要线程安全，确保 Mooncake 在临界区：
+
+```cpp
+// 一边
+while (1) {
+    mutex.lock();
+    mc.update();
+    mutex.unlock();
+}
+
+// 另一边
+mutex.lock();
+mc.openApp(114514);
+mutex.unlock();
+```
+
 ## Ability 模型
 
 这概念抄[鸿蒙](https://docs.openharmony.cn/pages/v4.1/zh-cn/application-dev/application-models/abilitykit-overview.md)的，有点像超级青春版
@@ -215,9 +239,7 @@ graph TD;
     
 ```
 
-提供了最简单的三段式生命周期，可以把 `onCreate` 比作 Arduino 的 `setup`，`onRunning` 比作 `loop` 
-
-在这三段式的基础上，可以派生出更针对性的 **Ability** 类型
+提供了最简单的三段式生命周期，可以把 `onCreate` 比作 **Arduino** 的 `setup`，`onRunning` 比作 `loop` 
 
 ### UIAbility
 
