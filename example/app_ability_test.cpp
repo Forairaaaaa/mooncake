@@ -1,12 +1,12 @@
 /**
- * @file ability_manager.cpp
+ * @file app_ability_test.cpp
  * @author Forairaaaaa
- * @brief
+ * @brief 
  * @version 0.1
- * @date 2024-09-26
- *
+ * @date 2024-09-28
+ * 
  * @copyright Copyright (c) 2024
- *
+ * 
  */
 #include <ability/ability.h>
 #include <ability_manager/ability_manager.h>
@@ -21,39 +21,42 @@ using namespace mooncake;
 
 std::atomic<bool> _enter_was_pressed = false;
 
-class MyAppAbility : public UIAbility {
+class MyAppAbility : public AppAbility {
 public:
     MyAppAbility()
     {
-        printf("[ui] on construct\n");
+        printf("[app] on construct\n");
+
+        // 配置 App 信息
+        setAppInfo().name = "帅的不谈";
     }
     ~MyAppAbility()
     {
-        printf("[ui] on deconstruct\n");
+        printf("[app] on deconstruct\n");
     }
     void onCreate() override
     {
-        printf("[ui] on create\n");
+        printf("[app] on create\n");
     }
-    void onShow() override
+    void onOpen() override
     {
-        printf("[ui] on show\n");
+        printf("[app] on open\n");
     }
-    void onForeground() override
+    void onRunning() override
     {
-        printf("[ui] on foreground\n");
+        printf("[app] on running\n");
     }
-    void onHide() override
+    void onSleeping() override
     {
-        printf("[ui] on hide\n");
+        printf("[app] on sleeping\n");
     }
-    void onBackground() override
+    void onClose() override
     {
-        printf("[ui] on backgournd\n");
+        printf("[app] on close\n");
     }
     void onDestroy() override
     {
-        printf("[ui] on ondestory\n");
+        printf("[app] on ondestory\n");
     }
 };
 
@@ -74,6 +77,9 @@ int main()
     printf(">> create ability\n");
     auto ability_id = am.createAbility(std::make_unique<MyAppAbility>());
 
+    // 获取 App 信息
+    printf(">> app name is: %s\n", am.getAppAbilityAppInfo(ability_id).name.c_str());
+
     while (1) {
         // 刷新 Ability
         am.updateAbilities();
@@ -83,13 +89,13 @@ int main()
             _enter_was_pressed = false;
 
             // 获取当前状态
-            auto ability_current_state = am.getUIAbilityCurrentState(ability_id);
+            auto ability_current_state = am.getAppAbilityCurrentState(ability_id);
 
-            // 前后台反转
-            if (ability_current_state == UIAbility::StateForeground) {
-                am.hideUIAbility(ability_id);
-            } else if (ability_current_state == UIAbility::StateBackground) {
-                am.showUIAbility(ability_id);
+            // 打开关闭反转
+            if (ability_current_state == AppAbility::StateRunning) {
+                am.closeAppAbility(ability_id);
+            } else if (ability_current_state == AppAbility::StateSleeping) {
+                am.openAppAbility(ability_id);
             }
         }
 

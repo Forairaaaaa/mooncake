@@ -1,9 +1,9 @@
 /**
- * @file basic.cpp
+ * @file multiple_apps_demo.cpp
  * @author Forairaaaaa
  * @brief
  * @version 0.1
- * @date 2024-09-24
+ * @date 2024-09-28
  *
  * @copyright Copyright (c) 2024
  *
@@ -87,7 +87,6 @@ int main()
 
     // 创建 Mooncake
     Mooncake mc;
-    mc.logAboutMsg();
 
     // 安装 App
     auto app_1_id = mc.installApp(std::make_unique<App_1>());

@@ -1,15 +1,17 @@
-# Basic
-add_executable(basic ./basic.cpp)
-target_link_libraries(basic ${PROJECT_NAME})
+add_executable(basic_demo ./basic_demo.cpp)
+target_link_libraries(basic_demo ${PROJECT_NAME})
 
-# Ability manager
-add_executable(ability_manager ./ability_manager.cpp)
-target_link_libraries(ability_manager ${PROJECT_NAME})
+add_executable(multiple_apps_demo ./multiple_apps_demo.cpp)
+target_link_libraries(multiple_apps_demo ${PROJECT_NAME})
 
-# UI Ability
-add_executable(ui_ability ./ui_ability.cpp)
-target_link_libraries(ui_ability ${PROJECT_NAME} pthread)
+add_executable(extension_test ./extension_test.cpp)
+target_link_libraries(extension_test ${PROJECT_NAME})
 
-# App Ability
-add_executable(app_ability ./app_ability.cpp)
-target_link_libraries(app_ability ${PROJECT_NAME} pthread)
+add_executable(ability_manager_test ./ability_manager_test.cpp)
+target_link_libraries(ability_manager_test ${PROJECT_NAME})
+
+add_executable(ui_ability_test ./ui_ability_test.cpp)
+target_link_libraries(ui_ability_test ${PROJECT_NAME} pthread)
+
+add_executable(app_ability_test ./app_ability_test.cpp)
+target_link_libraries(app_ability_test ${PROJECT_NAME} pthread)

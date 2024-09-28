@@ -31,5 +31,6 @@ endif()
 # CTest
 enable_testing()
 
-add_test(basic example/basic)
-add_test(ability_manager example/ability_manager)
+add_test(basic_demo example/basic_demo)
+add_test(ability_manager_test example/ability_manager_test)
+add_test(extension_test example/extension_test)
