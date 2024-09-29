@@ -2,7 +2,7 @@
 
 适用于单片机的多 App 管理调度框架
 
-A multi-app management and scheduling framework designed for microcontrollers
+A multi-app management and scheduling framework designed for mcu
 
 ------
 
