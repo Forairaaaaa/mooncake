@@ -2,11 +2,13 @@
 
 适用于单片机的多 App 管理调度框架
 
+A multi-app management and scheduling framework designed for microcontrollers
+
 ------
 
 - 结构化 App 生命周期设计
 - 多 App 管理
-- 可扩展的行为管理
+- 可扩展的生命周期行为管理
 
 简单使用：
 
