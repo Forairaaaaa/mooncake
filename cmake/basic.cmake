@@ -2,6 +2,8 @@
 
 project(mooncake)
 
+set(CMAKE_CXX_STANDARD 17)
+
 # Src files
 file(GLOB_RECURSE MOONCAKE_SRCS
     ${MOONCAKE_ROOT_DIR}/src/*.c
