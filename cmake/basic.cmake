@@ -2,15 +2,17 @@
 
 project(mooncake)
 
+set(CMAKE_CXX_STANDARD 17)
+
 # Src files
 file(GLOB_RECURSE MOONCAKE_SRCS
     ${MOONCAKE_ROOT_DIR}/src/*.c
+    ${MOONCAKE_ROOT_DIR}/src/*.cc
     ${MOONCAKE_ROOT_DIR}/src/*.cpp
 )
 # Include
 set(MOONCAKE_INCS
     ${MOONCAKE_ROOT_DIR}/src/
-    ${MOONCAKE_ROOT_DIR}/src/spdlog/include/
 )
 
 
@@ -31,17 +33,6 @@ endif()
 # CTest
 enable_testing()
 
-# Framework Test
-# App manager basic
-add_test(app_manager_basic example/framework/app_manager_basic)
-# App register test
-add_test(app_register_test example/framework/app_register_test)
-# App internal api test
-add_test(app_internal_api_test example/framework/app_internal_api_test)
-# Mooncake framework test
-add_test(mooncake_framework_test example/framework/mooncake_framework_test)
-
-
-# Mooncake Test
-# Mooncake basic
-add_test(mooncake_basic example/mooncake/mooncake_basic)
+add_test(basic_demo example/basic_demo)
+add_test(ability_manager_test example/ability_manager_test)
+add_test(extension_test example/extension_test)

@@ -3,12 +3,12 @@
 # Src files
 file(GLOB_RECURSE MOONCAKE_SRCS
     ${MOONCAKE_ROOT_DIR}/src/*.c
+    ${MOONCAKE_ROOT_DIR}/src/*.cc
     ${MOONCAKE_ROOT_DIR}/src/*.cpp
 )
 # Include
 set(MOONCAKE_INCS
     ${MOONCAKE_ROOT_DIR}/src/
-    ${MOONCAKE_ROOT_DIR}/src/spdlog/include/
 )
 
 # Public component requirement

@@ -2,196 +2,152 @@
  * @file mooncake.h
  * @author Forairaaaaa
  * @brief
- * @version 0.2
- * @date 2023-08-19
+ * @version 0.1
+ * @date 2024-09-27
  *
- * @copyright Copyright (c) 2023
+ * @copyright Copyright (c) 2024
  *
  */
 #pragma once
-#include "app/app.h"
-#include "app/app_manager.h"
-#include "app/app_register.h"
-#include "types.h"
+#include "ability/ability.h"
+#include "ability_manager/ability_manager.h"
+#include <cstddef>
+#include <memory>
+#include <vector>
 
-/* Disable some features */
-#ifdef ESP_PLATFORM
-#define SPDLOG_NO_EXCEPTIONS
-#define SPDLOG_NO_THREAD_ID
-#endif
-#include "spdlog/include/spdlog/spdlog.h"
+#define MOONCAKE_VERSION "2.0.0"
 
-namespace MOONCAKE
-{
+namespace mooncake {
+
+class Mooncake {
+public:
+    /**
+     * @brief 打印关于信息
+     *
+     */
+    void logAboutMsg();
+
+    /**
+     * @brief 更新 Mooncake，刷新 App 及 Extension 状态，触发生命周期回调
+     *
+     */
+    void update();
+
     /* -------------------------------------------------------------------------- */
-    /*                                  Mooncake                                  */
+    /*                             App Ability Manager                            */
     /* -------------------------------------------------------------------------- */
-    // A class to provide app frmework apis
-    class Mooncake
-    {
-    private:
-        // Components
-        struct Data_t
-        {
-            APP_Register* app_register = nullptr;
-            APP_Manager* app_manager = nullptr;
-            void* user_data = nullptr;
-        };
-        Data_t _data;
-        void _free_components();
-        void _welcome_log();
+    // App Ability 管理器 API 封装
 
-    public:
-        ~Mooncake();
+    /**
+     * @brief 安装 App，返回 App ID
+     *
+     * @param appAbility
+     * @return int
+     */
+    int installApp(std::unique_ptr<AppAbility> appAbility);
 
-        /* ---------------------------- Components getter --------------------------- */
-    public:
-        inline APP_Register* getAppRegister() { return _data.app_register; }
-        inline APP_Manager* getAppManager() { return _data.app_manager; }
+    /**
+     * @brief 卸载指定 ID 的 App
+     *
+     * @param appID
+     * @return true
+     * @return false
+     */
+    bool uninstallApp(int appID);
 
-        /* -------------------------------- User data ------------------------------- */
-        // Can be your database or anything
-    public:
-        inline void setUserData(void* userData) { _data.user_data = userData; }
-        inline void* getUserData() { return _data.user_data; }
+    /**
+     * @brief 卸载所有 App
+     *
+     */
+    void uninstallAllApps();
 
-        /* ----------------------------- Framework apis ----------------------------- */
-    public:
-        /**
-         * @brief Init framework
-         *
-         */
-        void init();
+    /**
+     * @brief 打开指定 ID 的 App
+     *
+     * @param appID
+     * @return true
+     * @return false
+     */
+    bool openApp(int appID);
 
-        /**
-         * @brief Calling this in loop to keep framework running
-         *
-         */
-        void update();
+    /**
+     * @brief 关闭指定 ID 的 App
+     *
+     * @param appID
+     * @return true
+     * @return false
+     */
+    bool closeApp(int appID);
 
-        /* -------------------------------------------------------------------------- */
-        /*                              App register wrap                             */
-        /* -------------------------------------------------------------------------- */
-    public:
-        /**
-         * @brief Install an app (Register an app packer)
-         *
-         * @param appPacker
-         * @return true
-         * @return false
-         */
-        inline bool installApp(APP_PACKER_BASE* appPacker) { return _data.app_register->install(appPacker, this); }
+    /**
+     * @brief 检查 App 是否存在
+     *
+     * @param appID
+     * @return true
+     * @return false
+     */
+    bool isAppExist(int appID);
 
-        /**
-         * @brief Uninstall an app (Remove it from the register)
-         *
-         * @param appPacker
-         * @return true
-         * @return false
-         */
-        inline bool uninstallApp(APP_PACKER_BASE* appPacker) { return _data.app_register->uninstall(appPacker); }
+    /**
+     * @brief 获取当前 App 数量
+     *
+     * @return std::size_t
+     */
+    std::size_t getAppNum();
 
-        /**
-         * @brief Uninstall all apps
-         *
-         */
-        inline void uninstallAllApps() { _data.app_register->uninstallAllApps(); }
+    /**
+     * @brief 获取指定 ID 的 App 信息
+     *
+     * @param appID
+     * @return AppAbility::AppInfo_t
+     */
+    AppAbility::AppInfo_t getAppInfo(int appID);
 
-        /**
-         * @brief Get the total installed app num in app register
-         *
-         * @return std::size_t
-         */
-        inline std::size_t getInstalledAppNum() { return _data.app_register->getInstalledAppNum(); }
+    /**
+     * @brief 获取所有 App 的 App 信息
+     *
+     * @return std::vector<AppAbility::AppInfo_t>
+     */
+    std::vector<AppAbility::AppInfo_t> getAllAppInfo();
 
-        /**
-         * @brief Get the reference to the installed app packer list
-         *
-         * @return std::vector<APP_PACKER_BASE*>&
-         */
-        inline std::vector<APP_PACKER_BASE*>& getInstalledAppList() { return _data.app_register->getInstalledAppList(); }
+    /**
+     * @brief 获取指定 ID 的 App 当前生命周期状态
+     *
+     * @param appID
+     * @return AppAbility::State_t
+     */
+    AppAbility::State_t getAppCurrentState(int appID);
 
-        /**
-         * @brief Get installed app packer by app name
-         *
-         * @param appName
-         * @return APP_PACKER_BASE*
-         */
-        inline APP_PACKER_BASE* getInstalledAppByName(const std::string& appName)
-        {
-            return _data.app_register->getInstalledAppByName(appName);
-        }
+    /* -------------------------------------------------------------------------- */
+    /*                          Extension Ability Manager                         */
+    /* -------------------------------------------------------------------------- */
+    // Extension Ability 管理器 API 封装。
+    // 因为 Extension 可以是任意 Ability 类型，所以直接懒加载，暴露管理器实例就算 9 数了
 
-        /* -------------------------------------------------------------------------- */
-        /*                              App manager warp                              */
-        /* -------------------------------------------------------------------------- */
-    public:
-        /**
-         * @brief Create an app
-         *
-         * @param appPacker app's packer
-         * @return APP_BASE* started app's pointer
-         */
-        inline APP_BASE* createApp(APP_PACKER_BASE* appPacker) { return _data.app_manager->createApp(appPacker); }
+    /**
+     * @brief 获取 Extension Ability 管理器实例
+     *
+     * @return AbilityManager*
+     */
+    AbilityManager* ExtensionManager();
 
-        /**
-         * @brief Start an app, this method will only change passing app's state
-         *
-         * @param app
-         * @return true
-         * @return false
-         */
-        inline bool startApp(APP_BASE* app) { return _data.app_manager->startApp(app); }
+    /**
+     * @brief 重置 Extension Ability 管理器，销毁其中所有 Ability
+     *
+     */
+    void resetExtensionManager();
 
-        /**
-         * @brief Wrap of create and start an app
-         *
-         * @param appPacker
-         * @return true
-         * @return false
-         */
-        inline bool createAndStartApp(APP_PACKER_BASE* appPacker) { return startApp(createApp(appPacker)); }
+private:
+    // App Ability 管理器：提供集中的 App Ability 管理和信息获取
+    std::unique_ptr<AbilityManager> _app_ability_manager;
 
-        /**
-         * @brief Close an app, this method will only change passing app's state
-         *
-         * @param app App's pointer which you want to close
-         * @return true
-         * @return false
-         */
-        inline bool closeApp(APP_BASE* app) { return _data.app_manager->closeApp(app); }
+    // Extension Ability 管理器：提供集中的杂类 Ability 管理，比如一些后台运行的 Worker，或者某些 App Ability
+    // 要用到的 UI Ability、自定义 Ability 等，都可以创建在这里，由 Mooncake 集中管理
+    std::unique_ptr<AbilityManager> _extension_ability_manager;
 
-        /**
-         * @brief Destroy an app, app will be deleted by it's app packer
-         *
-         * @param app App's pointer which you want to destroy
-         * @return true
-         * @return false
-         */
-        inline bool destroyApp(APP_BASE* app) { return _data.app_manager->destroyApp(app); }
+    // 懒加载
+    AbilityManager* get_app_ability_manager();
+    AbilityManager* get_extension_ability_manager();
+};
 
-        /**
-         * @brief Destroy all apps
-         *
-         */
-        inline void destroyAllApps() { _data.app_manager->destroyAllApps(); }
-
-        /**
-         * @brief Get total created app num in app manager
-         *
-         * @return std::size_t
-         */
-        inline std::size_t getCreatedAppNum() { return _data.app_manager->getCreatedAppNum(); }
-
-        /**
-         * @brief Get created app num in app manager in specific app layer
-         *
-         * @param appLayer
-         * @return std::size_t
-         */
-        inline std::size_t getCreatedAppNumByLayer(const std::uint8_t& appLayer)
-        {
-            return _data.app_manager->getCreatedAppNumByLayer(appLayer);
-        }
-    };
-} // namespace MOONCAKE
+} // namespace mooncake
