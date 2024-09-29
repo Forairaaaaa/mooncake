@@ -11,7 +11,7 @@ add_executable(ability_manager_test ./ability_manager_test.cpp)
 target_link_libraries(ability_manager_test ${PROJECT_NAME})
 
 add_executable(ui_ability_test ./ui_ability_test.cpp)
-target_link_libraries(ui_ability_test ${PROJECT_NAME} pthread)
+target_link_libraries(ui_ability_test ${PROJECT_NAME})
 
 add_executable(app_ability_test ./app_ability_test.cpp)
-target_link_libraries(app_ability_test ${PROJECT_NAME} pthread)
+target_link_libraries(app_ability_test ${PROJECT_NAME})
