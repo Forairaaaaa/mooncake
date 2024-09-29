@@ -18,54 +18,45 @@ class MyApp : public AppAbility {
 public:
     MyApp()
     {
-        // 配置 App 信息
-        setAppInfo().name = "凤爪";
-
-        printf("[%s] on construct\n", getAppInfo().name.c_str());
+        printf("[MyApp] on construct\n");
     }
 
-    // 重载生命周期回调函数
+    // 重写生命周期回调函数
     void onOpen() override
     {
-        printf("[%s] on open\n", getAppInfo().name.c_str());
+        printf("[MyApp] on open\n");
     }
     void onRunning() override
     {
-        printf("[%s] on running\n", getAppInfo().name.c_str());
+        printf("[MyApp] on running\n");
     }
-
-    // ...
-    // void onCreate() override {}
-    // void onSleeping() override {}
-    // void onClose() override {}
-    // void onDestroy() override {}
 };
 
 Mooncake mc;
 
 // 安装 App
-printf(">> install app\n");
 auto my_app_id = mc.installApp(std::make_unique<MyApp>());
 // 输出：
-// >> install app
-// [凤爪] on construct
+// [MyApp] on construct
 
 // 打开 App
 mc.openApp(my_app_id);
 
 // 更新 Mooncake
-printf(">> update mooncake\n");
-for (int i = 0; i < 3; i++) {
+for (int i = 0; i < 6; i++) {
     mc.update();
 }
 // 输出：
-// >> update mooncake
-// [凤爪] on open
-// [凤爪] on running
-// [凤爪] on running
+// [MyApp] on open
+// [MyApp] on running
+// [MyApp] on running
+// [MyApp] on running
+// [MyApp] on running
+// [MyApp] on running
+// ...
 ```
 
-App 的生命周期可参考[图表](https://github.com/Forairaaaaa/mooncake?tab=readme-ov-file#appability)
+App 具体生命周期[图表](https://github.com/Forairaaaaa/mooncake?tab=readme-ov-file#appability)
 
 ## API
 
@@ -260,7 +251,9 @@ graph TD;
     
 ```
 
-扩展出前后台概念，由 `hide` 和 `show` 接口切换状态，适合需要前后台概念的 UI 行为
+扩展出前后台概念，创建之后默认为前台状态，可由 `hide` 和 `show` 接口切换
+
+适合需要前后台概念的 UI 行为
 
 ### WorkerAbility
 
@@ -276,7 +269,9 @@ graph TD;
     
 ```
 
-扩展出运行和暂停两个状态，由 `pause` 和 `resume` 接口切换，适合后台运行的行为，比如数据监听和事件转发
+扩展出运行和暂停两个状态，创建之后默认为运行状态，可由 `pause` 和 `resume` 接口切换
+
+适合后台运行的行为，比如数据监听和事件转发
 
 ### AppAbility
 
@@ -294,9 +289,47 @@ graph TD;
     
 ```
 
-扩展出打开和关闭行为，由 `open` 和 `close` 接口切换状态
+扩展出打开和关闭概念，创建后默认为关闭状态（sleeping），可由 `open` 和 `close` 接口切换状态
 
-提供 App 信息和接口：
+Mooncake 框架所管理的 App 就是基于 `AppAbility` 类型
+
+所以只要继承 `AppAbility` 类型，重写生命周期回调，就可以实现我们自己的 App 了：
+
+```cpp
+class MyApp_1 : public AppAbility {
+public:
+    void onOpen() override
+    {
+        // 上号
+    }
+    void onRunning() override
+    {
+        // 大乱斗
+    }
+    void onClose() override
+    {
+        // 耻辱下播
+    }
+};
+
+class MyApp_2 : public AppAbility {
+public:
+    void onOpen() override
+    {
+        // 去自习室
+    }
+    void onRunning() override
+    {
+        // 钓鱼
+    }
+    void onClose() override
+    {
+        // 回宿舍
+    }
+};
+```
+
+还提供 App 信息和接口：
 
 ```cpp
 struct AppInfo_t {
