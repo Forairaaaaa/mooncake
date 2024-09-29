@@ -419,9 +419,6 @@ std::unique_ptr<AbilityManager> _extension_ability_manager;
 比如：
 
 ```cpp
-// 创建 Mooncake
-Mooncake mc;
-
 // 安装 App
 mc.installApp(std::make_unique<MyApp>());
 
@@ -471,7 +468,7 @@ bool destroyAbility(int abilityID);
 
 **Ability ID** 并不是绝对唯一的，当一个 Ability 被销毁时，对应的 ID 会被 **回收**，等待分配到新的 Ability
 
-AbilityManager 还提供针对性的 Ability 操作接口，简化 Ability 状态切换，避免直接的实例操作：
+AbilityManager 还提供针对性的操作接口，简化常用的派生 Ability 的状态切换，避免直接的实例操作：
 
 ```cpp
 /* -------------------------------------------------------------------------- */
