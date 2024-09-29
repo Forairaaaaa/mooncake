@@ -1,12 +1,12 @@
 /**
  * @file app_ability_test.cpp
  * @author Forairaaaaa
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2024-09-28
- * 
+ *
  * @copyright Copyright (c) 2024
- * 
+ *
  */
 #include <ability/ability.h>
 #include <ability_manager/ability_manager.h>
@@ -19,7 +19,7 @@
 
 using namespace mooncake;
 
-std::atomic<bool> _enter_was_pressed = false;
+std::atomic<bool> _enter_was_pressed{false};
 
 class MyAppAbility : public AppAbility {
 public:
@@ -67,7 +67,7 @@ int main()
         std::string dev_null;
         while (1) {
             std::getline(std::cin, dev_null);
-            _enter_was_pressed = true;
+            _enter_was_pressed.store(true);
         }
     });
 
@@ -85,8 +85,8 @@ int main()
         am.updateAbilities();
 
         // 如果按了回车键
-        if (_enter_was_pressed) {
-            _enter_was_pressed = false;
+        if (_enter_was_pressed.load()) {
+            _enter_was_pressed.store(false);
 
             // 获取当前状态
             auto ability_current_state = am.getAppAbilityCurrentState(ability_id);

@@ -18,7 +18,7 @@
 
 using namespace mooncake;
 
-std::atomic<bool> _enter_was_pressed = false;
+std::atomic<bool> _enter_was_pressed{false};
 
 /**
  * @brief 派生一个 App
@@ -81,7 +81,7 @@ int main()
         std::string dev_null;
         while (1) {
             std::getline(std::cin, dev_null);
-            _enter_was_pressed = true;
+            _enter_was_pressed.store(true);
         }
     });
 
@@ -112,8 +112,8 @@ int main()
         mc.update();
 
         // 如果按了回车键
-        if (_enter_was_pressed) {
-            _enter_was_pressed = false;
+        if (_enter_was_pressed.load()) {
+            _enter_was_pressed.store(false);
 
             if (is_app_1_turn) {
                 // 反转 App_1 打开关闭状态

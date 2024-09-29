@@ -51,6 +51,8 @@ while (1) {
 
 App 具体生命周期[图表](https://github.com/Forairaaaaa/mooncake?tab=readme-ov-file#appability)
 
+更多使用案例可以参考 [例程](https://github.com/Forairaaaaa/mooncake/tree/main/example) 和 [Mooncake 工程模板](https://github.com/Forairaaaaa/mooncake_app_boilerplate)
+
 ## API
 
 常用管理接口：
