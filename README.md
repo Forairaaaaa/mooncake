@@ -35,8 +35,8 @@ auto my_app_id = mc.installApp(std::make_unique<MyApp>());
 // 打开 App
 mc.openApp(my_app_id);
 
-// 更新 Mooncake
-for (int i = 0; i < 6; i++) {
+// 保持 Mooncake 更新
+while (1) {
     mc.update();
 }
 // 输出：
