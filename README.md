@@ -69,7 +69,9 @@ App 的生命周期可参考[图表](https://github.com/Forairaaaaa/mooncake?tab
 
 ## API
 
-App 管理接口：
+常用管理接口：
+
+### 安装
 
 ```cpp
 /**
@@ -79,7 +81,10 @@ App 管理接口：
  * @return int
  */
 int installApp(std::unique_ptr<AppAbility> appAbility);
+```
 
+### 卸载
+```cpp
 /**
  * @brief 卸载指定 ID 的 App
  *
@@ -94,7 +99,11 @@ bool uninstallApp(int appID);
  *
  */
 void uninstallAllApps();
+```
 
+### 打开、关闭
+
+```cpp
 /**
  * @brief 打开指定 ID 的 App
  *
@@ -112,16 +121,10 @@ bool openApp(int appID);
  * @return false
  */
 bool closeApp(int appID);
+```
 
-/**
- * @brief 检查 App 是否存在
- *
- * @param appID
- * @return true
- * @return false
- */
-bool isAppExist(int appID);
-
+### App 信息
+```cpp
 /**
  * @brief 获取当前 App 数量
  *
@@ -143,15 +146,9 @@ AppAbility::AppInfo_t getAppInfo(int appID);
  * @return std::vector<AppAbility::AppInfo_t>
  */
 std::vector<AppAbility::AppInfo_t> getAllAppInfo();
-
-/**
- * @brief 获取指定 ID 的 App 当前生命周期状态
- *
- * @param appID
- * @return AppAbility::State_t
- */
-AppAbility::State_t getAppCurrentState(int appID);
 ```
+
+### 更新
 
 App 的所有生命周期回调都会集中在 Mooncake 的  `update()` 方法中触发：
 
