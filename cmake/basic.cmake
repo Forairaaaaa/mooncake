@@ -3,6 +3,7 @@
 project(mooncake)
 
 set(CMAKE_CXX_STANDARD 17)
+cmake_policy(SET CMP0077 NEW)
 
 # Src files
 file(GLOB_RECURSE MOONCAKE_SRCS
