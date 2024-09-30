@@ -15,3 +15,6 @@ target_link_libraries(ui_ability_test ${PROJECT_NAME})
 
 add_executable(app_ability_test ./app_ability_test.cpp)
 target_link_libraries(app_ability_test ${PROJECT_NAME})
+
+add_executable(singleton_test ./singleton_test.cpp)
+target_link_libraries(singleton_test ${PROJECT_NAME})

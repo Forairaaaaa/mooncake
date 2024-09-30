@@ -150,4 +150,22 @@ private:
     AbilityManager* get_extension_ability_manager();
 };
 
+/* -------------------------------------------------------------------------- */
+/*                                  Singleton                                 */
+/* -------------------------------------------------------------------------- */
+// 全局单例
+
+/**
+ * @brief 获取 Mooncake 单例
+ *
+ * @return Mooncake&
+ */
+Mooncake& GetMooncake();
+
+/**
+ * @brief 销毁 Mooncake 单例
+ *
+ */
+void DestroyMooncake();
+
 } // namespace mooncake

@@ -165,3 +165,33 @@ void Mooncake::resetExtensionManager()
 {
     _extension_ability_manager.reset();
 }
+
+/* -------------------------------------------------------------------------- */
+/*                                  Singleton                                 */
+/* -------------------------------------------------------------------------- */
+// 懒加载单例
+
+static std::unique_ptr<Mooncake> _mooncake_instance;
+
+/**
+ * @brief 获取 Mooncake 单例
+ *
+ * @return Mooncake&
+ */
+Mooncake& mooncake::GetMooncake()
+{
+    if (!_mooncake_instance) {
+        _mooncake_instance = std::make_unique<Mooncake>();
+        _mooncake_instance->logAboutMsg();
+    }
+    return *_mooncake_instance;
+}
+
+/**
+ * @brief 销毁 Mooncake 单例
+ *
+ */
+void mooncake::DestroyMooncake()
+{
+    _mooncake_instance.reset();
+}
