@@ -21,6 +21,9 @@
   "platforms": "*",
   "build": {
     "srcDir": ".",
-    "includeDir": "./src"
+    "includeDir": "./src",
+    "flags": [
+      "-std=c++17"
+    ]
   }
 }
