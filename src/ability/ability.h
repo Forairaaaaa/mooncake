@@ -69,7 +69,6 @@ public:
         return AbilityType_Basic;
     }
 
-private:
     void baseCreate() override
     {
         onCreate();
@@ -142,12 +141,12 @@ public:
         return AbilityType_UI;
     }
 
-private:
-    State_t _current_state = StateForeground;
-
     void baseCreate() override;
     void baseUpdate() override;
     void baseDestroy() override;
+
+private:
+    State_t _current_state = StateForeground;
 };
 
 /* -------------------------------------------------------------------------- */
@@ -205,12 +204,12 @@ public:
         return AbilityType_Worker;
     }
 
-private:
-    State_t _current_state = StateRunning;
-
     void baseCreate() override;
     void baseUpdate() override;
     void baseDestroy() override;
+
+private:
+    State_t _current_state = StateRunning;
 };
 
 /* -------------------------------------------------------------------------- */
@@ -278,13 +277,13 @@ public:
         return AbilityType_App;
     }
 
-private:
-    State_t _current_state = StateSleeping;
-    AppInfo_t _app_info;
-
     void baseCreate() override;
     void baseUpdate() override;
     void baseDestroy() override;
+
+private:
+    State_t _current_state = StateSleeping;
+    AppInfo_t _app_info;
 };
 
 } // namespace mooncake
