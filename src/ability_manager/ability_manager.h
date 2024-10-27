@@ -83,7 +83,7 @@ public:
     /* -------------------------------------------------------------------------- */
     /*                            Ability API Wrapping                            */
     /* -------------------------------------------------------------------------- */
-    // 对外暴露针对性的 Ability 操作接口
+    // 常用 Ability 类型的操作接口封装
 
     bool showUIAbility(int abilityID);
     bool hideUIAbility(int abilityID);

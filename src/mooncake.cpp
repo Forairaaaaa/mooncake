@@ -156,7 +156,7 @@ AppAbility::State_t Mooncake::getAppCurrentState(int appID)
 /*                          Extension Ability Manager                         */
 /* -------------------------------------------------------------------------- */
 
-AbilityManager* Mooncake::ExtensionManager()
+AbilityManager* Mooncake::extensionManager()
 {
     return get_extension_ability_manager();
 }
