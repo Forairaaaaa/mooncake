@@ -13,6 +13,7 @@
 #include "ability_manager/ability_manager.h"
 #include <cstddef>
 #include <memory>
+#include <utility>
 #include <vector>
 
 #define MOONCAKE_VERSION "2.0.0"
@@ -121,28 +122,60 @@ public:
     /* -------------------------------------------------------------------------- */
     /*                          Extension Ability Manager                         */
     /* -------------------------------------------------------------------------- */
-    // Extension Ability 管理器 API 封装。
-    // 因为 Extension 可以是任意 Ability 类型，所以直接懒加载，暴露管理器实例就算 9 数了
+    // 扩展管理器 API 封装。
+    // 可以用来存放管理自己的各种派生 Ability
 
     /**
-     * @brief 获取 Extension Ability 管理器实例
+     * @brief 获取扩展管理器
      *
      * @return AbilityManager*
      */
-    AbilityManager* ExtensionManager();
+    AbilityManager* extensionManager();
 
     /**
-     * @brief 重置 Extension Ability 管理器，销毁其中所有 Ability
+     * @brief 重置扩展管理器，销毁其中所有 Ability
      *
      */
     void resetExtensionManager();
 
-private:
-    // App Ability 管理器：提供集中的 App Ability 管理和信息获取
-    std::unique_ptr<AbilityManager> _app_ability_manager;
+    /**
+     * @brief 在扩展管理器中创建 Ability，返回 Ability ID
+     *
+     * @param ability
+     * @return int
+     */
+    int createExtension(std::unique_ptr<AbilityBase> ability)
+    {
+        return extensionManager()->createAbility(std::move(ability));
+    }
 
-    // Extension Ability 管理器：提供集中的杂类 Ability 管理，比如一些后台运行的 Worker，或者某些 App Ability
-    // 要用到的 UI Ability、自定义 Ability 等，都可以创建在这里，由 Mooncake 集中管理
+    /**
+     * @brief 在扩展管理器中销毁指定 ID 的 Ability
+     *
+     * @param abilityID
+     * @return true
+     * @return false
+     */
+    bool destroyExtension(int abilityID)
+    {
+        return extensionManager()->destroyAbility(abilityID);
+    }
+
+    /**
+     * @brief 获取扩展管理器中指定 ID Ability 的实例原始指针，以便外部调用 API，最不安全的一集
+     *
+     * @tparam T 扩展 Ability 类型
+     * @param abilityID Ability ID
+     * @return T
+     */
+    template <typename T>
+    T* getExtensionInstance(int abilityID)
+    {
+        return static_cast<T*>(extensionManager()->getAbilityInstance(abilityID));
+    }
+
+private:
+    std::unique_ptr<AbilityManager> _app_ability_manager;
     std::unique_ptr<AbilityManager> _extension_ability_manager;
 
     // 懒加载

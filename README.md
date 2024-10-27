@@ -425,8 +425,8 @@ std::unique_ptr<AbilityManager> _extension_ability_manager;
 mc.installApp(std::make_unique<MyApp>());
 
 // 安装扩展
-mc.ExtensionManager()->createAbility(std::make_unique<MyWorker>());
-mc.ExtensionManager()->createAbility(std::make_unique<MyUI>());
+mc.createExtension(std::make_unique<MyWorker>());
+mc.createExtension(std::make_unique<MyUI>());
 
 // 更新 Mooncake
 for (int i = 0; i < 3; i++) {

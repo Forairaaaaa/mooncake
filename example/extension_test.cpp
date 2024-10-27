@@ -77,8 +77,8 @@ int main()
 
     // 安装扩展
     printf(">> install extensions\n");
-    mc.ExtensionManager()->createAbility(std::make_unique<MyWorker>());
-    mc.ExtensionManager()->createAbility(std::make_unique<MyUI>());
+    mc.createExtension(std::make_unique<MyWorker>());
+    mc.createExtension(std::make_unique<MyUI>());
     // >> install extensions
     // [worker] on construct
     // [ui] on construct

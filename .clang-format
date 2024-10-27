@@ -34,7 +34,7 @@ AlwaysBreakAfterReturnType: None
 # 总是在多行string字面量前换行
 AlwaysBreakBeforeMultilineStrings: true
 # 总是在template声明后换行
-AlwaysBreakTemplateDeclarations: false
+AlwaysBreakTemplateDeclarations: true
 # false表示函数实参要么都在同一行，要么都各自一行
 BinPackArguments: true
 # false表示所有形参要么都在同一行，要么都各自一行

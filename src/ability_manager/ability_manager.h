@@ -83,7 +83,7 @@ public:
     /* -------------------------------------------------------------------------- */
     /*                            Ability API Wrapping                            */
     /* -------------------------------------------------------------------------- */
-    // 对外暴露针对性的 Ability 操作接口
+    // 常用 Ability 类型的操作接口封装
 
     bool showUIAbility(int abilityID);
     bool hideUIAbility(int abilityID);
@@ -112,6 +112,7 @@ protected:
     };
 
     std::vector<AbilityInfo_t> _ability_list;
+    std::vector<AbilityInfo_t> _new_ability_list;
     int _next_ability_id = 0;
     std::vector<int> _available_ability_id_list;
 
