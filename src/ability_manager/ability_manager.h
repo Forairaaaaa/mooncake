@@ -112,6 +112,7 @@ protected:
     };
 
     std::vector<AbilityInfo_t> _ability_list;
+    std::vector<AbilityInfo_t> _new_ability_list;
     int _next_ability_id = 0;
     std::vector<int> _available_ability_id_list;
 

@@ -74,6 +74,7 @@ int main()
     // 超出作用域自动释放
     printf(">> test over\n");
     am.createAbility(std::make_unique<BasicAbilityTest>());
+    // >> test over
     // [basic] on construct
     // [basic] on deconstruct
     return 0;

@@ -10,6 +10,7 @@
  */
 #include "ability_manager.h"
 #include "ability/ability.h"
+#include <iterator>
 
 using namespace mooncake;
 
@@ -25,8 +26,8 @@ int AbilityManager::createAbility(std::unique_ptr<AbilityBase> ability)
     new_ability_info.state = StateGoCreate;
     new_ability_info.ability = std::move(ability);
 
-    // 转移所有权
-    _ability_list.push_back(std::move(new_ability_info));
+    // 转移所有权，暂存到 new ability list
+    _new_ability_list.push_back(std::move(new_ability_info));
 
     return new_ability_info.id;
 }
@@ -41,11 +42,25 @@ bool AbilityManager::destroyAbility(int abilityID)
             return true;
         }
     }
+    for (auto& ability_info : _new_ability_list) {
+        if (ability_info.id == abilityID) {
+            // 更新状态
+            ability_info.state = StateGoDestroy;
+            return true;
+        }
+    }
     return false;
 }
 
 void AbilityManager::updateAbilities()
 {
+    // 如果有新添加的 ability
+    if (!_new_ability_list.empty()) {
+        // 合并到 ability list
+        std::move(_new_ability_list.begin(), _new_ability_list.end(), std::back_inserter(_ability_list));
+        _new_ability_list.clear();
+    }
+
     // 遍历所有 Abilities
     for (auto ability_iter = _ability_list.begin(); ability_iter != _ability_list.end();) {
         /* ----------------------------------- 状态机 ---------------------------------- */
@@ -83,7 +98,7 @@ void AbilityManager::updateAbilities()
 
 std::size_t AbilityManager::getAbilityNum()
 {
-    return _ability_list.size();
+    return _ability_list.size() + _new_ability_list.size();
 }
 
 bool AbilityManager::isAbilityExist(int abilityID)
@@ -98,6 +113,11 @@ bool AbilityManager::isAbilityExist(int abilityID)
 AbilityBase* AbilityManager::getAbilityInstance(int abilityID)
 {
     // 遍历查找对应 ID 的 Ability
+    for (auto& ability_info : _new_ability_list) {
+        if (ability_info.id == abilityID) {
+            return ability_info.ability.get();
+        }
+    }
     for (auto& ability_info : _ability_list) {
         if (ability_info.id == abilityID) {
             return ability_info.ability.get();
@@ -111,6 +131,9 @@ std::vector<AbilityBase*> AbilityManager::getAllAbilityInstance()
     std::vector<AbilityBase*> ret;
 
     for (auto& ability_info : _ability_list) {
+        ret.push_back(ability_info.ability.get());
+    }
+    for (auto& ability_info : _new_ability_list) {
         ret.push_back(ability_info.ability.get());
     }
 
