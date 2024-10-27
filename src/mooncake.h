@@ -156,7 +156,7 @@ public:
      * @return true
      * @return false
      */
-    bool removeExtension(int abilityID)
+    bool destroyExtension(int abilityID)
     {
         return extensionManager()->destroyAbility(abilityID);
     }
