@@ -36,10 +36,17 @@ public:
     bool destroyAbility(int abilityID);
 
     /**
-     * @brief 刷新 Ability 状态，触发回调
+     * @brief 刷新所有 Ability 状态，触发回调
      *
      */
     void updateAbilities();
+
+    /**
+     * @brief 刷新指定 ID 的 Ability 状态，触发回调
+     *
+     * @param abilityID
+     */
+    void updateAbility(int abilityID);
 
     /**
      * @brief 获取当前的 Ability 数量
@@ -117,6 +124,7 @@ protected:
     std::vector<int> _available_ability_id_list;
 
     int get_next_ability_id();
+    void update_ability(std::vector<mooncake::AbilityManager::AbilityInfo_t>::iterator& abilityIter);
 };
 
 } // namespace mooncake
