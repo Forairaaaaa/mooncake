@@ -63,35 +63,24 @@ void AbilityManager::updateAbilities()
 
     // 遍历所有 Abilities
     for (auto ability_iter = _ability_list.begin(); ability_iter != _ability_list.end();) {
-        /* ----------------------------------- 状态机 ---------------------------------- */
-        switch (ability_iter->state) {
-            case StateGoCreate: {
-                // 触发创建回调
-                ability_iter->ability->baseCreate();
-                // 切到正常刷新状态
-                ability_iter->state = StateUpdating;
-                ability_iter->ability->baseUpdate();
-                ability_iter++;
-                break;
-            }
-            case StateUpdating: {
-                ability_iter->ability->baseUpdate();
-                ability_iter++;
-                break;
-            }
-            case StateGoDestroy: {
-                // 触发销毁回调
-                ability_iter->ability->baseDestroy();
-                // 把 ID 存到可用 ID 列表，防止反复创建销毁导致的 ID 溢出
-                _available_ability_id_list.push_back(ability_iter->id);
-                // 销毁 Ability
-                ability_iter = _ability_list.erase(ability_iter);
-                break;
-            }
-            default: {
-                ability_iter++;
-                break;
-            }
+        update_ability(ability_iter);
+    }
+}
+
+void AbilityManager::updateAbility(int abilityID)
+{
+    // 如果有新添加的 ability
+    if (!_new_ability_list.empty()) {
+        // 合并到 ability list
+        std::move(_new_ability_list.begin(), _new_ability_list.end(), std::back_inserter(_ability_list));
+        _new_ability_list.clear();
+    }
+
+    // 遍历所有 Abilities
+    for (auto ability_iter = _ability_list.begin(); ability_iter != _ability_list.end(); ability_iter++) {
+        if (ability_iter->id == abilityID) {
+            update_ability(ability_iter);
+            break;
         }
     }
 }
@@ -165,4 +154,39 @@ int AbilityManager::get_next_ability_id()
     _next_ability_id++;
 
     return next_ability_id;
+}
+
+void AbilityManager::update_ability(std::vector<mooncake::AbilityManager::AbilityInfo_t>::iterator& abilityIter)
+{
+    /* ----------------------------------- 状态机 ---------------------------------- */
+    // 更新状态，触发原始回调
+    switch (abilityIter->state) {
+        case StateGoCreate: {
+            // 触发创建回调
+            abilityIter->ability->baseCreate();
+            // 切到正常刷新状态
+            abilityIter->state = StateUpdating;
+            abilityIter->ability->baseUpdate();
+            abilityIter++;
+            break;
+        }
+        case StateUpdating: {
+            abilityIter->ability->baseUpdate();
+            abilityIter++;
+            break;
+        }
+        case StateGoDestroy: {
+            // 触发销毁回调
+            abilityIter->ability->baseDestroy();
+            // 把 ID 存到可用 ID 列表，防止反复创建销毁导致的 ID 溢出
+            _available_ability_id_list.push_back(abilityIter->id);
+            // 销毁 Ability
+            abilityIter = _ability_list.erase(abilityIter);
+            break;
+        }
+        default: {
+            abilityIter++;
+            break;
+        }
+    }
 }
