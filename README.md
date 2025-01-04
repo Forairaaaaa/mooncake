@@ -10,7 +10,7 @@ A multi-app management and scheduling framework designed for mcu
 - 多 App 管理
 - 灵活的生命周期行为抽象
 
-简单使用：
+单个 App：
 
 ```cpp
 // 派生一个 App
@@ -47,6 +47,54 @@ while (1) {
 // [MyApp] on running
 // [MyApp] on running
 // ...
+```
+
+多个 App，由事件切换当前运行的 App：
+
+```cpp
+// App A
+class MyAppA : public AppAbility {
+public:
+    void onRunning() override { /* ... */  }
+};
+
+// App B
+class MyAppB : public AppAbility {
+public:
+    void onRunning() override { /* ... */  }
+};
+
+Mooncake mc;
+
+// 安装 App
+auto my_app_id_a = mc.installApp(std::make_unique<MyAppA>());
+auto my_app_id_b = mc.installApp(std::make_unique<MyAppB>());
+
+while (1) {
+    // 事件 A 时：关闭 App B，打开 App A
+    if (事件A) {
+        mc.closeApp(my_app_id_b);
+        mc.openApp(my_app_id_a);
+    }
+
+    // 事件 B 时：关闭 App A，打开 App B
+    else if (事件B) {
+        mc.closeApp(my_app_id_a);
+        mc.openApp(my_app_id_b);
+    }
+
+    // 更新 Mooncake
+    mc.update();
+}
+```
+
+全局单例：
+
+```cpp
+GetMooncake().installApp(std::make_unique<MyAppA>());
+GetMooncake().installApp(std::make_unique<MyAppB>());
+
+DestroyMooncake();
 ```
 
 App 具体生命周期[图表](https://github.com/Forairaaaaa/mooncake?tab=readme-ov-file#appability)
