@@ -119,6 +119,16 @@ public:
      */
     AppAbility::State_t getAppCurrentState(int appID);
 
+    /**
+     * @brief 获取 App 管理器
+     *
+     * @return AbilityManager*
+     */
+    AbilityManager* getAppAbilityManager()
+    {
+        return get_app_ability_manager();
+    }
+
     /* -------------------------------------------------------------------------- */
     /*                          Extension Ability Manager                         */
     /* -------------------------------------------------------------------------- */

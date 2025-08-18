@@ -25,6 +25,7 @@ int AbilityManager::createAbility(std::unique_ptr<AbilityBase> ability)
     new_ability_info.id = get_next_ability_id();
     new_ability_info.state = StateGoCreate;
     new_ability_info.ability = std::move(ability);
+    new_ability_info.ability->_set_id(new_ability_info.id);
 
     // 转移所有权，暂存到 new ability list
     _new_ability_list.push_back(std::move(new_ability_info));

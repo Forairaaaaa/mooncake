@@ -45,6 +45,20 @@ public:
     virtual void baseCreate() {}
     virtual void baseUpdate() {}
     virtual void baseDestroy() {}
+
+    // 获取自己的 Ability ID
+    inline int getId()
+    {
+        return _id;
+    }
+
+    inline void _set_id(int id)
+    {
+        _id = id;
+    }
+
+private:
+    int _id = -1;
 };
 
 /* -------------------------------------------------------------------------- */
