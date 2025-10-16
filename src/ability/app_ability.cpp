@@ -23,7 +23,9 @@ void AppAbility::baseUpdate()
     switch (_current_state) {
         case StateGoOpen: {
             onOpen();
-            _current_state = StateRunning;
+            if (_current_state == StateGoOpen) {
+                _current_state = StateRunning;
+            }
             break;
         }
         case StateRunning: {
@@ -32,7 +34,9 @@ void AppAbility::baseUpdate()
         }
         case StateGoClose: {
             onClose();
-            _current_state = StateSleeping;
+            if (_current_state == StateGoClose) {
+                _current_state = StateSleeping;
+            }
             break;
         }
         case StateSleeping: {
