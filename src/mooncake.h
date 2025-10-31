@@ -22,7 +22,7 @@ namespace mooncake {
 
 struct AppProps_t {
     AppAbility::AppInfo_t info;
-    int appId = -1;
+    int appID = -1;
 };
 
 class Mooncake {

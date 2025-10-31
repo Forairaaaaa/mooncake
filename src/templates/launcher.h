@@ -26,20 +26,20 @@ public:
     /**
      * @brief 尝试打开 App
      *
-     * @param appId
+     * @param appID
      * @return true
      * @return false
      */
-    bool openApp(int appId)
+    bool openApp(int appID)
     {
         // Check if it's itself
-        if (appId == getId()) {
+        if (appID == getID()) {
             return false;
         }
 
         // Check if app exist
-        if (GetMooncake().isAppExist(appId)) {
-            _going_to_open_app_id = appId;
+        if (GetMooncake().isAppExist(appID)) {
+            _going_to_open_app_id = appID;
             return true;
         }
 
@@ -57,7 +57,7 @@ public:
 
         // Remove launcher from list
         auto it = std::find_if(app_props.begin(), app_props.end(),
-                               [this](const auto& item) { return item.appID == getId(); });
+                               [this](const auto& item) { return item.appID == getID(); });
         if (it != app_props.end()) {
             app_props.erase(it);
         }

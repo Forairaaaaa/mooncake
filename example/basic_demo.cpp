@@ -11,6 +11,7 @@
 #include <cstdio>
 #include <memory>
 #include <mooncake.h>
+#include <mooncake_templates.h>
 
 using namespace mooncake;
 

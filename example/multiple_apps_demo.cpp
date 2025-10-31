@@ -99,7 +99,7 @@ int main()
     printf(">> app num: %zu\n", app_props_list.size());
     for (auto& props : app_props_list) {
         printf(">> app name: %s\n", props.info.name.c_str());
-        printf(">> app id: %d\n", props.appId);
+        printf(">> app id: %d\n", props.appID);
     }
     // >> app num: 2
     // >> app name: 肠粉

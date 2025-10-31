@@ -140,7 +140,7 @@ std::vector<AppProps_t> Mooncake::getAllAppProps()
     for (const auto& ability : ability_list) {
         AppProps_t props;
         props.info = static_cast<AppAbility*>(ability)->getAppInfo();
-        props.appId = ability->getId();
+        props.appID = ability->getID();
         ret.emplace_back(props);
     }
 
