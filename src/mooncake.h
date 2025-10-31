@@ -16,9 +16,14 @@
 #include <utility>
 #include <vector>
 
-#define MOONCAKE_VERSION "2.2.1"
+#define MOONCAKE_VERSION "2.3.0"
 
 namespace mooncake {
+
+struct AppProps_t {
+    AppAbility::AppInfo_t info;
+    int appID = -1;
+};
 
 class Mooncake {
 public:
@@ -105,11 +110,11 @@ public:
     AppAbility::AppInfo_t getAppInfo(int appID);
 
     /**
-     * @brief 获取所有 App 的 App 信息
+     * @brief 获取所有 App 的属性, 包含信息和 ID
      *
-     * @return std::vector<AppAbility::AppInfo_t>
+     * @return std::vector<AppProps_t>
      */
-    std::vector<AppAbility::AppInfo_t> getAllAppInfo();
+    std::vector<AppProps_t> getAllAppProps();
 
     /**
      * @brief 获取指定 ID 的 App 当前生命周期状态

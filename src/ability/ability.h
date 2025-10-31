@@ -47,7 +47,7 @@ public:
     virtual void baseDestroy() {}
 
     // 获取自己的 Ability ID
-    inline int getId()
+    inline int getID()
     {
         return _id;
     }

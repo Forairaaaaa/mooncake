@@ -94,11 +94,12 @@ int main()
     // [1] on construct
     // [2] on construct
 
-    // 获取 App 信息
-    auto app_info_list = mc.getAllAppInfo();
-    printf(">> app num: %zu\n", app_info_list.size());
-    for (auto& info : app_info_list) {
-        printf(">> app name: %s\n", info.name.c_str());
+    // 获取 App 属性
+    auto app_props_list = mc.getAllAppProps();
+    printf(">> app num: %zu\n", app_props_list.size());
+    for (auto& props : app_props_list) {
+        printf(">> app name: %s\n", props.info.name.c_str());
+        printf(">> app id: %d\n", props.appID);
     }
     // >> app num: 2
     // >> app name: 肠粉
