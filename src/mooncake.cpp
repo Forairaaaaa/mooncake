@@ -128,9 +128,9 @@ AppAbility::AppInfo_t Mooncake::getAppInfo(int appID)
     return get_app_ability_manager()->getAppAbilityAppInfo(appID);
 }
 
-std::vector<AppAbility::AppInfo_t> Mooncake::getAllAppInfo()
+std::vector<AppProps_t> Mooncake::getAllAppProps()
 {
-    std::vector<AppAbility::AppInfo_t> ret;
+    std::vector<AppProps_t> ret;
 
     if (!_app_ability_manager) {
         return ret;
@@ -138,7 +138,10 @@ std::vector<AppAbility::AppInfo_t> Mooncake::getAllAppInfo()
 
     auto ability_list = get_app_ability_manager()->getAllAbilityInstance();
     for (const auto& ability : ability_list) {
-        ret.push_back(static_cast<AppAbility*>(ability)->getAppInfo());
+        AppProps_t props;
+        props.info = static_cast<AppAbility*>(ability)->getAppInfo();
+        props.appId = ability->getId();
+        ret.emplace_back(props);
     }
 
     return ret;
