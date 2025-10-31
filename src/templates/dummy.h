@@ -10,7 +10,8 @@
  */
 #pragma once
 #include <mooncake.h>
-#include <cstdio>
+#include <string>
+#include <stdio.h>
 
 namespace mooncake {
 namespace templates {
@@ -23,32 +24,32 @@ public:
         dummy_id++;
         setAppInfo().name = "Dummy" + std::to_string(dummy_id);
 
-        std::printf("%s onCreate\n", getAppInfo().name.c_str());
+        printf("%s onCreate\n", getAppInfo().name.c_str());
     }
 
     void onOpen() override
     {
-        std::printf("%s onOpen\n", getAppInfo().name.c_str());
+        printf("%s onOpen\n", getAppInfo().name.c_str());
     }
 
     void onRunning() override
     {
-        std::printf("%s onRunning\n", getAppInfo().name.c_str());
+        printf("%s onRunning\n", getAppInfo().name.c_str());
     }
 
     void onSleeping() override
     {
-        std::printf("%s onSleeping\n", getAppInfo().name.c_str());
+        printf("%s onSleeping\n", getAppInfo().name.c_str());
     }
 
     void onClose() override
     {
-        std::printf("%s onClose\n", getAppInfo().name.c_str());
+        printf("%s onClose\n", getAppInfo().name.c_str());
     }
 
     void onDestroy() override
     {
-        std::printf("%s onDestroy\n", getAppInfo().name.c_str());
+        printf("%s onDestroy\n", getAppInfo().name.c_str());
     }
 };
 
