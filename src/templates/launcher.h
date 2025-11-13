@@ -109,16 +109,10 @@ public:
     {
         // If there is an app to open
         if (_going_to_open_app_id >= 0) {
-            // Open new app
-            if (GetMooncake().openApp(_going_to_open_app_id)) {
-                _running_app_id = _going_to_open_app_id;
-                _going_to_open_app_id = -1;
-
-                // Close laucnher
-                close();
-                return;
-            }
-            _going_to_open_app_id = -1;
+            // Close laucnher first
+            // So launcher's onClose will be called before new app's onOpen
+            close();
+            return;
         }
 
         onLauncherRunning();
@@ -126,6 +120,14 @@ public:
 
     void onSleeping() override
     {
+        // If there is an app to open
+        if (_going_to_open_app_id >= 0) {
+            // Open new app
+            GetMooncake().openApp(_going_to_open_app_id);
+            _running_app_id = _going_to_open_app_id;
+            _going_to_open_app_id = -1;
+        }
+
         // If an app is opened and running
         if (isAppRunning()) {
             // If running app is closed
