@@ -7,7 +7,7 @@ A multi-app management and scheduling framework designed for mcu
 ------
 
 - 结构化 App 生命周期设计
-- 多 App 对象池管理
+- 多 App 管理（对象池）
 - 灵活的生命周期行为抽象
 
 单个 App：
